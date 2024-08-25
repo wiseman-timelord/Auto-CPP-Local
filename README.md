@@ -2,7 +2,7 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- Check and update code relating to the .ENV.
+- Check and update code relating to the streamlining of the .ENV.
 - SKim over other scripts, checking compatibility with updates, and possibility of streamlining for methods of doing things we are no-longer using.
 - Merging of smaller scripts with simlarly themed scripts, overall scripts should be reduced to as few 150-200 line scripts as possible.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
