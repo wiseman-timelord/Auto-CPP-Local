@@ -72,6 +72,12 @@ if not exist ".\models" (
     mkdir ".\models"
     echo ".\models" created.
 )
+echo Checking: .\working
+if not exist ".\working" (
+    echo ".\working" not found.
+    mkdir ".\working"
+    echo ".\working" created.
+)
 
 :: Install Requirements
 echo Installing requirements.txt...
