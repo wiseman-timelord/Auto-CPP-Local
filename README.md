@@ -61,7 +61,7 @@ CUSTOM_SEARCH_ENGINE_ID=your-custom-search-engine-id
 
 ### INSTALL AND USAGE:
 1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through.
-2. Ensure to insert a `*.GGUF` model into ".\models` folder, only one.
+2. Ensure to insert a `*.GGUF` model into `.\models` folder, only one.
 2. Configure the `.\.ENV` file, its now cut down, and should be simple enough.
 3. Run the `.\Launcher.Bat`, and use as you would normally, within the limitations.
 
