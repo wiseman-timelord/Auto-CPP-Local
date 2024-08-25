@@ -4,7 +4,8 @@
 set "ScriptDirectoryWt=%~dp0"
 set "ScriptDirectoryWt=%ScriptDirectoryWt:~0,-1%"
 pushd "%ScriptDirectoryWt%"
-echo Working Dir: %ScriptDirectoryWt%
+set "PYTHON_VERSION_TEXT=Python_3.9"
+set "PYTHON_VERSION_FOLDER=Python39"
 
 :: Check for administrative privileges
 net session >nul 2>&1
@@ -16,8 +17,7 @@ if %errorLevel% NEQ 0 (
 )
 
 :: Find Python and pip
-set "PYTHON_VERSION_TEXT=Python_3.9"
-set "PYTHON_VERSION_FOLDER=Python39"
+
 set "PIP_EXE_TO_USE="
 set "PYTHON_EXE_TO_USE="
 set "PYTHON_FOLDER_TO_USE="

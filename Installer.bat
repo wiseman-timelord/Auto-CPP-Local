@@ -4,6 +4,9 @@
 set "ScriptDirectoryWt=%~dp0"
 set "ScriptDirectoryWt=%ScriptDirectoryWt:~0,-1%"
 pushd "%ScriptDirectoryWt%"
+set "PYTHON_VERSION_TEXT=Python_3.9"
+set "PYTHON_VERSION_FOLDER=Python39"'
+set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 
 :: Check for administrative privileges
 net session >nul 2>&1
@@ -15,8 +18,6 @@ if %errorLevel% NEQ 0 (
 )
 
 :: Find Python and pip
-set "PYTHON_VERSION_TEXT=Python_3.9"
-set "PYTHON_VERSION_FOLDER=Python39"
 set "PIP_EXE_TO_USE="
 set "PYTHON_EXE_TO_USE="
 set "PYTHON_FOLDER_TO_USE="
@@ -87,12 +88,12 @@ echo.
 
 :: Install Libraries
 :: Download llama binaries
-set "cachedFilePath=.\cache\%llamaVulkanVersion%.zip"
+set "cachedFilePath=.\cache\llama_cpp_binaries.zip"
 if exist "%cachedFilePath%" (
     echo Cached file found. Continuing.
 ) else (
     echo Downloading Llama Vulkan Binary...
-    powershell -Command "Invoke-WebRequest -Uri \"%downloadUrl%.zip\" -OutFile \"%cachedFilePath%\""
+    powershell -Command "Invoke-WebRequest -Uri "%downloadUrl%" -OutFile "%cachedFilePath%""
 )
 timeout /t 2 >nul
 if %errorlevel% neq 0 (
