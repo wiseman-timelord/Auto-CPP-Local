@@ -9,7 +9,7 @@ Status: Alpha
 - Pre-Launch Gradio-Interface run with "Configure.Bat" for Configuring ENV, that will now be kept in the Yaml, env will be deleted.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
 - We could use a yaml instead of the .env, as it will contain no sensitive data such as API keys, and delete and do away with the env system. this could also result in some form of configurator batch with gradio interface, for the yaml, and we could hide the yaml in .\scripts or something and instead use a batch run gradio configurator
-- Data visualization, spinner should be replaced with data visualization, line, time taken, throughput rate, memory/processor usage, whats possible and fitting?
+- Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
