@@ -13,7 +13,7 @@ Status: Alpha
 
 ## DESCRIPTION:
 - Quoted from the original `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI.`
-- This fork "AutoGPT=CPPVulkan", is a remake of an early version of Auto-GPT, that has been streamlined to basic windows non-wsl operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over, and hopefully by the end of it, we will have something robust, and the main thing THAT RUNS ON WINDOWS without complicated setup and with Acelleration for Non-ROCM AMD users. 
+- This fork "AutoGPT=CPPVulkan", is a remake of an early version of Auto-GPT, that has been streamlined to basic windows non-wsl operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over, and hopefully by the end of it, we will have something robust, and the main thing THAT RUNS ON VANILLA WINDOWS PYTHON, without complicated setup and with Acelleration for Non-ROCM AMD users. 
 
 ### PREVIEW:
 - The Env gives a better idea of where its going...
