@@ -5,14 +5,13 @@ Status: Alpha
 - Merging of smaller scripts in ".\scripts\" with simlarly themed scripts, while optimizing and compacting, functions. overall scripts should be reduced to multiple 150-200 line scripts, but as few as as possible. prediction 1/3 of scripts in ".\scripts" are mergeable.
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
-- Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
 - We could use a yaml instead of the .env, as it will contain no sensitive data such as API keys, and delete and do away with the env system. this could also result in some form of configurator batch "Configure.Bat" with gradio interface, for the yaml, and we could hide the yaml in .\scripts or something and instead use a batch run gradio configurator. Batch files will then be required to be numbered, 1., 2., 3., for foolproofing.
-
 - Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
-- Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
+- Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
+- Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
 
 ## DESCRIPTION:
 - This fork "AutoGPT-CPPVulkan", is a remake of the last release of "AutoGPT v1", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over. The main goal we will have something robust and compitent on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
