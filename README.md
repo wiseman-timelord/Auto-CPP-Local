@@ -1,4 +1,4 @@
-# AutoGPT-CPPVulkan: A Fork and Remake of AutoGPT 1.3
+# AutoGPT-CPPVulkan: A Fork and Remake, of AutoGPT 1.3
 Status: Alpha
 
 ### DEVELOPMENT:
@@ -79,7 +79,7 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 
 ### NOTATION:
 - Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`. We can use this instead of huggingfce.
-- 
+- Playwright is a library for browser interaction in python, Chrome Driver enables local server to interact with chrome in headless mode, together we can replace google requirement.
 
 # DISCLAIMER
 - This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
