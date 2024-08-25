@@ -2,13 +2,13 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- merge and optimize files in `.\memory\`, then move single merged script to ".\scripts", and update compatibility with other functions that mention it in other scripts. Also, hardcode memory choice to always just use local settings, so as to not have .env entry, and streamline where appropriate. additionally review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI.
 - Merging of smaller scripts in ".\scripts\" with simlarly themed scripts, while optimizing and compacting, functions. overall scripts should be reduced to multiple 150-200 line scripts, but as few as as possible.
 - SKim over all scripts, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
 - Pre-Launch Gradio-Interface run with "Configure.Bat" for Configuring ENV, that will now be kept in the Yaml, env will be deleted.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
+- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better, or stepping stones with less updates elsewhere?
 - Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
 
 ## DESCRIPTION:
