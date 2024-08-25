@@ -30,30 +30,39 @@ BROWSE_SUMMARY_MAX_TOKEN=300
 # USER_AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
 # AI_SETTINGS_FILE - Specifies which AI Settings file to use (defaults to ai_settings.yaml)
 AI_SETTINGS_FILE=ai_settings.yaml
+
 ################################################################################
 ### LLM MODELS
 ################################################################################
+
 # SMART_LLM_MODEL - Smart language model (Default: gpt-4)
-SMART_LLM_MODEL=.\models\L3-8B-Stheno-v3.2-IQ3_M-imat.gguf
+SMART_LLM_MODEL=.\models\YourModel.gguf
 ### LLM MODEL SETTINGS
-# SMART_TOKEN_LIMIT - Smart token limit for OpenAI (Default: 8000)
-# TEMPERATURE - Sets temperature in OpenAI (Default: 1)
+# SMART_TOKEN_LIMIT - Smart token limit for model(Default: 8000)
+# TEMPERATURE - Sets temperature for model(Default: 1)
 SMART_TOKEN_LIMIT=8000
+EMBED_DIM=1536
 TEMPERATURE=1
+
 ################################################################################
 ### MEMORY
 ################################################################################
+
 # MEMORY_BACKEND - Memory backend type (Default: local)
 MEMORY_BACKEND=local
+
 ################################################################################
 ### IMAGE GENERATION PROVIDER
 ################################################################################
+
 ### HUGGINGFACE
 # HUGGINGFACE_API_TOKEN - HuggingFace API token (Example: my-huggingface-api-token)
 HUGGINGFACE_API_TOKEN=your-huggingface-api-token
+
 ################################################################################
 ### SEARCH PROVIDER
 ################################################################################
+
 ### GOOGLE
 # GOOGLE_API_KEY - Google API key (Example: my-google-api-key)
 # CUSTOM_SEARCH_ENGINE_ID - Custom search engine ID (Example: my-custom-search-engine-id)
