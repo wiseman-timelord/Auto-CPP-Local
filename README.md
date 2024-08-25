@@ -78,7 +78,8 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that. unless you installed it in a non-optional location.
 
 ### NOTATION:
-- Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`.
+- Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`. We can use this instead of huggingfce.
+- 
 
 # DISCLAIMER
 - This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
