@@ -6,6 +6,7 @@ from json_utils import correct_json
 from logger import logger
 
 cfg = Config()
+model = Llama(model_path=cfg.smart_llm_model)
 
 JSON_SCHEMA = """
 {
@@ -76,8 +77,6 @@ def fix_and_parse_json(
 
 
 def fix_json(json_str: str, schema: str) -> str:
-    """Fix the given JSON string to make it parseable and fully compliant with the provided schema."""
-    # Try to fix the JSON using GPT:
     function_string = "def fix_json(json_str: str, schema:str=None) -> str:"
     args = [f"'''{json_str}'''", f"'''{schema}'''"]
     description_string = "Fixes the provided JSON string to make it parseable"\
@@ -86,12 +85,13 @@ def fix_json(json_str: str, schema: str) -> str:
         " JSON, it is omitted.\n This function is brilliant at guessing"\
         " when the format is incorrect."
 
-    # If it doesn't already start with a "`", add one:
     if not json_str.startswith("`"):
         json_str = "```json\n" + json_str + "\n```"
-    result_string = call_ai_function(
-        function_string, args, description_string, model=cfg.fast_llm_model
-    )
+    
+    prompt = f"{function_string}\n\nArgs:\n{args}\n\nDescription:\n{description_string}\n\nJSON to fix:\n{json_str}"
+    
+    result_string = model.create_completion(prompt, max_tokens=1000, temperature=cfg.temperature)['choices'][0]['text']
+    
     logger.debug("------------ JSON FIX ATTEMPT ---------------")
     logger.debug(f"Original JSON: {json_str}")
     logger.debug("-----------")
@@ -99,11 +99,7 @@ def fix_json(json_str: str, schema: str) -> str:
     logger.debug("----------- END OF FIX ATTEMPT ----------------")
 
     try:
-        json.loads(result_string)  # just check the validity
+        json.loads(result_string)
         return result_string
-    except:  # noqa: E722
-        # Get the call stack:
-        # import traceback
-        # call_stack = traceback.format_exc()
-        # print(f"Failed to fix JSON: '{json_str}' "+call_stack)
+    except:
         return "failed"

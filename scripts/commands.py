@@ -52,14 +52,10 @@ def get_command(response):
 
 
 def execute_command(command_name, arguments):
-    """Execute the command and return the result"""
     memory = get_memory(cfg)
 
     try:
         if command_name == "google":
-
-            # Check if the Google API key is set and use the official search method
-            # If the API key is not set or has only whitespaces, use the unofficial search method
             if cfg.google_api_key and (cfg.google_api_key.strip() if cfg.google_api_key else None):
                 return google_official_search(arguments["input"])
             else:
@@ -93,16 +89,13 @@ def execute_command(command_name, arguments):
             return search_files(arguments["directory"])
         elif command_name == "browse_website":
             return browse_website(arguments["url"], arguments["question"])
-        # TODO: Change these to take in a file rather than pasted code, if
-        # non-file is given, return instructions "Input should be a python
-        # filepath, write your code to file and try again"
         elif command_name == "evaluate_code":
-            return ai.evaluate_code(arguments["code"])
+            return model.create_completion(arguments["code"], max_tokens=1500)
         elif command_name == "improve_code":
-            return ai.improve_code(arguments["suggestions"], arguments["code"])
+            return model.create_completion(f"Improve the following code based on the suggestions:\n\nCode:\n{arguments['code']}\n\nSuggestions:\n{arguments['suggestions']}", max_tokens=1500)
         elif command_name == "write_tests":
-            return ai.write_tests(arguments["code"], arguments.get("focus"))
-        elif command_name == "execute_python_file":  # Add this command
+            return model.create_completion(f"Write tests for the following code:\n\n{arguments['code']}\n\nFocus on: {arguments.get('focus', 'all aspects')}", max_tokens=1500)
+        elif command_name == "execute_python_file":
             return execute_python_file(arguments["file"])
         elif command_name == "execute_shell":
             if cfg.execute_local_commands:
@@ -117,7 +110,6 @@ def execute_command(command_name, arguments):
             shutdown()
         else:
             return f"Unknown command '{command_name}'. Please refer to the 'COMMANDS' list for available commands and only respond in the specified JSON format."
-    # All errors, return "Error: + error message"
     except Exception as e:
         return "Error: " + str(e)
 
@@ -266,7 +258,7 @@ def start_agent(name, task, prompt, model=cfg.fast_llm_model):
     # Create agent
     if cfg.speak_mode:
         speak.say_text(agent_intro, 1)
-    key, ack = agents.create_agent(task, first_message, model)
+    key, ack = agents.create_agent(task, first_message, model_path)
 
     if cfg.speak_mode:
         speak.say_text(f"Hello {voice_name}. Your task is as follows. {task}.")

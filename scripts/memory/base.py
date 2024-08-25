@@ -1,18 +1,14 @@
-"""Base class for memory providers."""
 import abc
 from config import AbstractSingleton, Config
-import openai
+from llama_cpp import Llama
 
 cfg = Config()
 
-
-def get_ada_embedding(text):
+def get_embedding(text):
     text = text.replace("\n", " ")
-    if cfg.use_azure:
-        return openai.Embedding.create(input=[text], engine=cfg.get_azure_deployment_id_for_model("text-embedding-ada-002"))["data"][0]["embedding"]
-    else:
-        return openai.Embedding.create(input=[text], model="text-embedding-ada-002")["data"][0]["embedding"]
-
+    model = Llama(model_path=cfg.smart_llm_model)
+    embedding = model.embed(text)
+    return embedding
 
 class MemoryProviderSingleton(AbstractSingleton):
     @abc.abstractmethod

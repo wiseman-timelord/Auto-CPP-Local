@@ -7,6 +7,7 @@ from urllib.parse import urlparse, urljoin
 
 cfg = Config()
 memory = get_memory(cfg)
+model = Llama(model_path=cfg.smart_llm_model)
 
 session = requests.Session()
 session.headers.update({'User-Agent': cfg.user_agent})
@@ -139,7 +140,6 @@ def create_message(chunk, question):
 
 
 def summarize_text(url, text, question):
-    """Summarize text using the LLM model"""
     if not text:
         return "Error: No text to summarize"
 
@@ -158,14 +158,10 @@ def summarize_text(url, text, question):
         memory.add(memory_to_add)
 
         print(f"Summarizing chunk {i + 1} / {len(chunks)}")
-        messages = [create_message(chunk, question)]
-
-        summary = create_chat_completion(
-            model=cfg.fast_llm_model,
-            messages=messages,
-            max_tokens=cfg.browse_summary_max_token,
-        )
-        summaries.append(summary)
+        prompt = f"\"\"\"{chunk}\"\"\" Using the above text, please answer the following question: \"{question}\" -- if the question cannot be answered using the text, please summarize the text."
+        
+        summary = model.create_completion(prompt, max_tokens=cfg.browse_summary_max_token, temperature=cfg.temperature)
+        summaries.append(summary['choices'][0]['text'])
         print(f"Added chunk {i + 1} summary to memory")
 
         memory_to_add = f"Source: {url}\n" \
@@ -176,12 +172,8 @@ def summarize_text(url, text, question):
     print(f"Summarized {len(chunks)} chunks.")
 
     combined_summary = "\n".join(summaries)
-    messages = [create_message(combined_summary, question)]
+    prompt = f"\"\"\"{combined_summary}\"\"\" Using the above text, please answer the following question: \"{question}\" -- if the question cannot be answered using the text, please summarize the text."
+    
+    final_summary = model.create_completion(prompt, max_tokens=cfg.browse_summary_max_token, temperature=cfg.temperature)
 
-    final_summary = create_chat_completion(
-        model=cfg.fast_llm_model,
-        messages=messages,
-        max_tokens=cfg.browse_summary_max_token,
-    )
-
-    return final_summary
+    return final_summary['choices'][0]['text']
