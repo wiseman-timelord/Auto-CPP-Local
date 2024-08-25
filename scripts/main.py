@@ -8,7 +8,7 @@ from spinner import Spinner
 import time
 import speak
 from config import Config
-from json_parser import fix_and_parse_json
+from models import create_chat_completion, fix_json, JsonHandler
 from ai_config import AIConfig
 import traceback
 import yaml
@@ -16,7 +16,7 @@ import argparse
 from logger import logger
 import logging
 from prompt import get_prompt
-from llm_utils import initialize_model, create_chat_completion
+from llm_utils import initialize_model
 
 cfg = Config()
 
