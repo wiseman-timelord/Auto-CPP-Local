@@ -78,7 +78,7 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that. unless you installed it in a non-optional location.
 
 ### NOTATION:
-- Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`. We can use this instead of huggingfce.
+- Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`. We can use this offline instead of "huggingface.co".
 - Playwright is a library for browser interaction in python, Chrome Driver enables local server to interact with chrome in headless mode, together we can replace google requirement.
 
 # DISCLAIMER
