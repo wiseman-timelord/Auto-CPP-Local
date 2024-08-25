@@ -68,16 +68,9 @@ CUSTOM_SEARCH_ENGINE_ID=your-custom-search-engine-id
 
 ### INSTALL AND USAGE:
 1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through.
-2. Ensure to insert a GGUF model into ".\model`
+2. Ensure to insert a `*.GGUF` model into ".\models` folder, only one.
 2. Configure the `.\.ENV` file, its now cut down, and should be simple enough.
-
 3. Run the `.\Launcher.Bat`, and use as you would normally, within the limitations.
 
-Run the `Launcher.Bat`, ensure to 
-
-
-### NOTATION:
-Continuous mode is not recommendedm It is potentially dangerous and may cause your AI to run forever or carry out actions you would not usually authorise.
-
 # DISCLAIMER
-This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more GPT fees.
+This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more GPT fees. Continuous mode is not recommendedm It is potentially dangerous and may cause your AI to run forever or carry out actions you would not usually authorise.
