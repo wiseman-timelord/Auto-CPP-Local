@@ -1,4 +1,5 @@
 # AutoGPT-CPPVulkan: A Fork and Remake of AutoGPT 1.3, the Autonomous LLM Experiment
+Status: Alpha - Do not use.
 
 ### DEVELOPMENT:
 - Check and update code relating to the .ENV.
