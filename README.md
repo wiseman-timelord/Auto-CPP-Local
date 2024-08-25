@@ -1,6 +1,6 @@
 # AutoGPT-CPPVulkan: A Fork and Remake of AutoGPT 1.3, the Autonomous LLM Experiment
 
-# DEVELOPMENT:
+### DEVELOPMENT:
 - Check and update code relating to the .ENV.
 - SKim over other scripts, checking compatibility with updates, and possibility of streamlining.
 - Installer works, however, Launcer requires, run and debug. 
