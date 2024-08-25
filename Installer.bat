@@ -1,102 +1,87 @@
 @echo off
-setlocal enabledelayedexpansion
-cls
 
-:: Set the filename to download
-set "llamaVulkanVersion=llama-b3617-bin-win-vulkan-x64"
-set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3617/%llamaVulkanVersion%"
+:: Initialization
+set "ScriptDirectoryWt=%~dp0"
+set "ScriptDirectoryWt=%ScriptDirectoryWt:~0,-1%"
+pushd "%ScriptDirectoryWt%"
 
-:: Check for admin privileges
+:: Check for administrative privileges
 net session >nul 2>&1
-if %errorLevel% neq 0 (
-    echo This script requires administrative privileges.
-    echo Please run this script as an administrator.
-    timeout /t 5 >nul
-    goto :error
+if %errorLevel% NEQ 0 (
+    echo Error: Admin Required!
+    echo Right Click, then Run As Administrator.
+    timeout /t 3 >nul
+    goto :eof
 )
-echo Running with Admin rights.
 
-:: Working Fodler Fix After Admin
-set "ScriptDirectory=%~dp0"
-set "ScriptDirectory=%ScriptDirectory:~0,-1%"
-pushd "%ScriptDirectory%"
-
-:: Find Python 3.X and pip
+:: Find Python and pip
+set "PYTHON_VERSION_TEXT=Python_3.9"
+set "PYTHON_VERSION_FOLDER=Python39"
 set "PIP_EXE_TO_USE="
 set "PYTHON_EXE_TO_USE="
 set "PYTHON_FOLDER_TO_USE="
 for %%I in (
-    "C:\Program Files\Python39\"
-    "C:\Program Files (x86)\Python39\"
-    "%LocalAppData%\Programs\Python\Python39\"
+    "C:\Program Files\%PYTHON_VERSION_FOLDER%\"
+    "%LocalAppData%\Programs\Python\%PYTHON_VERSION_FOLDER%\"
 ) do (
     if exist "%%~I" (
         set "PYTHON_FOLDER_TO_USE=%%~I"
         set "PYTHON_EXE_TO_USE=%%~dpI\python.exe"
         set "PIP_EXE_TO_USE=%%~dpI\Scripts\pip.exe"
-        goto :found_python3X
+        goto :found_python_location
     )
 )
-:found_python3X
+:found_python_location
 if not defined PYTHON_EXE_TO_USE (
-    echo Error: Python 3.X not found. Please ensure it is installed.
-    timeout /t 5 >nul
-    goto :error
+    echo Error: %PYTHON_VERSION_TEXT% not found. Please install it before running this script.
+    timeout /t 3 >nul
+    goto :eof
 )
-
-:: Custom Banner
-echo *******************************************************************************************************************
-echo                                          Chat-LlamaVulkan - Installer
-echo *******************************************************************************************************************
-echo.
-echo Working Dir: %ScriptDirectory%
-echo.
-
-:: Create Directories
+echo Python Found: %PYTHON_EXE_TO_USE%
+echo Pip Found: %PIP_EXE_TO_USE%
 timeout /t 1 >nul
-echo Checking ".\data\libraries"...
-if not exist ".\data\libraries" (
-    echo ".\data\libraries" not found.
-    mkdir ".\data\libraries"
-    echo ".\data\libraries" created.
+echo.
+
+:: BaNNer
+echo *******************************************************************************************************************
+echo                                              Auto-LLM-Vulkan Launcher
+echo *******************************************************************************************************************
+echo.
+echo Working Dir: %ScriptDirectoryWt%
+
+:: Install Libraries
+echo Maintenance Tasks...
+echo Checking: .\Libraries
+if not exist ".\libraries" (
+    mkdir ".\libraries"
+    echo Created: .\libraries.
 ) else (
-    echo ".\data\libraries" exists.
+    echo Emptying .\libraries
+    del /s /q ".\libraries\*.*"
+	echo Emptied: .\libraries
 )
-echo Checking for ".\data\cache"...
-if not exist ".\data\cache" (
-    echo ".\data\cache" not found.
-    mkdir ".\data\cache"
-    echo ".\data\cache" created.
-) else (
-    echo ".\data\cache" exists.
+echo Checking: .\cache
+if not exist ".\cache" (
+    echo ".\cache" not found.
+    mkdir ".\cache"
+    echo ".\cache" created.
 )
-echo Checking ".\models"...
+echo Checking: .\models
 if not exist ".\models" (
     echo ".\models" not found.
     mkdir ".\models"
     echo ".\models" created.
-) else (
-    echo ".\models" exists.
 )
-timeout /t 1 >nul
-echo.
-
-:: Folder Maintenance
-if exist ".\data\libraries\*.*" (
-    echo Emptying .\data\libraries
-    del /s /q ".\data\libraries\*.*"
-	echo Emptied: .\data\libraries
-) 
-timeout /t 1 <nul
 
 :: Install Requirements
-echo Installing Pip Requirements...
-"%PIP_EXE_TO_USE%" install -r ./data/requirements.txt
-echo Requirements install finished.
-timeout /t 2 >nul
+echo Installing requirements.txt...
+"%PIP_EXE_TO_USE%" install -r requirements.txt
+echo requirements.txt Installed.
+echo.
 
-:: Check if the file exists in the cache
-set "cachedFilePath=.\data\cache\%llamaVulkanVersion%.zip"
+:: Install Libraries
+:: Download llama binaries
+set "cachedFilePath=.\cache\%llamaVulkanVersion%.zip"
 if exist "%cachedFilePath%" (
     echo Cached file found. Continuing.
 ) else (
@@ -127,8 +112,8 @@ if not defined sevenZipPath (
 timeout /t 2 >nul
 
 :: Extract Llama Vulkan Binary
-echo Extracting Llama Vulkan Binary to ".\data\libraries\LlamaCpp_Binaries"...
-"%sevenZipPath%" x "%cachedFilePath%" -o".\data\libraries\LlamaCpp_Binaries" -mmt4 -y
+echo Extracting Llama Vulkan Binary to ".\libraries\LlamaCpp_Binaries"...
+"%sevenZipPath%" x "%cachedFilePath%" -o".\libraries\LlamaCpp_Binaries" -mmt4 -y
 if %errorlevel% neq 0 (
     echo Failed to extract Llama Vulkan Binary.
     goto :error
