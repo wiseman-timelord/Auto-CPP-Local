@@ -4,9 +4,12 @@ Status: Alpha
 ### DEVELOPMENT:
 - Check and update code relating to the streamlining of the .ENV.
 - SKim over other scripts, checking compatibility with updates, and possibility of streamlining for methods of doing things we are no-longer using.
+- use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember.
 - Merging of smaller scripts with simlarly themed scripts, while optimizing and compacting, functions overall scripts should be reduced to as few 150-200 line scripts as possible.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
-- Depending upon how many scripts were the result, there is the possibility of a gradio interface, with menu chat etc, the ENV configuration being done in the 1st display of interface before lauch main script, or something.
+- Pre-Launch Gradio-Interface run with "Configure.Bat" for Configuring ENV, that will now be kept in the Yaml, env will be deleted.
+- Solutions need to be found to HuggingFace, local stable diffusion GGUF files are a thing, but will they do the job, albeit more simple version. 
+- Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
 
 ## DESCRIPTION:
 Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI. This forf "AutoGPT=CPPVulkan", is a remake of an early version of Auto-GPT, that has been streamlined to basic windows non-wsl operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation, however, we will be finding better alternates to things such as huggingface and google websearch.
