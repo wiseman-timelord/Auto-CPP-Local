@@ -4,7 +4,6 @@ import numpy as np
 import os
 from typing import Any, List, Optional
 from config import AbstractSingleton, Config
-from llama_cpp import Llama
 
 cfg = Config()
 SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS

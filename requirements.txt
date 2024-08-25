@@ -5,7 +5,6 @@ pyyaml==6.0
 readability-lxml==0.8.1
 requests
 tiktoken==0.3.3
-gTTS==2.3.1
 duckduckgo-search
 google-api-python-client #(https://developers.google.com/custom-search/v1/overview)
 orjson
@@ -13,3 +12,4 @@ Pillow
 coverage
 flake8
 numpy
+pywin32==305

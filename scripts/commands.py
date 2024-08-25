@@ -1,7 +1,5 @@
 from memory import LocalCache
-import browse
-import json
-import datetime
+import browse, json, datetime
 import agent_manager as agents
 import speak
 from config import Config
@@ -256,7 +254,7 @@ def start_agent(name, task, prompt, model=cfg.fast_llm_model):
 
     # Create agent
     if cfg.speak_mode:
-        speak.say_text(agent_intro, 1)
+        speak.say_text(agent_intro)
     key, ack = agents.create_agent(task, first_message, model_path)
 
     if cfg.speak_mode:
@@ -283,7 +281,7 @@ def message_agent(key, message):
 
     # Speak response
     if cfg.speak_mode:
-        speak.say_text(agent_response, 1)
+        speak.say_text(agent_response)
     return agent_response
 
 

@@ -1,8 +1,4 @@
-import logging
-import os
-import random
-import re
-import time
+import logging, os, random, re, time
 from logging import LogRecord
 import speak
 from config import Config
