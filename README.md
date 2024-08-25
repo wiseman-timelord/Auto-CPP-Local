@@ -6,9 +6,9 @@ Status: Alpha
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
-- Pre-Launch Gradio-Interface run with "Configure.Bat" for Configuring ENV, that will now be kept in the Yaml, env will be deleted.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
-- We could use a yaml instead of the .env, as it will contain no sensitive data such as API keys, and delete and do away with the env system. this could also result in some form of configurator batch with gradio interface, for the yaml, and we could hide the yaml in .\scripts or something and instead use a batch run gradio configurator
+- We could use a yaml instead of the .env, as it will contain no sensitive data such as API keys, and delete and do away with the env system. this could also result in some form of configurator batch "Configure.Bat" with gradio interface, for the yaml, and we could hide the yaml in .\scripts or something and instead use a batch run gradio configurator. Batch files will then be required to be numbered, 1., 2., 3., for foolproofing.
+
 - Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
