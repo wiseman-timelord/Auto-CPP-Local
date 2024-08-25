@@ -4,10 +4,6 @@ import random
 import re
 import time
 from logging import LogRecord
-from colorama import Fore
-
-from colorama import Style
-
 import speak
 from config import Config
 from config import Singleton
@@ -69,13 +65,7 @@ class Logger(metaclass=Singleton):
         self.logger.addHandler(error_handler)
         self.logger.setLevel(logging.DEBUG)
 
-    def typewriter_log(
-            self,
-            title='',
-            title_color='',
-            content='',
-            speak_text=False,
-            level=logging.INFO):
+    def typewriter_log(self, title='', title_color='', content='', speak_text=False, level=logging.INFO):
         if speak_text and cfg.speak_mode:
             speak.say_text(f"{title}. {content}")
 
@@ -129,7 +119,8 @@ class Logger(metaclass=Singleton):
         if not additionalText:
             additionalText = "Please ensure you've setup and configured everything correctly. Read https://github.com/Torantulino/Auto-GPT#readme to double check. You can also create a github issue or join the discord and ask there!"
 
-        self.typewriter_log("DOUBLE CHECK CONFIGURATION", Fore.YELLOW, additionalText)
+        self.typewriter_log("DOUBLE CHECK CONFIGURATION", "", additionalText)    
+    )
 
 
 '''
@@ -169,15 +160,11 @@ class ConsoleHandler(logging.StreamHandler):
 
 
 class AutoGptFormatter(logging.Formatter):
-    """
-    Allows to handle custom placeholders 'title_color' and 'message_no_color'.
-    To use this formatter, make sure to pass 'color', 'title' as log extras.
-    """
     def format(self, record: LogRecord) -> str:
-        if (hasattr(record, 'color')):
-            record.title_color = getattr(record, 'color') + getattr(record, 'title') + " " + Style.RESET_ALL
+        if hasattr(record, 'title'):
+            record.title_color = getattr(record, 'title') + " "
         else:
-            record.title_color = getattr(record, 'title')
+            record.title_color = ""
         if hasattr(record, 'msg'):
             record.message_no_color = remove_color_codes(getattr(record, 'msg'))
         else:

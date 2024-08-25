@@ -4,7 +4,6 @@ import commands as cmd
 import utils
 from memory import get_memory, get_supported_memory_backends
 import chat
-from colorama import Fore, Style
 from spinner import Spinner
 import time
 import speak
@@ -105,8 +104,8 @@ class Agent:
                 self.user_input = ""
                 logger.typewriter_log(
                     "NEXT ACTION: ",
-                    Fore.CYAN,
-                    f"COMMAND = {Fore.CYAN}{command_name}{Style.RESET_ALL}  ARGUMENTS = {Fore.CYAN}{arguments}{Style.RESET_ALL}")
+                    "",
+                    f"COMMAND = {command_name}  ARGUMENTS = {arguments}")
                 print(
                     f"Enter 'y' to authorise command, 'y -N' to run N continuous commands, 'n' to exit program, or enter feedback for {self.ai_name}...",
                     flush=True)

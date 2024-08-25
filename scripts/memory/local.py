@@ -3,16 +3,14 @@ import orjson
 from typing import Any, List, Optional
 import numpy as np
 import os
-from memory.base import MemoryProviderSingleton, get_ada_embedding
+from memory.base import MemoryProviderSingleton
+from config import Config
 
-
-EMBED_DIM = 1536
+cfg = Config()
 SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
 
-
 def create_default_embeddings():
-    return np.zeros((0, EMBED_DIM)).astype(np.float32)
-
+    return np.zeros((0, cfg.embed_dim)).astype(np.float32)
 
 @dataclasses.dataclass
 class CacheContent:
@@ -21,19 +19,19 @@ class CacheContent:
         default_factory=create_default_embeddings
     )
 
-
 class LocalCache(MemoryProviderSingleton):
 
-    # on load, load our database
     def __init__(self, cfg) -> None:
         self.filename = f"{cfg.memory_index}.json"
         if os.path.exists(self.filename):
             try:
-                with open(self.filename, 'w+b') as f:
+                with open(self.filename, 'r+b') as f:
                     file_content = f.read()
                     if not file_content.strip():
                         file_content = b'{}'
+                        f.seek(0)
                         f.write(file_content)
+                        f.truncate()
 
                     loaded = orjson.loads(file_content)
                     self.data = CacheContent(**loaded)
@@ -45,20 +43,11 @@ class LocalCache(MemoryProviderSingleton):
             self.data = CacheContent()
 
     def add(self, text: str):
-        """
-        Add text to our list of texts, add embedding as row to our
-            embeddings-matrix
-
-        Args:
-            text: str
-
-        Returns: None
-        """
         if 'Command Error:' in text:
             return ""
         self.data.texts.append(text)
 
-        embedding = get_ada_embedding(text)
+        embedding = self.get_embedding(text)
 
         vector = np.array(embedding).astype(np.float32)
         vector = vector[np.newaxis, :]
@@ -79,37 +68,14 @@ class LocalCache(MemoryProviderSingleton):
         return text
 
     def clear(self) -> str:
-        """
-        Clears the redis server.
-
-        Returns: A message indicating that the memory has been cleared.
-        """
         self.data = CacheContent()
-        return "Obliviated"
+        return "Memory cleared"
 
     def get(self, data: str) -> Optional[List[Any]]:
-        """
-        Gets the data from the memory that is most relevant to the given data.
-
-        Args:
-            data: The data to compare to.
-
-        Returns: The most relevant data.
-        """
         return self.get_relevant(data, 1)
 
     def get_relevant(self, text: str, k: int) -> List[Any]:
-        """"
-        matrix-vector mult to find score-for-each-row-of-matrix
-         get indices for top-k winning scores
-         return texts for those indices
-        Args:
-            text: str
-            k: int
-
-        Returns: List[str]
-        """
-        embedding = get_ada_embedding(text)
+        embedding = self.get_embedding(text)
 
         scores = np.dot(self.data.embeddings, embedding)
 
@@ -118,7 +84,9 @@ class LocalCache(MemoryProviderSingleton):
         return [self.data.texts[i] for i in top_k_indices]
 
     def get_stats(self):
-        """
-        Returns: The stats of the local cache.
-        """
         return len(self.data.texts), self.data.embeddings.shape
+
+    def get_embedding(self, text: str) -> List[float]:
+        # Implement your local model's embedding function here
+        # This is a placeholder and should be replaced with actual embedding logic
+        return [0.0] * cfg.embed_dim

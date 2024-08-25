@@ -1,6 +1,4 @@
 import yaml
-from colorama import Fore
-
 
 def clean_input(prompt: str=''):
     try:
@@ -10,14 +8,13 @@ def clean_input(prompt: str=''):
         print("Quitting...")
         exit(0)
 
-
 def validate_yaml_file(file: str):
     try:
         with open(file) as file:
             yaml.load(file, Loader=yaml.FullLoader)
     except FileNotFoundError:
-        return (False, f"The file {Fore.CYAN}`{file}`{Fore.RESET} wasn't found")
+        return (False, f"The file `{file}` wasn't found")
     except yaml.YAMLError as e:
         return (False, f"There was an issue while trying to read with your AI Settings file: {e}")
 
-    return (True, f"Successfully validated {Fore.CYAN}`{file}`{Fore.RESET}!")
+    return (True, f"Successfully validated `{file}`!")
