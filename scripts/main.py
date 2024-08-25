@@ -2,7 +2,7 @@ import json
 import random
 import commands as cmd
 import utils
-from memory import get_memory, get_supported_memory_backends
+from memory import get_memory
 import chat
 from spinner import Spinner
 import time
@@ -26,7 +26,6 @@ def parse_arguments():
     parser.add_argument('--continuous-limit', '-l', type=int, dest="continuous_limit", help='Defines the number of times to run in continuous mode')
     parser.add_argument('--speak', action='store_true', help='Enable Speak Mode')
     parser.add_argument('--debug', action='store_true', help='Enable Debug Mode')
-    parser.add_argument('--use-memory', '-m', dest="memory_type", help='Defines which Memory backend to use')
     parser.add_argument('--skip-reprompt', '-y', dest='skip_reprompt', action='store_true', help='Skips the re-prompting messages at the beginning of the script')
     parser.add_argument('--ai-settings', '-C', dest='ai_settings_file', help="Specifies which ai_settings.yaml file to use, will also automatically skip the re-prompt.")
     args = parser.parse_args()
@@ -38,8 +37,6 @@ def parse_arguments():
         cfg.set_continuous_limit(args.continuous_limit)
     if args.speak:
         cfg.set_speak_mode(True)
-    if args.use_memory:
-        cfg.memory_backend = args.use_memory
     if args.ai_settings_file:
         cfg.ai_settings_file = args.ai_settings_file
         cfg.skip_reprompt = True
@@ -162,4 +159,4 @@ class Agent:
             # Check if there's a result from the command append it to the message
             # history
             if result is not None:
-                self.full_message_history.append(chat.create
+                self.full_message_history.append(chat.create)

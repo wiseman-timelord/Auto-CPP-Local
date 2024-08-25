@@ -18,7 +18,7 @@ class Config:
         self.max_tokens = int(os.getenv("MAX_TOKENS", "4000"))
         self.temperature = float(os.getenv("TEMPERATURE", "0.5"))
 
-        self.memory_backend = os.getenv("MEMORY_BACKEND", 'local')
+        self.memory_backend = 'local'  # Default to local memory
         self.memory_index = os.getenv("MEMORY_INDEX", 'autogpt-cppvulkan')
 
     def set_continuous_mode(self, value: bool):

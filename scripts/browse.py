@@ -1,12 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-from memory import get_memory
+from memory import LocalCache
 from config import Config
 from llm_utils import create_chat_completion
 from urllib.parse import urlparse, urljoin
 
 cfg = Config()
-memory = get_memory(cfg)
+memory = LocalCache(cfg)
 model = Llama(model_path=cfg.smart_llm_model)
 
 session = requests.Session()

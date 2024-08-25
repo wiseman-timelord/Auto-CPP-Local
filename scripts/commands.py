@@ -1,6 +1,6 @@
+from memory import LocalCache
 import browse
 import json
-from memory import get_memory
 import datetime
 import agent_manager as agents
 import speak
@@ -15,7 +15,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 cfg = Config()
-
 
 def is_valid_int(value):
     try:
@@ -52,7 +51,7 @@ def get_command(response):
 
 
 def execute_command(command_name, arguments):
-    memory = get_memory(cfg)
+    memory = LocalCache(cfg)
 
     try:
         if command_name == "google":

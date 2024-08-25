@@ -1,10 +1,12 @@
 import time
+from memory import LocalCache
 from config import Config
 import token_counter
 from llm_utils import create_chat_completion
 from logger import logger
 
 cfg = Config()
+permanent_memory = LocalCache(cfg)
 
 def create_chat_message(role, content):
     return {"role": role, "content": content}

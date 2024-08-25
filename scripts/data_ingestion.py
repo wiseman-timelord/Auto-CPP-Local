@@ -1,11 +1,10 @@
 import argparse
 import logging
+from memory import LocalCache
 from config import Config
-from memory import get_memory
 from file_operations import ingest_file, search_files
 
 cfg = Config()
-
 
 def configure_logging():
     logging.basicConfig(filename='log-ingestion.txt',
@@ -14,7 +13,6 @@ def configure_logging():
                     datefmt='%H:%M:%S',
                     level=logging.DEBUG)
     return logging.getLogger('AutoGPT-Ingestion')
-
 
 def ingest_directory(directory, memory, args):
     """
@@ -45,9 +43,12 @@ def main():
     args = parser.parse_args()
 
     # Initialize memory
-    memory = get_memory(cfg, init=args.init)
+    memory = LocalCache(cfg)
     print('Using memory of type: ' + memory.__class__.__name__)
 
+    if args.init:
+        memory.clear()
+        
     if args.file:
         try:
             ingest_file(args.file, memory, args.max_length, args.overlap)
