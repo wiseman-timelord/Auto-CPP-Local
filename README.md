@@ -58,12 +58,14 @@ CUSTOM_SEARCH_ENGINE_ID=your-custom-search-engine-id
 
 ### REQUIREMENTS:
 - HuggingFace - For now, AutoGPT-CCPVulkan uses Stable Diffusion, get a [HuggingFace API Token](https://huggingface.co/settings/tokens) , then see ENV section.
+- Python 3.9 - It will find "...Python39\pip.exe" in, user folder or either program files, though you can change Python 3.9 consistently to any version in the 2 batches.
+- No Environments - Such as, Dockers or WSL, no, just normal windows operations, we are using the Llama Pre-compiled binaries, they run in windows, no issues there. 
 
 ### INSTALL AND USAGE:
-1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through.
+1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through. 
 2. Ensure to insert a `*.GGUF` model into `.\models` folder, only one.
 2. Configure the `.\.ENV` file, its now cut down, and should be simple enough.
-3. Run the `.\Launcher.Bat`, and use as you would normally, within the limitations.
+3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that. unless you installed it in a non-optional location.
 
 # DISCLAIMER
 - This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
