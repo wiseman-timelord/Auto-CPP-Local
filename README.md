@@ -2,7 +2,7 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- Check and update code relating to the streamlining of the .ENV.
+- Check and update code relating to the streamlining of the .ENV. Also Hardcode memory choice to always be local, so as to not have .env entry, and streamline where appropriate.
 - SKim over other scripts, checking compatibility with updates, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Merging of smaller scripts with simlarly themed scripts, while optimizing and compacting, functions overall scripts should be reduced to as few 150-200 line scripts as possible.
