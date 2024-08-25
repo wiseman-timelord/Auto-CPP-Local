@@ -1,4 +1,4 @@
-# AutoGPT-CPPVulkan: A Fork and Remake of AutoGPT 1.3.
+# AutoGPT-CPPVulkan: A Fork and Remake of AutoGPT 1.3
 
 ### DEVELOPMENT:
 - Check and update code relating to the .ENV.
