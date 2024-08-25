@@ -2,7 +2,7 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- Merging of smaller scripts in ".\scripts\" with simlarly themed scripts, while optimizing and compacting, functions. overall scripts should be reduced to multiple 150-200 line scripts, but as few as as possible.
+- Merging of smaller scripts in ".\scripts\" with simlarly themed scripts, while optimizing and compacting, functions. overall scripts should be reduced to multiple 150-200 line scripts, but as few as as possible. prediction 1/3 of scripts in ".\scripts" are mergeable.
 - SKim over all scripts, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
