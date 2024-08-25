@@ -8,7 +8,7 @@ Status: Alpha
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
 - Pre-Launch Gradio-Interface run with "Configure.Bat" for Configuring ENV, that will now be kept in the Yaml, env will be deleted.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
-- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better, or stepping stones with less updates elsewhere?
+- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of claude.
 
 ## DESCRIPTION:
