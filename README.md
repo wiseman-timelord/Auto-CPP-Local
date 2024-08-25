@@ -4,8 +4,9 @@ Status: Alpha
 ### DEVELOPMENT:
 - Check and update code relating to the streamlining of the .ENV.
 - SKim over other scripts, checking compatibility with updates, and possibility of streamlining for methods of doing things we are no-longer using.
-- Merging of smaller scripts with simlarly themed scripts, overall scripts should be reduced to as few 150-200 line scripts as possible.
+- Merging of smaller scripts with simlarly themed scripts, while optimizing and compacting, functions overall scripts should be reduced to as few 150-200 line scripts as possible.
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
+- Depending upon how many scripts were the result, there is the possibility of a gradio interface, with menu chat etc, the ENV configuration being done in the 1st display of interface before lauch main script, or something.
 
 ## DESCRIPTION:
 Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI. This forf "AutoGPT=CPPVulkan", is a remake of an early version of Auto-GPT, that has been streamlined to basic windows non-wsl operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation, however, we will be finding better alternates to things such as huggingface and google websearch.
