@@ -1,59 +1,77 @@
 @echo off
+mode 45,22
+title Chat-LlamaVulkan-Launcher
 
-:: Initialization
-set "ScriptDirectoryWt=%~dp0"
-set "ScriptDirectoryWt=%ScriptDirectoryWt:~0,-1%"
-pushd "%ScriptDirectoryWt%"
-echo Working Dir: %ScriptDirectoryWt%
-
-:: Check for administrative privileges
+:: Check for admin privileges
 net session >nul 2>&1
-if %errorLevel% NEQ 0 (
-    echo Error: Admin Required!
-    echo Right Click, then Run As Administrator.
-    timeout /t 3 >nul
-    goto :eof
+if %errorLevel% neq 0 (
+    echo This script requires administrative privileges.
+    echo Please run this script as an administrator.
+    pause
+    exit /b 1
 )
+echo Running with Admin rights.
 
-:: Find Python and pip
-set "PYTHON_VERSION_TEXT=Python_3.9"
-set "PYTHON_VERSION_FOLDER=Python39"
+
+:: Find Python 3.X and pip
 set "PIP_EXE_TO_USE="
 set "PYTHON_EXE_TO_USE="
 set "PYTHON_FOLDER_TO_USE="
 for %%I in (
-    "C:\Program Files\%PYTHON_VERSION_FOLDER%\"
-    "%LocalAppData%\Programs\Python\%PYTHON_VERSION_FOLDER%\"
+    "C:\Program Files\Python39\"
+    "C:\Program Files (x86)\Python39\"
+    "%LocalAppData%\Programs\Python\Python39\"
 ) do (
     if exist "%%~I" (
         set "PYTHON_FOLDER_TO_USE=%%~I"
-        set "PYTHON_EXE_TO_USE=%%~Ipython.exe"
-        set "PIP_EXE_TO_USE=%%~IScripts\pip.exe"
-        goto :found_python_location
+        set "PYTHON_EXE_TO_USE=%%~dpI\python.exe"
+        set "PIP_EXE_TO_USE=%%~dpI\Scripts\pip.exe"
+        goto :found_python3X
     )
 )
-:found_python_location
+:found_python3X
 if not defined PYTHON_EXE_TO_USE (
-    echo Error: %PYTHON_VERSION_TEXT% not found. Please install it before running this script.
-    timeout /t 3 >nul
-    goto :eof
+    echo Error: Python 3.X not found. Please ensure it is installed.
+    timeout /t 5 >nul
+    goto :error
 )
-echo Python Found: %PYTHON_EXE_TO_USE%
-echo Pip Found: %PIP_EXE_TO_USE%
-timeout /t 1 >nul
 
-:: BaNNer
-echo *******************************************************************************************************************
-echo                                            Auto-LLM-Vulkan Launcher
-echo *******************************************************************************************************************
+:: Intro
+echo *********************************************
+echo         Chat-LlamaVulkan - Launcher
+echo *********************************************
 echo.
+set "ScriptDirectoryWt=%~dp0"
+set "ScriptDirectoryWt=%ScriptDirectoryWt:~0,-1%"
+pushd "%ScriptDirectoryWt%"
 echo Working Dir: %ScriptDirectoryWt%
+echo.
 
-:: Run Program
-echo Executing Main Script...
-"%PYTHON_EXE_TO_USE%" main.py
-echo AutoLLM Has Exited.
+:: Run both windows for Chat-LlamaVulkan
+echo Launching 2 Windows...
+echo.
+timeout /t 1 /nobreak >nul
+echo Options for window1: --logs
+echo Options for window2: --tts --sound
+echo.
+timeout /t 2 /nobreak >nul
 
-:: End Of Script
-popd
-pause
+start "" cmd /c "%PYTHON_EXE_TO_USE% window_1.py --logs || pause"
+if errorlevel 1 (
+    echo Error launching window 1.
+    pause
+    exit /b 1
+)
+
+start "" cmd /c "%PYTHON_EXE_TO_USE% window_2.py --tts --sound || pause"
+if errorlevel 1 (
+    echo Error launching window 2.
+    pause
+    exit /b 1
+)
+
+echo.
+echo Windows launched, closing in 3 seconds...
+echo.
+timeout /t 3 /nobreak >nul
+exit /b 0
