@@ -3,14 +3,12 @@ from typing import List
 import json, requests, os
 from config import Config
 from models import call_ai_function, create_chat_completion
-from PIL import Image
 import uuid
-from base64 import b64decode
 from bs4 import BeautifulSoup
 from utilities import LocalCache
 from urllib.parse import urlparse, urljoin
 import argparse, logging
-from operations import ingest_file, search_files#
+from operations import ingest_file, search_files
 
 # Globals
 next_key = 0
@@ -124,19 +122,6 @@ def write_tests(code: str, focus: List[str]) -> str:
         [code, json.dumps(focus)], 
         "Generates test cases."
     )
-
-def generate_image(prompt):
-    if cfg.image_provider != 'sd':
-        return "No Image Provider Set"
-    response = requests.post(
-        "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4", 
-        headers={"Authorization": f"Bearer {cfg.huggingface_api_token}"}, 
-        json={"inputs": prompt}
-    )
-    image = Image.open(io.BytesIO(response.content))
-    filename = f"{uuid.uuid4()}.jpg"
-    image.save(os.path.join(WORKSPACE_FOLDER, filename))
-    return f"Saved: {filename}"
 
 def ingest_directory(directory, memory, args):
     try:

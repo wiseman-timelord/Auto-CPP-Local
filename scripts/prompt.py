@@ -228,7 +228,6 @@ def get_prompt():
         ("Execute Python File", "execute_python_file", {"file": "<file>"}),
         ("Execute Shell Command, non-interactive commands only", "execute_shell", { "command_line": "<command_line>"}),
         ("Task Complete (Shutdown)", "task_complete", {"reason": "<reason>"}),
-        ("Generate Image", "generate_image", {"prompt": "<prompt>"}),
         ("Do Nothing", "do_nothing", {}),
     ]
 
