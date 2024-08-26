@@ -75,7 +75,7 @@ model_path: ./models
 .\data\persistent_settings.yaml
 .\data\requirements.txt
 .\models
-.\models\**GGUF Model**
+.\models\**default models location**
 .\scripts
 .\scripts\config.py
 .\scripts\main.py
