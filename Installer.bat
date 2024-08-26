@@ -82,7 +82,7 @@ if not exist ".\working" (
 
 :: Install Requirements
 echo Installing requirements.txt...
-"%PIP_EXE_TO_USE%" install -r requirements.txt
+"%PIP_EXE_TO_USE%" install -r .\data\requirements.txt
 echo requirements.txt Installed.
 echo.
 
