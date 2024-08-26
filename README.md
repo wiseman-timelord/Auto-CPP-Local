@@ -66,22 +66,24 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 ```
 - Check out the new files structure, its now manageable...
 ```
+.\data
 .\Installer.bat
 .\Launcher.bat
 .\main.py
 .\models
-.\requirements.txt
 .\scripts
-.\the.env.template
 .\working
-.\models\codeqwen-1_5-7b-chat-q8_0.gguf
+.\data\libraries\
+.\data\libraries\**Llama.Cpp Library**
+.\data\persistent_settings.yaml
+.\data\requirements.txt
+.\models\**GGUF Model**
 .\scripts\config.py
 .\scripts\main.py
 .\scripts\management.py
 .\scripts\models.py
 .\scripts\operations.py
 .\scripts\prompt.py
-.\scripts\spinner.py
 .\scripts\utilities.py
 .\scripts\__init__.py
 ```
