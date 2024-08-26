@@ -2,7 +2,7 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- Merging and optimizting, of scripts in ".\scripts\", overall scripts should be reduced to as few as as possible...Merging was done...Optimization was done...now merging optimized files. Predicted 10 scripts or less in ".\scripts". Prompts were left alone.
+- Merging and optimizting...there are now 8 scripts in ".\scripts\", if we can somehow simplify and combine spinner with utils, or at worst remove it, then merging will be complete, and we will have a total of 8 scripts including `.\main`.
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
