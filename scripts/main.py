@@ -1,9 +1,8 @@
 import json, random, time, traceback, yaml, argparse, logging
 from memory import get_memory
 from spinner import Spinner
-from config import Config
+from config import Config, AIConfig
 from models import create_chat_completion, fix_json
-from ai_config import AIConfig
 from utils import logger, say_text, clean_input
 from prompt import get_prompt, generate_context, chat_with_ai
 import commands as cmd

@@ -1,5 +1,4 @@
-import json
-import time
+import json, time
 from memory import LocalCache
 from config import Config
 import models
