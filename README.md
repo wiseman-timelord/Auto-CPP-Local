@@ -68,12 +68,10 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 ```
 - Check out the new files structure, its now manageable...
 ```
-.>dir /b/s
 .\Installer.bat
 .\Launcher.bat
 .\main.py
 .\models
-.\outputs
 .\requirements.txt
 .\scripts
 .\the.env.template
