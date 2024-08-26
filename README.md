@@ -16,49 +16,51 @@ Status: Alpha - Processing files, for easier maintenance.
 - Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI.`
 
 ### PREVIEW:
-- The Env gives a better idea of where its going...
+- The Env is now a yaml, as we have no APIs, this will have a gradio configurator for logical keys...
 ```
-################################################################################
-### AUTOCPP-LITE 
-################################################################################
+# General Settings
+execute_local_commands: Allow
+ai_settings_file: ai_settings.yaml
+speak_mode: false
 
-################################################################################
-### GENERAL SETTINGS
-################################################################################
+# LLM Model Settings
+smart_llm_model: ./models/YourModel.gguf
+smart_token_limit: 8000
+embed_dim: 1536
+gpu_threads_used: 1024
+temperature: 1
 
-### ENGINE
-EXECUTE_LOCAL_COMMANDS=Allow
-AI_SETTINGS_FILE=ai_settings.yaml
+# Browsing Settings
+browse_chunk_max_length: 8192
+browse_summary_max_token: 300
+user_agent: "Mozilla/5.0"
 
-################################################################################
-### LLM MODELS
-################################################################################
+# Playwright Settings
+playwright_headless: true
+playwright_timeout: 30000
 
-### LLM MODEL SETTINGS
-SMART_LLM_MODEL=.\models\YourModel.gguf
-SMART_TOKEN_LIMIT=8000
-EMBED_DIM=1536
-TEMPERATURE=1
+# AI Configuration
+ai_name: ""
+ai_role: ""
+ai_goals: []
 
-################################################################################
-### INTERNET USAGE
-################################################################################
+# Memory Settings
+memory_backend: local
+memory_index: autogpt-cppvulkan
 
-### BROWSING
-BROWSE_CHUNK_MAX_LENGTH=8192
-BROWSE_SUMMARY_MAX_TOKEN=300
-# USER_AGENT - Define the user-agent used by the requests library to browse website (Example, Chrome/83.0.4103.97)
-# USER_AGENT="Mozilla/5.0"  #--- Options, Chrome/83.0.4103.97, Mozilla/5.0
+# Debug Settings
+debug_mode: false
 
-### GOOGLE
-# GOOGLE_API_KEY - Google API key (Example: my-google-api-key)
-# CUSTOM_SEARCH_ENGINE_ID - Custom search engine ID (Example: my-custom-search-engine-id)
-GOOGLE_API_KEY=your-google-api-key
-CUSTOM_SEARCH_ENGINE_ID=your-custom-search-engine-id
+# Continuous Mode Settings
+continuous_mode: false
+continuous_limit: 0
 
-################################################################################
-### IMAGE GENERATION
-################################################################################
+# Context Settings
+context_size: 8192
+max_tokens: 4000
+
+# File Paths
+model_path: ./models
 
 ### HUGGINGFACE
 # HUGGINGFACE_API_TOKEN - HuggingFace API token (Example: my-huggingface-api-token)
