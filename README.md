@@ -8,7 +8,7 @@ Status: Alpha - Processing files, for easier maintenance.
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
-- No gradio interface, scripts are too large as it is.
+
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over. The main goal we will have something robust and compitent on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
@@ -70,6 +70,8 @@ model_path: ./models
 .\models
 .\scripts
 .\working
+.\docs
+.\docs\*programming notes*
 .\data\libraries\
 .\data\libraries\**Llama.Cpp Library**
 .\data\persistent_settings.yaml
@@ -86,8 +88,8 @@ model_path: ./models
 ```
 
 ### REQUIREMENTS:
-- HuggingFace - For now, AutoGPT-CCPVulkan uses Stable Diffusion, get a [HuggingFace API Token](https://huggingface.co/settings/tokens) , then see ENV section.
 - Python 3.9 - It will find "...Python39\pip.exe" in, user folder or either program files, though you can change Python 3.9 consistently to any version in the 2 batches.
+- Python Requirements - Installed by `Installer.Bat`, from, Web-Request on GitHub and what is now `.\data\requirements.txt`.  
 - No Environments - Such as, Dockers or WSL, no, just normal windows operations, we are using the Llama Pre-compiled binaries, they run in windows, no issues there. 
 
 ### INSTALL AND USAGE:
@@ -98,7 +100,7 @@ model_path: ./models
 
 ### NOTATION:
 - Check it out, stable-diffusion 2.1 model in GGUF `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`. We can use this offline instead of "huggingface.co".
-- Playwright is a library for browser interaction in python, Chrome Driver enables local server to interact with chrome in headless mode, together we can replace google requirement.
+- No gradio interface, scripts are too large as it is for AI programming. At least not for now, until I have full release, at which point I will produce a decision.
 
 # DISCLAIMER
 - This fork AutoCPP-Lite, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
