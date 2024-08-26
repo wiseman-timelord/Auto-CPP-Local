@@ -3,7 +3,7 @@ Status: Alpha - Processing files, for easier maintenance.
 
 ### DEVELOPMENT:
 - Decide upon what is configured by the user, and create standalone gradio interface launched by `Configure.Bat`, for the pre-launch setup of `.\data\persistent_settings.yaml`. the yaml will be having its own gradio interface through configurator in `.\Configure.Bat`). Batch files will then be required to be numbered, 1., 2., 3..
-- Have removed image generation. Prompting an assessment of the tools available to the AI, cutting down some of the features. 
+- Have removed image generation. Prompting an assessment of the tools available to the AI, cutting down some of the features. At same time, check, correctness and completenes, of current implementations, fix any logical errors, ensure everything is investigated.
 - to `make up` for the removal of image generation, the user should be generating their own images optimally with other software, and making them available in the .\working folder, or maybe the introduction of an ".\intput" folder, where the AI will become aware of new files, and ask the user what to do with them, also option in same prompt, to re-detect, incase the user has not completed insertion of files.
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
