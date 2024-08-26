@@ -2,7 +2,7 @@
 Status: Alpha - Processing files, for easier maintenance.
 
 ### DEVELOPMENT:
-- `requirememnts.txt` has been moved to ".\data", and `.\data` should be used for storage of libraries and the yaml (the yaml will be having its own configurator in `.\Configure.Bat`).
+- the .env is now done through the yaml, the yaml will be having its own gradio interface through configurator in `.\Configure.Bat`). this still requires google to be replaced with the alternate.
 - Have removed image generation. Prompting an assessment of the tools available to the AI, cutting down some of the features. 
 - Merging and optimizting...there are now 8 scripts in ".\scripts\", if we can somehow simplify and combine spinner with utils, or at worst remove it, then merging will be complete, and we will have a total of 8 scripts including `.\main`, obviously excluding the blank `.\scripts\__init__.py". Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
 - to `make up` for the removal of image generation, the user should be generating their own images optimally with other software, and making them available in the .\working folder, or maybe the introduction of an ".\intput" folder, where the AI will become aware of new files, and ask the user what to do with them, also option in same prompt, to re-detect, incase the user has not completed insertion of files.
