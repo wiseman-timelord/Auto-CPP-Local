@@ -78,7 +78,6 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 .\working
 .\models\codeqwen-1_5-7b-chat-q8_0.gguf
 .\scripts\agent_manager.py
-.\scripts\ai_config.py
 .\scripts\ai_functions.py
 .\scripts\commands.py
 .\scripts\config.py
