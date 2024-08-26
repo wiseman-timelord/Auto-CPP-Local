@@ -24,8 +24,16 @@ class MemoryProviderSingleton(AbstractSingleton):
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
 
+def get_memory(cfg):
+    memory_type = cfg.memory_backend
+    if memory_type == "local":
+        return LocalCache(cfg)
+    else:
+        print(f"Unknown memory type '{memory_type}'. Using LocalCache.")
+        return LocalCache(cfg)
+
 class LocalCache(MemoryProviderSingleton):
-    def __init__(self, cfg) -> None:
+    def __init__(self, cfg):
         self.filename = f"{cfg.memory_index}.json"
         if os.path.exists(self.filename):
             try:

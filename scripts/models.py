@@ -29,7 +29,7 @@ class LlamaModel:
 
     def run_llama_cli(self, prompt: str, max_tokens: int, temperature: float) -> str:
         cmd = [
-            ".\\libraries\\LlamaCpp_Binaries\\llama-cli.exe",
+            ".\\data\\libraries\\LlamaCpp_Binaries\\llama-cli.exe",
             "-m", self.model_path, "-p", prompt, "--temp", str(temperature),
             "-n", str(max_tokens), "-t", str(self.n_threads), "--ctx_size", str(cfg.context_size), "-ngl", "1"
         ]

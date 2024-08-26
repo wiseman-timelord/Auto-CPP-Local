@@ -16,27 +16,33 @@ def parse_arguments():
     parser.add_argument('--speak', action='store_true', help='Enable Speak Mode')
     parser.add_argument('--debug', action='store_true', help='Enable Debug Mode')
     parser.add_argument('-y', '--skip-reprompt', action='store_true', help='Skip reprompt messages')
-    parser.add_argument('-C', '--ai-settings', help="Specify ai_settings.yaml")
+    parser.add_argument('-C', '--config', help="Specify config file path")
     args = parser.parse_args()
 
-    if args.debug:
-        logger.setLevel(logging.DEBUG)
+    cfg = Config()
+    if args.config:
+        cfg.config_file = args.config
+        cfg.load_config()
     if args.continuous:
         cfg.set_continuous_mode(True)
+    if args.continuous_limit is not None:
         cfg.set_continuous_limit(args.continuous_limit)
     if args.speak:
         cfg.set_speak_mode(True)
-    if args.ai_settings:
-        cfg.ai_settings_file = args.ai_settings
-        cfg.skip_reprompt = True
+    if args.debug:
+        cfg.set_debug_mode(True)
 
+    return cfg
+
+# Update the main function to use the new Config
 def main():
-    parse_arguments()
+    cfg = parse_arguments()
     logger.set_level(logging.DEBUG if cfg.debug_mode else logging.INFO)
     
     initialize_model()
     
-    prompt = construct_prompt()
+    ai_config = AIConfig.load(cfg.ai_settings_file)
+    prompt = ai_config.construct_full_prompt()
     full_message_history, next_action_count = [], 0
     user_input = "Determine next command:"
 

@@ -1,126 +1,102 @@
-import os, yaml
-from dotenv import load_dotenv
-from prompt import get_prompt
-
-load_dotenv()
-
-class AIConfig:
-    """
-    A class object that contains the configuration information for the AI
-
-    Attributes:
-        ai_name (str): The name of the AI.
-        ai_role (str): The description of the AI's role.
-        ai_goals (list): The list of objectives the AI is supposed to complete.
-    """
-
-    def __init__(self, ai_name: str="", ai_role: str="", ai_goals: list=[]) -> None:
-        """
-        Initialize a class instance
-
-        Parameters:
-            ai_name (str): The name of the AI.
-            ai_role (str): The description of the AI's role.
-            ai_goals (list): The list of objectives the AI is supposed to complete.
-        Returns:
-            None
-        """
-
-        self.ai_name = ai_name
-        self.ai_role = ai_role
-        self.ai_goals = ai_goals
-
-    # Soon this will go in a folder where it remembers more stuff about the run(s)
-    SAVE_FILE = os.path.join(os.path.dirname(__file__), '..', 'ai_settings.yaml')
-
-    @classmethod
-    def load(cls: object, config_file: str=SAVE_FILE) -> object:
-        """
-        Returns class object with parameters (ai_name, ai_role, ai_goals) loaded from yaml file if yaml file exists,
-        else returns class with no parameters.
-
-        Parameters:
-           cls (class object): An AIConfig Class object.
-           config_file (int): The path to the config yaml file. DEFAULT: "../ai_settings.yaml"
-
-        Returns:
-            cls (object): An instance of given cls object
-        """
-
-        try:
-            with open(config_file, encoding='utf-8') as file:
-                config_params = yaml.load(file, Loader=yaml.FullLoader)
-        except FileNotFoundError:
-            config_params = {}
-
-        ai_name = config_params.get("ai_name", "")
-        ai_role = config_params.get("ai_role", "")
-        ai_goals = config_params.get("ai_goals", [])
-
-        return cls(ai_name, ai_role, ai_goals)
-
-    def save(self, config_file: str=SAVE_FILE) -> None:
-        """
-        Saves the class parameters to the specified file yaml file path as a yaml file.
-
-        Parameters:
-            config_file(str): The path to the config yaml file. DEFAULT: "../ai_settings.yaml"
-
-        Returns:
-            None
-        """
-
-        config = {"ai_name": self.ai_name, "ai_role": self.ai_role, "ai_goals": self.ai_goals}
-        with open(config_file, "w",  encoding='utf-8') as file:
-            yaml.dump(config, file, allow_unicode=True)
-
-    def construct_full_prompt(self) -> str:
-        """
-        Returns a prompt to the user with the class information in an organized fashion.
-
-        Parameters:
-            None
-
-        Returns:
-            full_prompt (str): A string containing the initial prompt for the user including the ai_name, ai_role and ai_goals.
-        """
-
-        prompt_start = """Your decisions must always be made independently without seeking user assistance. Play to your strengths as an LLM and pursue simple strategies with no legal complications."""
-
-        # Construct full prompt
-        full_prompt = f"You are {self.ai_name}, {self.ai_role}\n{prompt_start}\n\nGOALS:\n\n"
-        for i, goal in enumerate(self.ai_goals):
-            full_prompt += f"{i+1}. {goal}\n"
-
-        full_prompt += f"\n\n{get_prompt()}"
-        return full_prompt
+import os
+import yaml
 
 class Config:
     def __init__(self):
-        self.debug_mode = False
-        self.continuous_mode = False
-        self.continuous_limit = 0
-        self.speak_mode = False
-        self.skip_reprompt = False
+        self.config_file = os.path.join(os.path.dirname(__file__), '..', 'data', 'persistent_settings.yaml')
+        self.load_config()
 
-        self.ai_settings_file = os.getenv("AI_SETTINGS_FILE", "ai_settings.yaml")
-        self.model_path = os.getenv("MODEL_PATH", "./models")
-        self.context_size = int(os.getenv("CONTEXT_SIZE", "8192"))
-        self.embed_dim = int(os.getenv("EMBED_DIM", 4096))
-        self.max_tokens = int(os.getenv("MAX_TOKENS", "4000"))
-        self.temperature = float(os.getenv("TEMPERATURE", "0.5"))
+    def load_config(self):
+        with open(self.config_file, 'r') as file:
+            config = yaml.safe_load(file)
 
-        self.memory_backend = 'local'  # Default to local memory
-        self.memory_index = os.getenv("MEMORY_INDEX", 'autogpt-cppvulkan')
+        # General Settings
+        self.execute_local_commands = config.get('execute_local_commands', 'Allow')
+        self.ai_settings_file = config.get('ai_settings_file', 'ai_settings.yaml')
+        self.speak_mode = config.get('speak_mode', False)
+
+        # LLM Model Settings
+        self.smart_llm_model = config.get('smart_llm_model', './models/YourModel.gguf')
+        self.smart_token_limit = config.get('smart_token_limit', 8000)
+        self.embed_dim = config.get('embed_dim', 1536)
+        self.gpu_threads_used = config.get('gpu_threads_used', 1024)
+        self.temperature = config.get('temperature', 1)
+
+        # Browsing Settings
+        self.browse_chunk_max_length = config.get('browse_chunk_max_length', 8192)
+        self.browse_summary_max_token = config.get('browse_summary_max_token', 300)
+        self.user_agent = config.get('user_agent', 'Mozilla/5.0')
+
+        # Google API Settings
+        self.google_api_key = config.get('google_api_key', '')
+        self.custom_search_engine_id = config.get('custom_search_engine_id', '')
+
+        # AI Configuration
+        self.ai_name = config.get('ai_name', '')
+        self.ai_role = config.get('ai_role', '')
+        self.ai_goals = config.get('ai_goals', [])
+
+        # Memory Settings
+        self.memory_backend = config.get('memory_backend', 'local')
+        self.memory_index = config.get('memory_index', 'autogpt-cppvulkan')
+
+        # Debug Settings
+        self.debug_mode = config.get('debug_mode', False)
+
+        # Continuous Mode Settings
+        self.continuous_mode = config.get('continuous_mode', False)
+        self.continuous_limit = config.get('continuous_limit', 0)
+
+        # Context Settings
+        self.context_size = config.get('context_size', 8192)
+        self.max_tokens = config.get('max_tokens', 4000)
+
+        # File Paths
+        self.model_path = config.get('model_path', './models')
+
+    def save_config(self):
+        config = {
+            'execute_local_commands': self.execute_local_commands,
+            'ai_settings_file': self.ai_settings_file,
+            'speak_mode': self.speak_mode,
+            'smart_llm_model': self.smart_llm_model,
+            'smart_token_limit': self.smart_token_limit,
+            'embed_dim': self.embed_dim,
+            'gpu_threads_used': self.gpu_threads_used,
+            'temperature': self.temperature,
+            'browse_chunk_max_length': self.browse_chunk_max_length,
+            'browse_summary_max_token': self.browse_summary_max_token,
+            'user_agent': self.user_agent,
+            'google_api_key': self.google_api_key,
+            'custom_search_engine_id': self.custom_search_engine_id,
+            'ai_name': self.ai_name,
+            'ai_role': self.ai_role,
+            'ai_goals': self.ai_goals,
+            'memory_backend': self.memory_backend,
+            'memory_index': self.memory_index,
+            'debug_mode': self.debug_mode,
+            'continuous_mode': self.continuous_mode,
+            'continuous_limit': self.continuous_limit,
+            'context_size': self.context_size,
+            'max_tokens': self.max_tokens,
+            'model_path': self.model_path,
+        }
+
+        with open(self.config_file, 'w') as file:
+            yaml.dump(config, file)
 
     def set_continuous_mode(self, value: bool):
         self.continuous_mode = value
+        self.save_config()
 
     def set_continuous_limit(self, value: int):
         self.continuous_limit = value
+        self.save_config()
 
     def set_speak_mode(self, value: bool):
         self.speak_mode = value
+        self.save_config()
 
     def set_debug_mode(self, value: bool):
         self.debug_mode = value
+        self.save_config()
