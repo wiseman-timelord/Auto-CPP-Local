@@ -63,20 +63,20 @@ model_path: ./models
 ```
 - Check out the new files structure, its now manageable...
 ```
-.\data
 .\Installer.bat
 .\Launcher.bat
 .\main.py
-.\models
-.\scripts
 .\working
 .\docs
 .\docs\*programming notes*
+.\data
 .\data\libraries\
 .\data\libraries\**Llama.Cpp Library**
 .\data\persistent_settings.yaml
 .\data\requirements.txt
+.\models
 .\models\**GGUF Model**
+.\scripts
 .\scripts\config.py
 .\scripts\main.py
 .\scripts\management.py
