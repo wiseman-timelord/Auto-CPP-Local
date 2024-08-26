@@ -2,7 +2,48 @@
 Status: Alpha - Processing files, for easier maintenance.
 
 ### DEVELOPMENT:
-- Decide upon what is configured by the user, and create standalone gradio interface launched by `Configure.Bat`, for the pre-launch setup of `.\data\persistent_settings.yaml`. the yaml will be having its own gradio interface through configurator in `.\Configure.Bat`). Batch files will then be required to be numbered, 1., 2., 3..
+- Decide upon what is configured by the user, and implement a pre-launch configuration menu into `.\main.py`, for the pre-launch setup of `.\data\persistent_settings.yaml`, before `.\scripts\main.py` is imported into `.\main`, is that possible? the yaml will be having its own text interface with numbered menu...
+1. with numbered main menu with options for... 
+```
+=================================================
+                  AutoCPP-Lite
+-------------------------------------------------
+
+          1. Program Settings,
+
+          2. Session Settings,
+
+          3. System Settings,
+
+          4. LLM Model Settings,
+
+          5. Browsing Settings.
+
+=================================================
+Selection; Menu Options = 1-5, Begin AutoCPP-Lite = B, Exit and Save = X:
+```
+...input would be on the same line as the prompt, and dont change the prompt, additionally there will have to be 2 new functions, for printing the separators, and ensure to make them a width of 120.
+2. with numbered submenus with options and a different submenu prompt, where begin has been replaced by back, and exit is unavailable, for example... 
+```
+=================================================
+                  AutoCPP-Lite
+-------------------------------------------------
+
+          1. execute_local_commands,
+                    (Allow)
+          2. continuous_mode,
+                    (false)
+          3. continuous_limit,
+                      (0)
+          4. debug_mode,
+                   (false)
+
+=================================================
+Selection; Options = 1-#, Back To Main = B:
+```
+- it would require the loading of the `.\data\persistent_settings.yaml` into relating globals in ".\main.py` at the start of `.\main.py` using the yaml functions in `.\scripts\utilities.py`., then human interaction with the menu would change the values in the globals, and then when the user selects, `Begin AutoCPP-Lite = B` or `Exit and Save = X`, then, and only then it will save the globals in `.\main.py` to the yaml. each time the user changes a value in the menu, then it will save that to the relating global in `.\main.py`, and re-print the display, and each time the display is re-drawn, it will read from the globals. 
+
+- this will launch python script to conf. Batch files will then be required to be numbered, 1., 2., 3..
 - Have removed image generation. Prompting an assessment of the tools available to the AI, cutting down some of the features. At same time, check, correctness and completenes, of current implementations, fix any logical errors, ensure everything is investigated.
 - to `make up` for the removal of image generation, the user should be generating their own images optimally with other software, and making them available in the .\working folder, or maybe the introduction of an ".\intput" folder, where the AI will become aware of new files, and ask the user what to do with them, also option in same prompt, to re-detect, incase the user has not completed insertion of files.
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
