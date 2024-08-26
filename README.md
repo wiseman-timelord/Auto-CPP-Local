@@ -16,13 +16,29 @@ Status: Alpha - Processing files, for easier maintenance.
 ### PREVIEW:
 - The Env is now a yaml, as we have no APIs, this will have a gradio configurator for logical keys...
 ```
-# General Settings
+# Program Settings
 execute_local_commands: Allow
+continuous_mode: false
+continuous_limit: 0
+debug_mode: false
+
+# Session Settings
 ai_settings_file: ai_settings.yaml
+user_name: ""
+ai_name: ""
+ai_role: ""
+ai_goals: []
+
+# System Settings
+memory_backend: local
+memory_index: autoccp-lite
 speak_mode: false
 
 # LLM Model Settings
+model_path: ./models
 smart_llm_model: ./models/YourModel.gguf
+context_size: 8192
+max_tokens: 4000
 smart_token_limit: 8000
 embed_dim: 1536
 gpu_threads_used: 1024
@@ -32,33 +48,8 @@ temperature: 1
 browse_chunk_max_length: 8192
 browse_summary_max_token: 300
 user_agent: "Mozilla/5.0"
-
-# Playwright Settings
 playwright_headless: true
 playwright_timeout: 30000
-
-# AI Configuration
-ai_name: ""
-ai_role: ""
-ai_goals: []
-
-# Memory Settings
-memory_backend: local
-memory_index: autogpt-cppvulkan
-
-# Debug Settings
-debug_mode: false
-
-# Continuous Mode Settings
-continuous_mode: false
-continuous_limit: 0
-
-# Context Settings
-context_size: 8192
-max_tokens: 4000
-
-# File Paths
-model_path: ./models
 ```
 - Check out the new files structure, its now manageable...
 ```
