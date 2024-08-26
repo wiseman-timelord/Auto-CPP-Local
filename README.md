@@ -2,7 +2,7 @@
 Status: Alpha
 
 ### DEVELOPMENT:
-- Merging of smaller scripts in ".\scripts\" with simlarly themed scripts, while optimizing and compacting, functions. overall scripts should be reduced to multiple 150-200 line scripts, but as few as as possible. prediction 1/3 of scripts in ".\scripts" are mergeable.
+- Merging of smaller scripts in ".\scripts\", overall scripts should be reduced to as few as as possible...Merging was done...Optimization was done...now merging optimized files. Predicted 10 scripts or less in ".\scripts".
 - due to less scripts, sKim over as many scripts together in 1 long input session starts with claude, checking compatibility with updates so far, ensure everything is logical and sound, and possibility of streamlining for methods of doing things we are no-longer using.
 - use of Yaml instead of Json, this was a later advancement in Auto-GPT, as I remember, yet I see mentions of Yaml, so I guess it uses yaml, maybe the json references are for OpenAI, in which case, will requre converting to llama.cpp binaries.
 - Solutions have been found to HuggingFace and google, see "NOTATION" section. 
