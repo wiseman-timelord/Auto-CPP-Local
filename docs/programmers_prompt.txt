@@ -1,0 +1,24 @@
+INFORMATION: 
+We are re-creating "AutoGPT 1.3", it is a simpler version, than the current "AutoGPT 5.1", it is now as a fork of the original. We are programming towards, "Windows 10" and "non-wsl python 3.9". We are in the second session of editing, and we have limited interactions before I have to wait for a chat refresh, so ensure updates are clear and comprehensive. 
+
+Here is the file-structure, note ",\main.py" imports ".\scripts\main.py"...
+.\Installer.bat
+.\Launcher.bat
+.\main.py
+.\models
+.\requirements.txt
+.\scripts
+.\the.env.template
+.\working
+.\models\codeqwen-1_5-7b-chat-q8_0.gguf
+.\scripts\config.py
+.\scripts\main.py
+.\scripts\management.py
+.\scripts\models.py
+.\scripts\operations.py
+.\scripts\prompt.py
+.\scripts\utilities.py
+.\scripts\__init__.py
+
+
+INSTRUCTION:

@@ -1,0 +1,299 @@
+INSTRUCTION:
+implement a pre-launch configuration menu into `.\main.py`, for the pre-launch setup of `.\data\persistent_settings.yaml`, before `.\scripts\main.py` is imported into `.\main`, is that possible? the yaml will be having its own text interface with numbered menu...
+1. with numbered main menu with options for... 
+```
+=================================================
+                  AutoCPP-Lite
+-------------------------------------------------
+
+          1. Program Settings,
+
+          2. Session Settings,
+
+          3. System Settings,
+
+          4. LLM Model Settings,
+
+          5. Browsing Settings.
+
+=================================================
+Selection; Menu Options = 1-5, Begin AutoCPP-Lite = B, Exit and Save = X:
+```
+...input would be on the same line as the prompt, and dont change the prompt, additionally there will have to be 2 new functions, for printing the separators, and ensure to make them a width of 120.
+2. with numbered submenus with options and a different submenu prompt, where begin has been replaced by back, and exit is unavailable, for example... 
+```
+=================================================
+                  AutoCPP-Lite
+-------------------------------------------------
+
+          1. execute_local_commands,
+                    (Allow)
+          2. continuous_mode,
+                    (false)
+          3. continuous_limit,
+                      (0)
+          4. debug_mode,
+                   (false)
+
+=================================================
+Selection; Options = 1-#, Back To Main = B:
+```
+- it would require the loading of the `.\data\persistent_settings.yaml` into relating globals in ".\main.py` at the start of `.\main.py` using the yaml functions in `.\scripts\utilities.py`., then human interaction with the menu would change the values in the globals, and then when the user selects, `Begin AutoCPP-Lite = B` or `Exit and Save = X`, then, and only then it will save the globals in `.\main.py` to the yaml. each time the user changes a value in the menu, then it will save that to the relating global in `.\main.py`, and re-print the display, and each time the display is re-drawn, it will read from the globals. 
+
+- In `.\main.py`, where we are implementing the menu, and also where the entry point is, and an exit section...
+```
+**globals for loading to and from the, menu and yaml**
+
+***menus displays and relating processes***
+
+:begin_autocpp-lite
+print Importing .\scripts\main.py
+*waits 2 seconds*
+from scripts.main import main
+print .\scripts\main.py Finished.
+*waits 2 seconds*
+print Exiting .\main.py
+*waits 5 seconds*
+*exits python script*
+
+:exit_and_save
+Print Exititing and Saving...
+**saves globals to .\data\persistent_settings.py**
+print Settings Saved To Yaml.
+*wait 2 seconds*
+Print Exititing Configurator
+*wait 5 seconds*
+*exits python script*
+```
+
+
+RESOURCE:
+Here is the current `.\main.py`...
+```
+from scripts.main import main
+```
+
+
+RESOURCE:
+Here is the current `.\data\persistent_settings.yaml`, ensure to gain a list of all of the keys, and ensure that the menu displays them all correctly, as relatingly shown...
+```
+# Program Settings
+execute_local_commands: Allow
+continuous_mode: false
+continuous_limit: 0
+debug_mode: false
+
+# Session Settings
+ai_settings_file: ai_settings.yaml
+user_name: ""
+ai_name: ""
+ai_role: ""
+ai_goals: []
+
+# System Settings
+memory_backend: local
+memory_index: autoccp-lite
+speak_mode: false
+
+# LLM Model Settings
+model_path: ./models
+smart_llm_model: ./models/YourModel.gguf
+context_size: 8192
+max_tokens: 4000
+smart_token_limit: 8000
+embed_dim: 1536
+gpu_threads_used: 1024
+temperature: 1
+
+# Browsing Settings
+browse_chunk_max_length: 8192
+browse_summary_max_token: 300
+user_agent: "Mozilla/5.0"
+playwright_headless: true
+playwright_timeout: 30000
+```
+
+
+RESOURCE:
+Here is `.\scripts\utilities.py`, we need to inspect this to determine how the code is currently working for the yaml, so that `.\main.py` is displayed correctly...
+```
+import yaml
+import win32com.client
+import logging, os, random, re, time
+from config import AbstractSingleton, Config
+import dataclasses, orjson, os
+import numpy as np
+from typing import Any, List, Optional
+
+cfg = Config()
+speaker = win32com.client.Dispatch("SAPI.SpVoice")
+SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
+get_embedding = lambda txt: Llama(model_path=cfg.smart_llm_model).embed(txt.replace("\n", " "))
+create_default_embeddings = lambda: np.zeros((0, cfg.embed_dim), np.float32)
+
+@dataclasses.dataclass
+class CacheContent:
+    texts: List[str] = dataclasses.field(default_factory=list)
+    embeddings: np.ndarray = dataclasses.field(default_factory=create_default_embeddings)
+
+class MemoryProviderSingleton(AbstractSingleton):
+    def add(self, data: str) -> str: pass
+    def get(self, data: str) -> Optional[List[Any]]: pass
+    def clear(self) -> str: pass
+    def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
+    def get_stats(self) -> Any: pass
+
+def get_memory(cfg):
+    memory_type = cfg.memory_backend
+    if memory_type == "local":
+        return LocalCache(cfg)
+    else:
+        print(f"Unknown memory type '{memory_type}'. Using LocalCache.")
+        return LocalCache(cfg)
+
+class LocalCache(MemoryProviderSingleton):
+    def __init__(self, cfg):
+        self.filename = f"{cfg.memory_index}.json"
+        if os.path.exists(self.filename):
+            try:
+                with open(self.filename, 'r+b') as f:
+                    content = f.read() or b'{}'
+                    self.data = CacheContent(**orjson.loads(content))
+            except orjson.JSONDecodeError:
+                print(f"Error: {self.filename} not JSON.")
+                self.data = CacheContent()
+        else:
+            print(f"Warning: {self.filename} missing.")
+            self.data = CacheContent()
+
+    def add(self, text: str) -> str:
+        if 'Command Error:' not in text:
+            self.data.texts.append(text)
+            vec = np.array(get_embedding(text), np.float32)[np.newaxis, :]
+            self.data.embeddings = np.concatenate([self.data.embeddings, vec], axis=0)
+            with open(self.filename, 'wb') as f:
+                f.write(orjson.dumps(self.data, option=SAVE_OPTIONS))
+        return text
+
+    clear = lambda self: "Memory cleared"
+
+    def get(self, data: str) -> Optional[List[Any]]:
+        return self.get_relevant(data, 1)
+
+    def get_relevant(self, txt: str, k: int = 5) -> List[Any]:
+        scores = np.dot(self.data.embeddings, get_embedding(txt))
+        return [self.data.texts[i] for i in np.argsort(scores)[-k:][::-1]]
+
+    def get_stats(self):
+        return len(self.data.texts), self.data.embeddings.shape
+
+class Logger:
+    def __init__(self):
+        log_dir = os.path.join(os.path.dirname(__file__), '../logs')
+        os.makedirs(log_dir, exist_ok=True)
+
+        log_file = os.path.join(log_dir, "activity.log")
+        error_file = os.path.join(log_dir, "error.log")
+
+        console_formatter = AutoGptFormatter('%(title_color)s %(message)s')
+
+        # Handlers
+        self.typing_console_handler = TypingConsoleHandler()
+        self.console_handler = ConsoleHandler()
+        self.file_handler = logging.FileHandler(log_file)
+        error_handler = logging.FileHandler(error_file)
+
+        for handler in [self.typing_console_handler, self.console_handler]:
+            handler.setFormatter(console_formatter)
+
+        error_handler.setFormatter(AutoGptFormatter(
+            '%(asctime)s %(levelname)s %(module)s:%(lineno)d %(title)s %(message_no_color)s'
+        ))
+
+        # Loggers
+        self.typing_logger = self._create_logger('TYPER', [self.typing_console_handler, self.file_handler, error_handler])
+        self.logger = self._create_logger('LOGGER', [self.console_handler, self.file_handler, error_handler])
+
+    def _create_logger(self, name, handlers):
+        logger = logging.getLogger(name)
+        for handler in handlers:
+            logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
+        return logger
+
+    def typewriter_log(self, title='', title_color='', content='', speak_text=False, level=logging.INFO):
+        if speak_text and cfg.speak_mode:
+            say_text(f"{title}. {content}")
+        self.typing_logger.log(level, " ".join(content) if isinstance(content, list) else content, extra={'title': title, 'color': title_color})
+
+    def debug(self, message, title='', title_color=''):
+        self._log(title, title_color, message, logging.DEBUG)
+
+    def warn(self, message, title='', title_color=''):
+        self._log(title, title_color, message, logging.WARN)
+
+    def error(self, title, message=''):
+        self._log(title, '', message, logging.ERROR)
+
+    def _log(self, title='', title_color='', message='', level=logging.INFO):
+        self.logger.log(level, " ".join(message) if isinstance(message, list) else message, extra={'title': title, 'color': title_color})
+
+    def set_level(self, level):
+        self.logger.setLevel(level)
+        self.typing_logger.setLevel(level)
+
+    def double_check(self, additional_text=None):
+        additional_text = additional_text or "Check setup/config: https://github.com/Torantulino/Auto-GPT#readme"
+        self.typewriter_log("DOUBLE CHECK CONFIG", "", additional_text)
+
+class TypingConsoleHandler(logging.StreamHandler):
+    def emit(self, record):
+        min_speed, max_speed = 0.05, 0.01
+        msg = self.format(record)
+        for i, word in enumerate(msg.split()):
+            print(word, end=" ", flush=True)
+            time.sleep(random.uniform(min_speed, max_speed))
+            min_speed, max_speed = min_speed * 0.95, max_speed * 0.95
+        print()
+
+class ConsoleHandler(logging.StreamHandler):
+    def emit(self, record):
+        print(self.format(record))
+
+class AutoGptFormatter(logging.Formatter):
+    def format(self, record):
+        record.title_color = f"{getattr(record, 'title', '')} "
+        record.message_no_color = remove_color_codes(getattr(record, 'msg', ''))
+        return super().format(record)
+
+def remove_color_codes(s):
+    return re.sub(r'\x1B[@-_][0-?]*[ -/]*[@-~]', '', s)
+
+logger = Logger()
+
+def clean_input(prompt=''):
+    try:
+        return input(prompt)
+    except KeyboardInterrupt:
+        print("Interrupted. Exiting...")
+        exit(0)
+
+def validate_yaml_file(file):
+    try:
+        with open(file) as f:
+            yaml.load(f, Loader=yaml.FullLoader)
+        return True, f"Validated `{file}`!"
+    except FileNotFoundError:
+        return False, f"File `{file}` not found"
+    except yaml.YAMLError as e:
+        return False, f"YAML error: {e}"
+
+def say_text(text, voice_index=0):
+    try:
+        speaker.Speak(text)
+        return True
+    except Exception as e:
+        print(f"TTS error: {e}")
+        return False
+```
+
