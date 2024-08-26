@@ -4,7 +4,7 @@ from config import Config, AIConfig
 from models import create_chat_completion, fix_json
 from utilities import logger, say_text, clean_input
 from prompt import get_prompt, generate_context, chat_with_ai
-from operations import is_valid_int, is_valid_int, execute_command, google_search, get_datetime, browse_website, get_text_summary, get_hyperlinks, commit_memory, delete_memory, overwrite_memory, shutdown, start_agent, message_agent, list_agents, delete_agent as cmd
+from operations import is_valid_int, execute_command, web_search, get_datetime, browse_website, get_text_summary, get_hyperlinks, commit_memory, delete_memory, overwrite_memory, shutdown, start_agent, message_agent, list_agents, delete_agent as cmd
 from llm_utilities import initialize_model
 
 cfg = Config()
@@ -118,8 +118,12 @@ def handle_user_input(command_name, arguments):
                 print("Invalid input. Use 'y -n' for continuous.")
         elif console_input == "n":
             return "EXIT"
+        elif command_name.lower() == "web_search":
+            search_results = web_search(arguments.get("query", ""))
+            print(f"Search Results: {search_results}")
         else:
             return console_input
+
 
 def log_command(command_name, arguments):
     logger.typewriter_log("NEXT ACTION: ", "", f"COMMAND = {command_name} ARGUMENTS = {arguments}")

@@ -5,8 +5,7 @@ import management as agents
 from management import configure_logging, is_valid_url, sanitize_url, check_local_file_access, get_response, scrape_text, extract_hyperlinks, format_hyperlinks, scrape_links, scrape_links, create_message, summarize_text, evaluate_code, improve_code, write_tests, generate_image, ingest_directory, main, __name__
 from operations import *
 from json_parser import fix_and_parse_json
-from duckduckgo_search import ddg
-from googleapiclient.discovery import build, HttpError
+from playwright.sync_api import sync_playwright
 
 WORKSPACE_FOLDER = ".\\workspace"
 cfg = Config()
@@ -32,8 +31,10 @@ def get_command(response):
 def execute_command(command_name, arguments):
     memory = LocalCache(cfg)
     try:
-        if command_name == "google":
-            return google_official_search(arguments["input"]) if cfg.google_api_key.strip() else google_search(arguments["input"])
+        if command_name == "web_search":
+            return web_search(arguments["query"])
+        if command_name == "browse_website":
+            return browse_website(arguments["url"], arguments["question"])
         if command_name == "memory_add":
             return memory.add(arguments["string"])
         if command_name == "start_agent":
@@ -58,8 +59,6 @@ def execute_command(command_name, arguments):
             return delete_file(arguments["file"])
         if command_name == "search_files":
             return search_files(arguments["directory"])
-        if command_name == "browse_website":
-            return browse_website(arguments["url"], arguments["question"])
         if command_name == "evaluate_code":
             return model.create_completion(arguments["code"], max_tokens=1500)
         if command_name == "improve_code":
@@ -83,10 +82,75 @@ def execute_command(command_name, arguments):
 def get_datetime():
     return "Current date/time: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+def web_search(query):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=cfg.playwright_headless)
+        page = browser.new_page()
+        try:
+            # Navigate to a search engine (e.g., DuckDuckGo)
+            page.goto("https://duckduckgo.com/")
+            
+            # Type the query and submit
+            page.fill('input[name="q"]', query)
+            page.press('input[name="q"]', 'Enter')
+            
+            # Wait for results to load
+            page.wait_for_selector('.result__body')
+            
+            # Extract search results
+            results = page.evaluate("""
+                () => Array.from(document.querySelectorAll('.result__body')).map(result => ({
+                    title: result.querySelector('.result__title').innerText,
+                    snippet: result.querySelector('.result__snippet').innerText,
+                    url: result.querySelector('.result__url').href
+                })).slice(0, 5)
+            """)
+            
+            browser.close()
+            return results
+        except Exception as e:
+            browser.close()
+            return {"error": str(e)}
+
 def browse_website(url, question):
-    summary = get_text_summary(url, question)
-    links = get_hyperlinks(url)[:5]
-    return f"Website Summary: {summary}\nLinks: {links}"
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=cfg.playwright_headless)
+        page = browser.new_page()
+        try:
+            page.goto(url, timeout=cfg.playwright_timeout)
+            page.wait_for_load_state("networkidle", timeout=cfg.playwright_timeout)
+            
+            # Extract the main content of the page
+            content = page.evaluate("""
+                () => {
+                    const article = document.querySelector('article');
+                    if (article) return article.innerText;
+                    const main = document.querySelector('main');
+                    if (main) return main.innerText;
+                    return document.body.innerText;
+                }
+            """)
+            
+            # Extract links
+            links = page.evaluate("""
+                () => Array.from(document.links).map(link => ({
+                    href: link.href,
+                    text: link.textContent.trim()
+                })).filter(link => link.text && link.href.startsWith('http'))
+            """)
+            
+            browser.close()
+            
+            # Summarize content (you may want to use your existing summarization function)
+            summary = summarize_text(content, question)
+            
+            return {
+                "summary": summary,
+                "links": links[:5]  # Return only top 5 links
+            }
+        except Exception as e:
+            browser.close()
+            return {"error": str(e)}
 
 def get_text_summary(url, question):
     text = scrape_text(url)

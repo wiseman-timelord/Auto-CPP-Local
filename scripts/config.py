@@ -27,9 +27,9 @@ class Config:
         self.browse_summary_max_token = config.get('browse_summary_max_token', 300)
         self.user_agent = config.get('user_agent', 'Mozilla/5.0')
 
-        # Google API Settings
-        self.google_api_key = config.get('google_api_key', '')
-        self.custom_search_engine_id = config.get('custom_search_engine_id', '')
+        # Playwright Settings
+        self.playwright_headless = config.get('playwright_headless', True)
+        self.playwright_timeout = config.get('playwright_timeout', 30000)
 
         # AI Configuration
         self.ai_name = config.get('ai_name', '')
@@ -67,8 +67,8 @@ class Config:
             'browse_chunk_max_length': self.browse_chunk_max_length,
             'browse_summary_max_token': self.browse_summary_max_token,
             'user_agent': self.user_agent,
-            'google_api_key': self.google_api_key,
-            'custom_search_engine_id': self.custom_search_engine_id,
+            'playwright_headless': self.playwright_headless,
+            'playwright_timeout': self.playwright_timeout,
             'ai_name': self.ai_name,
             'ai_role': self.ai_role,
             'ai_goals': self.ai_goals,
