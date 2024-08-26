@@ -1,4 +1,4 @@
-# AutoGPT-CPPVulkan: A Fork and Remake, of AutoGPT 1.3
+# AutoCPP-Lite: A Fork and Remake, of AutoGPT 1.3
 Status: Alpha
 
 ### DEVELOPMENT:
@@ -11,14 +11,14 @@ Status: Alpha
 - Depending upon how many scripts were the result, there is the possibility of a gradio interface for `Launcher.Bat`, for the display of engine, output and printed lines, in a box on the right, and a chat interface on the left, similar to the interface of a well known chat service.
 
 ## DESCRIPTION:
-- This fork "AutoGPT-CPPVulkan", is a remake of the last release of "AutoGPT v1", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over. The main goal we will have something robust and compitent on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
+- This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence, however, we will be finding better alternates to things such as huggingface and google websearch, as well as giving the code a good optimization and going over. The main goal we will have something robust and compitent on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
 - Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI.`
 
 ### PREVIEW:
 - The Env gives a better idea of where its going...
 ```
 ################################################################################
-### AUTOGPT-CPPVULKAN 
+### AUTOCPP-LITE 
 ################################################################################
 
 ################################################################################
@@ -104,5 +104,5 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 - Playwright is a library for browser interaction in python, Chrome Driver enables local server to interact with chrome in headless mode, together we can replace google requirement.
 
 # DISCLAIMER
-- This fork AutoGPT-CPPVulkan, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
+- This fork AutoCPP-Lite, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
 - Continuous mode is not recommendedm It is potentially dangerous and may cause your AI to run forever or carry out actions you would not usually authorise. This version will have features such as system commands, to be enabled by default, though this is configurable in the .ENV, and intended so for development purposes.
