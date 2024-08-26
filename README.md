@@ -84,7 +84,6 @@ HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 .\scripts\ai_functions.py
 .\scripts\commands.py
 .\scripts\config.py
-.\scripts\logger.py
 .\scripts\main.py
 .\scripts\memory.py
 .\scripts\models.py
