@@ -61,10 +61,6 @@ max_tokens: 4000
 
 # File Paths
 model_path: ./models
-
-### HUGGINGFACE
-# HUGGINGFACE_API_TOKEN - HuggingFace API token (Example: my-huggingface-api-token)
-HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 ```
 - Check out the new files structure, its now manageable...
 ```
