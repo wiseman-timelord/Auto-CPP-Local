@@ -1,6 +1,5 @@
 import json, random, time, traceback, yaml, argparse, logging
 from utilities import get_memory
-from spinner import Spinner
 from config import Config, AIConfig
 from models import create_chat_completion, fix_json
 from utilities import logger, say_text, clean_input
@@ -64,11 +63,12 @@ class Agent:
                 logger.typewriter_log("Limit Reached: ", "", f"{cfg.continuous_limit}")
                 break
 
-            with Spinner("Thinking..."):
-                assistant_reply = create_chat_completion(
-                    messages=[{"role": "user", "content": self.prompt + "\n" + self.user_input}],
-                    max_tokens=cfg.max_tokens
-                )
+            print("Thinking...")
+
+            assistant_reply = create_chat_completion(
+                messages=[{"role": "user", "content": self.prompt + "\n" + self.user_input}],
+                max_tokens=cfg.max_tokens
+            )
 
             print_assistant_thoughts(assistant_reply)
 
