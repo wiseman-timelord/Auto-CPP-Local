@@ -84,10 +84,11 @@ playwright_timeout: 30000
 - Suitable Models - I predict `codeqwen-1_5-7b-chat-q8_0.gguf`, is worthy; `context length max 64K`, `92 coding languages`, `text-to-SQL, bug fix, etc`.
 
 ### INSTALL AND USAGE:
-1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through. 
-2. Ensure to insert a `*.GGUF` model into `.\models` folder, only one.
-2. Configure the `.\.ENV` file, its now cut down, and should be simple enough.
-3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that. unless you installed it in a non-optional location.
+- Note, it does not work yet, but when it does, it will be like...
+1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through. it will find "...Python39\scripts\pip.exe" and use that, unless you installed Python 3.9 in a un-usual location.
+2. Ensure to insert a `*.GGUF` model into `.\models` folder, we are only using one for now, it must be capable of chat and code, and have its own embeddings in the model.
+3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that, unless you installed Python 3.9 in a un-usual location. 4. First the may user to configure some things, then the user may, Begin AutoCPP-Lite or Exit and Save.
+
 
 ### NOTATION:
 - If we re-implement image generation, stable-diffusion 2.1 model in GGUF here `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`.
