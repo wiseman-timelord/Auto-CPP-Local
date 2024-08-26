@@ -66,6 +66,34 @@ CUSTOM_SEARCH_ENGINE_ID=your-custom-search-engine-id
 # HUGGINGFACE_API_TOKEN - HuggingFace API token (Example: my-huggingface-api-token)
 HUGGINGFACE_API_TOKEN=your-huggingface-api-token
 ```
+- Check out the new files structure, its now manageable...
+```
+.>dir /b/s
+.\Installer.bat
+.\Launcher.bat
+.\main.py
+.\models
+.\outputs
+.\requirements.txt
+.\scripts
+.\the.env.template
+.\working
+.\models\codeqwen-1_5-7b-chat-q8_0.gguf
+.\scripts\agent_manager.py
+.\scripts\ai_config.py
+.\scripts\ai_functions.py
+.\scripts\commands.py
+.\scripts\config.py
+.\scripts\logger.py
+.\scripts\main.py
+.\scripts\memory.py
+.\scripts\models.py
+.\scripts\operations.py
+.\scripts\prompt.py
+.\scripts\spinner.py
+.\scripts\utils.py
+.\scripts\__init__.py
+```
 
 ### REQUIREMENTS:
 - HuggingFace - For now, AutoGPT-CCPVulkan uses Stable Diffusion, get a [HuggingFace API Token](https://huggingface.co/settings/tokens) , then see ENV section.
