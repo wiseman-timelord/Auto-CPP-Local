@@ -1,5 +1,5 @@
 # AutoCPP-Lite: A Fork and Remake, of AutoGPT 1.3
-Status: Alpha
+Status: Alpha - Processing files, for easier maintenance.
 
 ### DEVELOPMENT:
 - Merging and optimizting...there are now 8 scripts in ".\scripts\", if we can somehow simplify and combine spinner with utils, or at worst remove it, then merging will be complete, and we will have a total of 8 scripts including `.\main`, obviously excluding the blank `.\scripts\__init__.py". Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
