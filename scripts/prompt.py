@@ -1,9 +1,9 @@
 import json, time
-from memory import LocalCache
+from utilities import LocalCache
 from config import Config
 import models
 from models import create_chat_completion
-from utils import logger
+from utilities import logger
 
 cfg = Config()
 permanent_memory = LocalCache(cfg)

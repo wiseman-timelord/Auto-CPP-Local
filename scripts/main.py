@@ -1,12 +1,12 @@
 import json, random, time, traceback, yaml, argparse, logging
-from memory import get_memory
+from utilities import get_memory
 from spinner import Spinner
 from config import Config, AIConfig
 from models import create_chat_completion, fix_json
-from utils import logger, say_text, clean_input
+from utilities import logger, say_text, clean_input
 from prompt import get_prompt, generate_context, chat_with_ai
-import commands as cmd
-from llm_utils import initialize_model
+from operations import is_valid_int, is_valid_int, execute_command, google_search, get_datetime, browse_website, get_text_summary, get_hyperlinks, commit_memory, delete_memory, overwrite_memory, shutdown, start_agent, message_agent, list_agents, delete_agent as cmd
+from llm_utilities import initialize_model
 
 cfg = Config()
 
