@@ -2,7 +2,6 @@
 Status: Alpha - Processing files, for easier maintenance.
 
 ### DEVELOPMENT:
-- Remove spinner, it requires its own script, and is un-necessary. 
 - `requirememnts.txt` has been moved to ".\data", and `.\data` should be used for storage of libraries and the yaml (the yaml will be having its own configurator).
 - Prompting an assessment of the tools available to the AI, cutting down some of the features. we will be removing image generation, it requires stable diffusion local model, lets face it, the user should be generating their own images optimally with other software, and making them available in the .\working folder, or maybe the introduction of an ".\intput" folder, where the AI will become aware of new files, and ask the user what to do with them, also option in same prompt, to re-detect, incase the user has not completed insertion of files, that would all be neat.
 - Merging and optimizting...there are now 8 scripts in ".\scripts\", if we can somehow simplify and combine spinner with utils, or at worst remove it, then merging will be complete, and we will have a total of 8 scripts including `.\main`, obviously excluding the blank `.\scripts\__init__.py". Data visualization, spinner should be replaced with data visualization line during "thinking" phase, time taken, throughput rate, memory/processor usage, whats possible and fitting?
