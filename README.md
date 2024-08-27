@@ -5,7 +5,7 @@ Status: Alpha - Processing files, for easier maintenance.
 - due to less scripts and many modifications, checking logic and sanity, in script, while ensuring updates to produce, completeness and correctness, in scripts. No doubt there are some major issues, mainly from merging about 35 files into about 10 in a rushed process, and also we added/upgraded/replaced/cut certain features after. ensure everything is logical and sound, and possibility of optimizing functions, now that many functions that were in separate scripts, are now in the same script, so there will be some streamlining to be had also. check for, correctness and completenes, of current implementations, fix any logical errors.
 - to make up for removal of image generation, the user should be generating their own media such as, images, samples, movies, optimally with other software, and making them available in a ".\input" folder, where the AI will become aware of new files periodically, and ask the user what to do with them, or possibly be asking the user to produce certain media, for the ai to be using in the project, and can instruct upon proposed filenames, so they fit the code.
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
-- Installer works, and sets up folders correctly, however, Launcher requires, run and thorough debug.
+- Installer works, and sets up folders correctly, however, need review of import modules, and check requirements.txt.
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
 
 ## DESCRIPTION:
