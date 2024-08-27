@@ -1,52 +1,78 @@
 import time
 import yaml
 import os
+from typing import Dict, Any
 from scripts.utilities import clean_input, validate_yaml_file
 from scripts.config import Config
+
+# Constants
+MAIN_MENU_OPTIONS = {
+    '1': 'program_settings',
+    '2': 'session_settings',
+    '3': 'system_settings',
+    '4': 'llm_model_settings',
+    '5': 'browsing_settings'
+}
 
 # Global variables for settings
 config = Config()
 
-# Function to load settings into globals
-def load_settings():
+def load_settings() -> None:
+    """Load settings into globals."""
     global config
     config.load_config()
 
-# Function to save global settings to YAML
-def save_settings():
+def save_settings() -> None:
+    """Save global settings to YAML."""
     config.save_config()
 
-# Function to print a separator line of 120 characters width
-def print_separator():
+def print_separator() -> None:
+    """Print a separator line of 120 characters width."""
     print("=" * 120)
 
-# Function to display the main menu
-def display_main_menu():
+def display_main_menu() -> str:
+    """Display the main menu and return user's choice."""
     print_separator()
     print(" " * 39 + "AutoCPP-Lite")
     print("-" * 120)
-    print(" " * 10 + "1. Program Settings")
-    print(" " * 10 + "2. Session Settings")
-    print(" " * 10 + "3. System Settings")
-    print(" " * 10 + "4. LLM Model Settings")
-    print(" " * 10 + "5. Browsing Settings")
+    for number, setting in MAIN_MENU_OPTIONS.items():
+        print(f" {number}. {setting.replace('_', ' ').title()}")
     print_separator()
-    choice = clean_input("Selection; Menu Options = 1-5, Begin AutoCPP-Lite = B, Exit and Save = X: ").strip().upper()
-    return choice
+    return clean_input("Selection; Menu Options = 1-5, Begin AutoCPP-Lite = B, Exit and Save = X: ").strip().upper()
 
-# Function to display submenu for each setting
-def display_submenu(settings_group):
+def display_submenu(settings_group: Dict[str, Any]) -> str:
+    """Display submenu for each setting group and return user's choice."""
     print_separator()
     print(" " * 39 + "AutoCPP-Lite")
     print("-" * 120)
     for idx, (key, value) in enumerate(settings_group.items(), 1):
         print(f" {idx}. {key},".ljust(30) + f"({value})".rjust(50))
     print_separator()
-    choice = clean_input("Selection; Options = 1-#, Back To Main = B: ").strip().upper()
-    return choice
+    return clean_input("Selection; Options = 1-#, Back To Main = B: ").strip().upper()
 
-# Function to handle LLM Model Settings submenu
-def handle_llm_model_settings():
+def select_model_file(model_path: str) -> str:
+    """Display available model files and let the user select one."""
+    gguf_files = [f for f in os.listdir(model_path) if f.lower().endswith('.gguf')]
+    if not gguf_files:
+        print(f"No .gguf files found in directory: {model_path}")
+        return ""
+
+    print_separator()
+    print(" " * 39 + "Select Model File")
+    print("-" * 120)
+    for idx, model_file in enumerate(gguf_files, 1):
+        print(f" {idx}. {model_file}")
+    print_separator()
+    model_choice = clean_input("Selection; Model Options = 1-#: ").strip()
+    
+    if model_choice.isdigit() and 1 <= int(model_choice) <= len(gguf_files):
+        return os.path.join(model_path, gguf_files[int(model_choice) - 1])
+    else:
+        print("Invalid selection. Please choose a valid model number.")
+        return ""
+
+def handle_llm_model_settings() -> None:
+    """Handle LLM Model Settings submenu."""
     while True:
         choice = display_submenu(config.llm_model_settings)
         
@@ -59,30 +85,17 @@ def handle_llm_model_settings():
         elif choice == '2':  # smart_llm_model option
             model_path = config.llm_model_settings['model_path']
             if os.path.isdir(model_path):
-                gguf_files = [f for f in os.listdir(model_path) if f.lower().endswith('.gguf')]
-                if gguf_files:
-                    print_separator()
-                    print(" " * 39 + "Select Model File")
-                    print("-" * 120)
-                    for idx, model_file in enumerate(gguf_files, 1):
-                        print(f" {idx}. {model_file}")
-                    print_separator()
-                    model_choice = clean_input("Selection; Model Options = 1-#: ").strip()
-                    if model_choice.isdigit() and 1 <= int(model_choice) <= len(gguf_files):
-                        selected_model = gguf_files[int(model_choice) - 1]
-                        config.llm_model_settings['smart_llm_model'] = os.path.join(model_path, selected_model)
-                        save_settings()
-                    else:
-                        print("Invalid selection. Please choose a valid model number.")
-                else:
-                    print(f"No .gguf files found in directory: {model_path}")
+                selected_model = select_model_file(model_path)
+                if selected_model:
+                    config.llm_model_settings['smart_llm_model'] = selected_model
+                    save_settings()
             else:
                 print(f"Invalid model path: {model_path}")
         else:
             print("Invalid choice. Please select a valid option.")
 
-# Function to handle user's selection in submenus
-def handle_submenu_selection(settings_group_name):
+def handle_submenu_selection(settings_group_name: str) -> None:
+    """Handle user's selection in submenus."""
     if settings_group_name == 'llm_model_settings':
         handle_llm_model_settings()
     else:
@@ -99,22 +112,14 @@ def handle_submenu_selection(settings_group_name):
             else:
                 print("Invalid choice. Please select a valid option.")
 
-# Main entry point
-def main_menu():
+def main_menu() -> None:
+    """Main entry point for the configuration menu."""
     load_settings()
     
     while True:
         choice = display_main_menu()
-        if choice == '1':
-            handle_submenu_selection('program_settings')
-        elif choice == '2':
-            handle_submenu_selection('session_settings')
-        elif choice == '3':
-            handle_submenu_selection('system_settings')
-        elif choice == '4':
-            handle_submenu_selection('llm_model_settings')
-        elif choice == '5':
-            handle_submenu_selection('browsing_settings')
+        if choice in MAIN_MENU_OPTIONS:
+            handle_submenu_selection(MAIN_MENU_OPTIONS[choice])
         elif choice == 'B':
             begin_autocpp_lite()
             break
@@ -124,7 +129,8 @@ def main_menu():
         else:
             print("Invalid choice. Please select a valid option.")
 
-def begin_autocpp_lite():
+def begin_autocpp_lite() -> None:
+    """Start the AutoCPP-Lite main script."""
     print("Importing .\scripts\main.py")
     time.sleep(2)
     from scripts.main import main
@@ -134,7 +140,8 @@ def begin_autocpp_lite():
     print("Exiting .\main.py")
     time.sleep(5)
 
-def exit_and_save():
+def exit_and_save() -> None:
+    """Save settings and exit the configurator."""
     print("Exiting and Saving...")
     save_settings()
     print("Settings Saved To Yaml.")
