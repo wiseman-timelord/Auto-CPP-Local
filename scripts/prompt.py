@@ -1,3 +1,6 @@
+# `.\scripts\prompt.py`
+
+# Imports
 import json, time
 from utilities import LocalCache
 from config import Config

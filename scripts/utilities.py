@@ -1,3 +1,6 @@
+# `.\scripts\utilities.py`
+
+# Imports
 import yaml
 import win32com.client
 import logging, os, random, re, time

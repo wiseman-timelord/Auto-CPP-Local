@@ -1,3 +1,6 @@
+# `.\scripts\main.py`
+
+# Imports
 import json, random, time, traceback, yaml, argparse, logging
 from utilities import get_memory, logger, say_text, clean_input
 from config import Config
