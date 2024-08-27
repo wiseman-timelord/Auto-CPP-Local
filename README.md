@@ -13,6 +13,15 @@ Status: Alpha - Processing files, for easier maintenance.
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
 - Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI.`
 
+### NEW FEATURES:
+- summarize_multiple_urls: Summarizes the content from multiple URLs based on a given question.
+- compare_information: Compares information from multiple URLs in relation to a specific question.
+- generate_report: Creates a comprehensive report on a given topic using collected information.
+- prioritize_tasks: Organizes a list of tasks in order of priority.
+- break_down_task: Divides a large task into smaller, more manageable subtasks.
+- evaluate_task_success: Assesses the success of a completed task and provides a score and explanation.
+- TaskTracker class: Manage and track tasks; Add new task, Update task status, Get task status, Retrieve all tasks.
+
 ### PREVIEW:
 - The Env is now a yaml, as we have no APIs, this will have a gradio configurator for logical keys...
 ```
