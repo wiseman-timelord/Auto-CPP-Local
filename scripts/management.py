@@ -1,24 +1,24 @@
-from models import create_chat_completion
-from typing import List
+from models import create_chat_completion, call_ai_function
+from typing import List, Optional, Tuple
 import json, requests, os
 from config import Config
 from models import call_ai_function, create_chat_completion
-import uuid
-from bs4 import BeautifulSoup
-from utilities import LocalCache
+from utilities import LocalCache, logger, TaskTracker
 from urllib.parse import urlparse, urljoin
 import argparse, logging
-from operations import ingest_file, search_files
+from operations import ingest_file, search_files, evaluate_task_success, break_down_task
+
 
 # Globals
 next_key = 0
 agents = {}  # key: (task, history, model)
 cfg = Config()
 memory = LocalCache(cfg)
-model = Llama(model_path=cfg.smart_llm_model)
+model = Llama(model_path=cfg.llm_model_settings['smart_llm_model'])
+task_tracker = TaskTracker()  # Initialize TaskTracker for managing tasks
 WORKSPACE_FOLDER = ".\workspace"
 session = requests.Session()
-session.headers.update({'User-Agent': cfg.user_agent})
+session.headers.update({'User-Agent': cfg.browsing_settings['user_agent']})
 
 def configure_logging():
     logging.basicConfig(filename='log-ingestion.txt',
@@ -130,21 +130,39 @@ def ingest_directory(directory, memory, args):
     except Exception as e:
         print(f"Ingestion error in '{directory}': {e}")
 
-def create_agent(task, prompt, model):
+def create_agent(task: str, prompt: str, model) -> Tuple[int, str]:
     global next_key, agents
+    logger.debug(f"Creating agent for task: {task}")
+    
+    # Track the task using TaskTracker
+    task_id = task_tracker.add_task(task)
+
     msgs = [{"role": "user", "content": prompt}]
     reply = create_chat_completion(model=model, messages=msgs)
     msgs.append({"role": "assistant", "content": reply})
+    
     key = next_key
     next_key += 1
-    agents[key] = (task, msgs, model)
+    agents[key] = (task_id, msgs, model)
+    
+    # Update task status to 'In Progress'
+    task_tracker.update_task_status(task_id, "In Progress")
+    
     return key, reply
 
-def message_agent(key, message):
-    task, msgs, model = agents[int(key)]
+def message_agent(key: int, message: str) -> str:
+    task_id, msgs, model = agents[int(key)]
     msgs.append({"role": "user", "content": message})
     reply = create_chat_completion(model=model, messages=msgs)
     msgs.append({"role": "assistant", "content": reply})
+    
+    logger.debug(f"Message sent to agent {key} for task {task_id}: {message}")
+    
+    # Check if the task is completed based on the response
+    task_result = evaluate_task_success(task_id, reply)
+    if task_result['status'] == "Completed":
+        task_tracker.update_task_status(task_id, "Completed")
+    
     return reply
 
 def list_agents():
@@ -167,23 +185,22 @@ def main():
     memory = LocalCache(cfg)
     if args.init:
         memory.clear()
-        
+        logger.debug("Memory initialized and cleared.")
+    
     if args.file:
         try:
             ingest_file(args.file, memory, args.max_length, args.overlap)
-            print(f"File '{args.file}' ingested.")
+            logger.debug(f"File '{args.file}' ingested.")
         except Exception as e:
             logger.error(f"Ingest error: '{args.file}': {e}")
-            print(f"Ingest error: '{args.file}': {e}")
     elif args.dir:
         try:
             ingest_directory(args.dir, memory, args)
-            print(f"Directory '{args.dir}' ingested.")
+            logger.debug(f"Directory '{args.dir}' ingested.")
         except Exception as e:
             logger.error(f"Ingest error: '{args.dir}': {e}")
-            print(f"Ingest error: '{args.dir}': {e}")
     else:
-        print("Provide a file (--file) or directory (--dir) to ingest.")
+        logger.error("Provide a file (--file) or directory (--dir) to ingest.")
 
 if __name__ == "__main__":
     main()

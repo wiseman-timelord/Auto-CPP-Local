@@ -34,17 +34,17 @@ def get_memory(cfg):
 
 class LocalCache(MemoryProviderSingleton):
     def __init__(self, cfg):
-        self.filename = f"{cfg.memory_index}.json"
+        self.filename = f"{cfg.system_settings['memory_index']}.json"
         if os.path.exists(self.filename):
             try:
                 with open(self.filename, 'r+b') as f:
                     content = f.read() or b'{}'
                     self.data = CacheContent(**orjson.loads(content))
             except orjson.JSONDecodeError:
-                print(f"Error: {self.filename} not JSON.")
+                logger.error(f"Error: {self.filename} not JSON.")
                 self.data = CacheContent()
         else:
-            print(f"Warning: {self.filename} missing.")
+            logger.warn(f"Warning: {self.filename} missing.")
             self.data = CacheContent()
 
     def add(self, text: str) -> str:
@@ -54,19 +54,22 @@ class LocalCache(MemoryProviderSingleton):
             self.data.embeddings = np.concatenate([self.data.embeddings, vec], axis=0)
             with open(self.filename, 'wb') as f:
                 f.write(orjson.dumps(self.data, option=SAVE_OPTIONS))
+        logger.debug(f"Memory updated with text: {text}")
         return text
 
-    clear = lambda self: "Memory cleared"
+    clear = lambda self: logger.debug("Memory cleared")
 
     def get(self, data: str) -> Optional[List[Any]]:
         return self.get_relevant(data, 1)
 
     def get_relevant(self, txt: str, k: int = 5) -> List[Any]:
         scores = np.dot(self.data.embeddings, get_embedding(txt))
+        logger.debug(f"Retrieved relevant memory for: {txt}")
         return [self.data.texts[i] for i in np.argsort(scores)[-k:][::-1]]
 
     def get_stats(self):
         return len(self.data.texts), self.data.embeddings.shape
+
 
 class Logger:
     def __init__(self):
@@ -103,7 +106,7 @@ class Logger:
         return logger
 
     def typewriter_log(self, title='', title_color='', content='', speak_text=False, level=logging.INFO):
-        if speak_text and cfg.speak_mode:
+        if speak_text and cfg.system_settings['speak_mode']:
             say_text(f"{title}. {content}")
         self.typing_logger.log(level, " ".join(content) if isinstance(content, list) else content, extra={'title': title, 'color': title_color})
 

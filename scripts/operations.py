@@ -2,7 +2,7 @@ import json, datetime, os, subprocess
 from config import Config
 from utilities import LocalCache
 import management as agents
-from management import configure_logging, is_valid_url, sanitize_url, check_local_file_access, get_response, scrape_text, extract_hyperlinks, format_hyperlinks, scrape_links, scrape_links, create_message, summarize_text, evaluate_code, improve_code, write_tests, generate_image, ingest_directory, main, __name__
+from management import configure_logging, is_valid_url, sanitize_url, check_local_file_access, get_response, scrape_text, extract_hyperlinks, format_hyperlinks, scrape_links, create_message, summarize_text, evaluate_code, improve_code, write_tests, generate_image, ingest_directory, main, __name__
 from operations import *
 from json_parser import fix_and_parse_json
 from playwright.sync_api import sync_playwright
@@ -75,9 +75,23 @@ def execute_command(command_name, arguments):
             return "No action performed."
         if command_name == "task_complete":
             shutdown()
+        # New commands
+        if command_name == "summarize_multiple_urls":
+            return summarize_multiple_urls(arguments["urls"], arguments["question"])
+        if command_name == "compare_information":
+            return compare_information(arguments["urls"], arguments["question"])
+        if command_name == "generate_report":
+            return generate_report(arguments["topic"], arguments["collected_info"])
+        if command_name == "prioritize_tasks":
+            return prioritize_tasks(arguments["tasks"])
+        if command_name == "break_down_task":
+            return break_down_task(arguments["task"])
+        if command_name == "evaluate_task_success":
+            return evaluate_task_success(arguments["task_description"], arguments["task_result"])
         return f"Unknown command '{command_name}'."
     except Exception as e:
-        return "Error: " + str(e)
+        logger.error(f"Error executing command {command_name}: {str(e)}")
+        return f"Error: {str(e)}"
 
 def get_datetime():
     return "Current date/time: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -284,3 +298,50 @@ def search_files(directory):
             if not file.startswith('.'):
                 found_files.append(os.path.relpath(os.path.join(root, file), WORKSPACE_FOLDER))
     return found_files
+
+def summarize_multiple_urls(urls, question):
+    summaries = []
+    for url in urls:
+        summary = get_text_summary(url, question)
+        summaries.append(f"Summary of {url}:\n{summary}")
+    return "\n\n".join(summaries)
+
+def compare_information(urls, question):
+    summaries = summarize_multiple_urls(urls, question)
+    comparison_prompt = f"Compare the following information:\n\n{summaries}\n\nQuestion: {question}"
+    return model.create_completion(comparison_prompt, max_tokens=cfg.max_tokens, temperature=cfg.temperature)
+
+def generate_report(topic, collected_info):
+    report_prompt = f"Generate a comprehensive report on the topic: {topic}\n\nBased on the following information:\n\n{collected_info}"
+    return model.create_completion(report_prompt, max_tokens=cfg.max_tokens * 2, temperature=cfg.temperature)
+
+def prioritize_tasks(tasks):
+    prioritization_prompt = f"Prioritize the following tasks:\n\n{tasks}\n\nProvide a numbered list of tasks in order of priority."
+    return model.create_completion(prioritization_prompt, max_tokens=cfg.max_tokens, temperature=cfg.temperature)
+
+def break_down_task(task):
+    breakdown_prompt = f"Break down the following task into smaller, manageable subtasks:\n\n{task}\n\nProvide a numbered list of subtasks."
+    return model.create_completion(breakdown_prompt, max_tokens=cfg.max_tokens, temperature=cfg.temperature)
+
+class TaskTracker:
+    def __init__(self):
+        self.tasks = {}
+
+    def add_task(self, task_id, description):
+        self.tasks[task_id] = {"description": description, "status": "Not Started"}
+
+    def update_task_status(self, task_id, status):
+        if task_id in self.tasks:
+            self.tasks[task_id]["status"] = status
+
+    def get_task_status(self, task_id):
+        return self.tasks.get(task_id, {}).get("status", "Task not found")
+
+    def get_all_tasks(self):
+        return self.tasks
+
+task_tracker = TaskTracker()
+
+def evaluate_task_success(task_description, task_result):
+    evaluation_prompt = f"Evaluate the success of the following task:\n\nTask: {task_description}\n\nResult: {task_result}\n\nProvide a success score (0-100) and a brief explanation."
+    return model.create_completion(evaluation_prompt, max_tokens=cfg.max_tokens, temperature=cfg.temperature)
