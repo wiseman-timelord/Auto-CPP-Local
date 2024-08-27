@@ -4,6 +4,7 @@
 import os
 import yaml
 
+# Classes
 class Config:
     def __init__(self):
         self.config_file = os.path.join(os.path.dirname(__file__), '..', 'data', 'persistent_settings.yaml')

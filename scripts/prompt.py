@@ -11,6 +11,7 @@ from utilities import logger
 cfg = Config()
 permanent_memory = LocalCache(cfg)
 
+# Classes
 class PromptGenerator:
     """
     A class for generating custom prompt strings based on constraints, commands, resources, and performance evaluations.
@@ -138,6 +139,7 @@ class PromptGenerator:
 
         return prompt_string
 
+# Functions
 def create_chat_message(role, content):
     return {"role": role, "content": content}
     

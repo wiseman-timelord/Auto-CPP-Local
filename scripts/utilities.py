@@ -15,6 +15,7 @@ SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
 get_embedding = lambda txt: Llama(model_path=cfg.smart_llm_model).embed(txt.replace("\n", " "))
 create_default_embeddings = lambda: np.zeros((0, cfg.embed_dim), np.float32)
 
+# Classes
 @dataclasses.dataclass
 class CacheContent:
     texts: List[str] = dataclasses.field(default_factory=list)
@@ -27,6 +28,7 @@ class MemoryProviderSingleton(AbstractSingleton):
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
 
+# Functions
 def get_memory(cfg):
     memory_type = cfg.memory_backend
     if memory_type == "local":

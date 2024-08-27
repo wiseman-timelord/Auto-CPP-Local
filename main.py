@@ -1,3 +1,6 @@
+# `.\main.py`
+
+# Imports
 import time
 import yaml
 import os
@@ -17,6 +20,7 @@ MAIN_MENU_OPTIONS = {
 # Global variables for settings
 config = Config()
 
+# Functions
 def load_settings() -> None:
     """Load settings into globals."""
     global config

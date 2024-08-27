@@ -11,6 +11,7 @@ from llm_utilities import initialize_model
 
 cfg = Config()
 
+# Functions
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Process args.')
     parser.add_argument('-c', '--continuous', action='store_true', help='Enable Continuous Mode')

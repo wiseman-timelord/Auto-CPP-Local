@@ -16,6 +16,7 @@ cfg = Config()
 # Ensure workspace exists
 os.makedirs(WORKSPACE_FOLDER, exist_ok=True)
 
+# Functions
 def is_valid_int(value):
     try:
         int(value)
