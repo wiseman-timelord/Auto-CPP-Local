@@ -4,14 +4,13 @@
 import json, datetime, os, subprocess
 from scripts.config import Config
 from scripts.utilities import LocalCache, logger
-from scripts.management import TaskTracker, evaluate_task_success
-from scripts.models import JsonHandler, LlamaModel
+from scripts.models import JsonHandler
 from playwright.sync_api import sync_playwright
 
 # Globals
 cfg = Config()
 WORKSPACE_FOLDER = ".\\workspace"
-os.makedirs(WORKSPACE_FOLDER, exist_ok=True)
+os.makedirs(WORKSPACE_FOLDER, exist_ok=True
 
 # Functions
 def is_valid_int(value):
@@ -23,7 +22,7 @@ def is_valid_int(value):
 
 def get_command(response):
     try:
-        res_json = fix_and_parse_json(response)
+        res_json = JsonHandler.fix_and_parse_json(response)
         cmd = res_json.get("command", {})
         return cmd.get("name", "Error: Missing 'name'"), cmd.get("args", {})
     except (json.JSONDecodeError, Exception) as e:
@@ -61,12 +60,13 @@ def execute_command(command_name, arguments):
         return f"Unknown command '{command_name}'."
     except Exception as e:
         logger.error(f"Error executing command {command_name}: {str(e)}")
-        return f"Error: {str(e)}"
+        return f"Error executing command '{command_name}': {str(e)}. Please check your input or consult documentation."
 
 def get_datetime():
     return "Current date/time: " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def web_search(query):
+    logger.info(f"Starting web search for query: {query}")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=cfg.browsing_settings['playwright_headless'])
         page = browser.new_page()
@@ -86,9 +86,11 @@ def web_search(query):
             return results
         except Exception as e:
             browser.close()
+            logger.error(f"Web search failed for query '{query}': {str(e)}")
             return {"error": str(e)}
 
 def browse_website(url, question):
+    logger.info(f"Browsing website {url} for question: {question}")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=cfg.browsing_settings['playwright_headless'])
         page = browser.new_page()
@@ -118,6 +120,7 @@ def browse_website(url, question):
             }
         except Exception as e:
             browser.close()
+            logger.error(f"Browsing failed for URL '{url}': {str(e)}")
             return {"error": str(e)}
 
 def get_text_summary(url, question):
@@ -168,16 +171,22 @@ def safe_join(base, *paths):
     """Safely join paths."""
     new_path = os.path.normpath(os.path.join(base, *paths))
     if os.path.commonprefix([base, new_path]) != base:
+        logger.error("Path escape detected.")
         raise ValueError("Path escape detected.")
     return new_path
 
 def execute_shell(command_line):
     """Run shell command."""
     initial_dir = os.getcwd()
-    os.chdir(WORKSPACE_FOLDER) if WORKSPACE_FOLDER not in initial_dir else None
-    result = subprocess.run(command_line, capture_output=True, shell=True)
-    os.chdir(initial_dir)
-    return f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+    try:
+        os.chdir(WORKSPACE_FOLDER)
+        result = subprocess.run(command_line, capture_output=True, shell=True)
+        os.chdir(initial_dir)
+        return f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+    except Exception as e:
+        os.chdir(initial_dir)
+        logger.error(f"Error executing shell command '{command_line}': {str(e)}")
+        return f"Error executing shell command: {str(e)}"
 
 def execute_python_file(file):
     """Run a Python file."""

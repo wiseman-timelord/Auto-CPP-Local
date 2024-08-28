@@ -34,13 +34,20 @@ class PromptGenerator:
         }
 
     def add_constraint(self, constraint):
-        self.constraints.append(constraint)
+        if isinstance(constraint, str) and constraint:
+            self.constraints.append(constraint)
+        else:
+            logger.warn(f"Invalid constraint format: {constraint}")
 
     def add_command(self, command_label, command_name, args=None):
         if args is None:
             args = {}
 
-        command_args = {arg_key: arg_value for arg_key, arg_value in args.items()}
+        if not isinstance(command_label, str) or not isinstance(command_name, str):
+            logger.warn(f"Invalid command format: {command_label}, {command_name}")
+            return
+
+        command_args = {arg_key: arg_value for arg_key, arg_value in args.items() if isinstance(arg_key, str) and isinstance(arg_value, str)}
         command = {"label": command_label, "name": command_name, "args": command_args}
         self.commands.append(command)
 
@@ -50,10 +57,16 @@ class PromptGenerator:
         return f'{command["label"]}: "{command["name"]}", args: {format_args(command["args"])}'
 
     def add_resource(self, resource):
-        self.resources.append(resource)
+        if isinstance(resource, str) and resource:
+            self.resources.append(resource)
+        else:
+            logger.warn(f"Invalid resource format: {resource}")
 
     def add_performance_evaluation(self, evaluation):
-        self.performance_evaluation.append(evaluation)
+        if isinstance(evaluation, str) and evaluation:
+            self.performance_evaluation.append(evaluation)
+        else:
+            logger.warn(f"Invalid performance evaluation format: {evaluation}")
 
     def _generate_numbered_list(self, items, item_type='list'):
         if item_type == 'command':
@@ -77,18 +90,25 @@ def create_chat_message(role, content):
     return {"role": role, "content": content}
 
 def generate_context(prompt, relevant_memory, full_message_history):
-    current_context = [
-        create_chat_message("system", prompt),
-        create_chat_message("system", f"The current time and date is {time.strftime('%c')}"),
-        create_chat_message("system", f"This reminds you of these events from your past:\n{relevant_memory}\n\n")
-    ]
-    next_message_to_add_index = len(full_message_history) - 1
-    insertion_index = len(current_context)
-    current_tokens_used = LlamaModel.count_message_tokens(current_context)
-    return next_message_to_add_index, current_tokens_used, insertion_index, current_context
+    try:
+        current_context = [
+            create_chat_message("system", prompt),
+            create_chat_message("system", f"The current time and date is {time.strftime('%c')}"),
+            create_chat_message("system", f"This reminds you of these events from your past:\n{relevant_memory}\n\n")
+        ]
+        next_message_to_add_index = len(full_message_history) - 1
+        insertion_index = len(current_context)
+        current_tokens_used = LlamaModel.count_message_tokens(current_context)
+        return next_message_to_add_index, current_tokens_used, insertion_index, current_context
+    except Exception as e:
+        logger.error(f"Error generating context: {str(e)}")
+        return 0, 0, 0, []
 
 def chat_with_ai(prompt, user_input, full_message_history, permanent_memory, token_limit):
-    while True:
+    max_retries = 3
+    retry_count = 0
+    
+    while retry_count < max_retries:
         try:
             send_token_limit = token_limit - 1000
             relevant_memory = '' if len(full_message_history) == 0 else permanent_memory.get_relevant(str(full_message_history[-9:]), 10)
@@ -125,15 +145,19 @@ def chat_with_ai(prompt, user_input, full_message_history, permanent_memory, tok
 
             return assistant_reply
         except Exception as e:
-            logger.error(f"Error: {str(e)}")
+            logger.error(f"Error during AI chat interaction: {str(e)}")
+            retry_count += 1
             time.sleep(10)
+
+    logger.error("Max retries reached during chat interaction.")
+    return "Error: Could not complete the chat interaction due to repeated errors."
 
 def get_prompt():
     prompt_generator = PromptGenerator()
-    prompt_generator.add_constraint("~4000 word limit for short term memory. Your short term memory is short, so immediately save important information to files.")
-    prompt_generator.add_constraint("If you are unsure how you previously did something or want to recall past events, thinking about similar events will help you remember.")
-    prompt_generator.add_constraint("No user assistance")
-    prompt_generator.add_constraint('Exclusively use the commands listed in double quotes e.g. "command name"')
+    prompt_generator.add_constraint("~4000 word limit for short term memory. Your short term memory is short, so make best use of System Memory.")
+    prompt_generator.add_constraint("If you are unsure how you previously did something or want to recall past events, think about similar events.")
+    prompt_generator.add_constraint("No user assistance, try to determine the best solutions, and act independently.")
+    prompt_generator.add_constraint('Exclusively use the commands listed in double quotes e.g. "command name".')
 
     commands = [
         ("Web Search", "web_search", {"query": "<search>"}),
@@ -159,12 +183,12 @@ def get_prompt():
     for command_label, command_name, args in commands:
         prompt_generator.add_command(command_label, command_name, args)
 
-    prompt_generator.add_resource("Internet access for searches and information gathering.")
-    prompt_generator.add_resource("Long Term memory management.")
-    prompt_generator.add_resource("GPT-3.5 powered Agents for delegation of simple tasks.")
-    prompt_generator.add_resource("File output.")
+    prompt_generator.add_resource("Internet access for information, searches and gathering.")
+    prompt_generator.add_resource("Long Term memory management though system memory.")
+    prompt_generator.add_resource("8k Local Model powered Agents for delegation of tasks.")
+    prompt_generator.add_resource("File output for backing up and saving.")
 
-    prompt_generator.add_performance_evaluation("Continuously review and analyze your actions to ensure you are performing to the best of your abilities.")
+    prompt_generator.add_performance_evaluation("Continuously review and analyze your actions to ensure you are performing to your best.")
     prompt_generator.add_performance_evaluation("Constructively self-criticize your big-picture behavior constantly.")
     prompt_generator.add_performance_evaluation("Reflect on past decisions and strategies to refine your approach.")
     prompt_generator.add_performance_evaluation("Every command has a cost, so be smart and efficient. Aim to complete tasks in the least number of steps.")

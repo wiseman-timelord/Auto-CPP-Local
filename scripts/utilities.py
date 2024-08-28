@@ -14,6 +14,7 @@ speaker = win32com.client.Dispatch("SAPI.SpVoice")
 SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
 get_embedding = lambda txt: Llama(model_path=cfg.smart_llm_model).embed(txt.replace("\n", " "))
 create_default_embeddings = lambda: np.zeros((0, cfg.embed_dim), np.float32)
+logger = Logger()
 
 # Classes
 @dataclasses.dataclass
@@ -27,6 +28,7 @@ class MemoryProviderSingleton:
     def clear(self) -> str: pass
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
+
 
 class LocalCache(MemoryProviderSingleton):
     def __init__(self, cfg):
@@ -49,6 +51,8 @@ class LocalCache(MemoryProviderSingleton):
             with self.lock:
                 self.data.texts.append(text)
                 vec = np.array(get_embedding(text), np.float32)[np.newaxis, :]
+                if vec.shape[1] != cfg.embed_dim:
+                    logger.error(f"Embedding dimension mismatch: Expected {cfg.embed_dim}, got {vec.shape[1]}")
                 self.data.embeddings = np.concatenate([self.data.embeddings, vec], axis=0)
                 with open(self.filename, 'wb') as f:
                     f.write(orjson.dumps(self.data, option=SAVE_OPTIONS))
@@ -98,12 +102,24 @@ class Logger:
         self.typing_logger = self._create_logger('TYPER', [self.typing_console_handler, self.file_handler, error_handler])
         self.logger = self._create_logger('LOGGER', [self.console_handler, self.file_handler, error_handler])
 
+        self._setup_log_rotation(log_file)
+
     def _create_logger(self, name, handlers):
         logger = logging.getLogger(name)
         for handler in handlers:
             logger.addHandler(handler)
         logger.setLevel(logging.DEBUG)
         return logger
+
+    def _setup_log_rotation(self, log_file, max_size=5*1024*1024, backup_count=5):
+        if os.path.getsize(log_file) > max_size:
+            for i in range(backup_count - 1, 0, -1):
+                older_log = f"{log_file}.{i}"
+                newer_log = f"{log_file}.{i + 1}"
+                if os.path.exists(older_log):
+                    os.rename(older_log, newer_log)
+            os.rename(log_file, f"{log_file}.1")
+            open(log_file, 'w').close()  # Clear the current log file
 
     def typewriter_log(self, title='', title_color='', content='', speak_text=False, level=logging.INFO):
         if speak_text and cfg.system_settings['speak_mode']:
@@ -150,6 +166,7 @@ class AutoGptFormatter(logging.Formatter):
         record.message_no_color = remove_color_codes(getattr(record, 'msg', ''))
         return super().format(record)
 
+# Functions
 def get_memory(cfg):
     memory_type = cfg.system_settings['memory_backend']
     if memory_type == "local":
@@ -158,18 +175,27 @@ def get_memory(cfg):
         logger.warn(f"Unknown memory type '{memory_type}'. Using LocalCache.")
         return LocalCache(cfg)
 
-# Functions
 def remove_color_codes(s):
     return re.sub(r'\x1B[@-_][0-?]*[ -/]*[@-~]', '', s)
 
-logger = Logger()
-
-def clean_input(prompt=''):
+def clean_input(prompt='', timeout=None):
     try:
+        if timeout:
+            return input_with_timeout(prompt, timeout)
         return input(prompt)
     except KeyboardInterrupt:
         print("Interrupted. Exiting...")
         exit(0)
+
+def input_with_timeout(prompt, timeout):
+    import sys, select
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    ready, _, _ = select.select([sys.stdin], [], [], timeout)
+    if ready:
+        return sys.stdin.readline().strip()
+    else:
+        raise TimeoutError("Input timed out")
 
 def validate_yaml_file(file):
     try:
