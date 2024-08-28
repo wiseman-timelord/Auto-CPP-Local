@@ -1,5 +1,5 @@
 # AutoCPP-Lite: A Fork and Remake, of AutoGPT 1.3
-Status: Alpha - Processing files, for easier maintenance.
+Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
 - to make up for removal of image generation, the user should be generating their own media such as, images, samples, movies, optimally with other software, and making them available in a ".\input" folder, where the AI will become aware of new files periodically, and ask the user what to do with them, or possibly be asking the user to produce certain media, for the ai to be using in the project, and can instruct upon proposed filenames, so they fit the code.
