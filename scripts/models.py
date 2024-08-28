@@ -1,13 +1,15 @@
 # `.\scripts\models.py`
 
 # Imports
-import subprocess, os, math, re, json
+import subprocess, os, math, json, re
 from typing import List, Dict, Any, Union
-from config import Config
+from scripts.config import Config
 import tiktoken
+from scripts.utilities import logger
 
 cfg = Config()
 
+# Classes
 class LlamaModel:
     def __init__(self):
         self.model_path = None
@@ -19,11 +21,10 @@ class LlamaModel:
         self.model_path = next(
             (os.path.join(model_dir, f) for f in os.listdir(model_dir) if f.endswith(".gguf")), None)
         if not self.model_path:
-            raise FileNotFoundError(f"No .gguf in {model_dir}")
+            raise FileNotFoundError(f"No .gguf model found in {model_dir}")
         self.n_threads = self.calculate_optimal_threads()
         total_threads = os.cpu_count() or 4
-        print(f"\nModel: {self.model_path}")
-        print(f"Threads: {self.n_threads} ({(self.n_threads / total_threads) * 100:.2f}% CPU)")
+        logger.debug(f"Model: {self.model_path} with {self.n_threads} threads ({(self.n_threads / total_threads) * 100:.2f}% CPU)")
 
     @staticmethod
     def calculate_optimal_threads():
@@ -67,14 +68,15 @@ class JsonHandler:
         try:
             response_json = JsonHandler.fix_and_parse_json(response)
             if "command" not in response_json:
-                return "Error:", "Missing 'command' object"
+                return "Error", "Missing 'command' object"
             command = response_json["command"]
             return command.get("name", "Error"), command.get("args", {})
         except json.JSONDecodeError:
-            return "Error:", "Invalid JSON"
+            return "Error", "Invalid JSON"
         except Exception as e:
-            return "Error:", str(e)
+            return "Error", str(e)
 
+# Functions
 def count_message_tokens(messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo-0301") -> int:
     try:
         encoding = tiktoken.encoding_for_model(model)

@@ -1,15 +1,14 @@
 # `.\scripts\utilities.py`
 
 # Imports
-import yaml
-import win32com.client
-import logging, os, random, re, time
-from config import AbstractSingleton, Config
-import dataclasses, orjson, os
-import numpy as np
+import yaml, win32com.client, logging, os, random, re, time
+from scripts.config import Config
+import dataclasses, orjson, numpy as np
 from typing import Any, List, Optional
 import threading
+from scripts.models import LlamaModel
 
+# Globals
 cfg = Config()
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
 SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
@@ -22,19 +21,17 @@ class CacheContent:
     texts: List[str] = dataclasses.field(default_factory=list)
     embeddings: np.ndarray = dataclasses.field(default_factory=create_default_embeddings)
 
-class MemoryProviderSingleton(AbstractSingleton):
+class MemoryProviderSingleton:
     def add(self, data: str) -> str: pass
     def get(self, data: str) -> Optional[List[Any]]: pass
     def clear(self) -> str: pass
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
 
-
-
 class LocalCache(MemoryProviderSingleton):
     def __init__(self, cfg):
         self.filename = f"{cfg.system_settings['memory_index']}.json"
-        self.lock = threading.Lock()  # Ensure thread safety
+        self.lock = threading.Lock()
         if os.path.exists(self.filename):
             try:
                 with open(self.filename, 'r+b') as f:
@@ -76,7 +73,6 @@ class LocalCache(MemoryProviderSingleton):
         with self.lock:
             return len(self.data.texts), self.data.embeddings.shape
 
-
 class Logger:
     def __init__(self):
         log_dir = os.path.join(os.path.dirname(__file__), '../logs')
@@ -87,7 +83,6 @@ class Logger:
 
         console_formatter = AutoGptFormatter('%(title_color)s %(message)s')
 
-        # Handlers
         self.typing_console_handler = TypingConsoleHandler()
         self.console_handler = ConsoleHandler()
         self.file_handler = logging.FileHandler(log_file)
@@ -100,7 +95,6 @@ class Logger:
             '%(asctime)s %(levelname)s %(module)s:%(lineno)d %(title)s %(message_no_color)s'
         ))
 
-        # Loggers
         self.typing_logger = self._create_logger('TYPER', [self.typing_console_handler, self.file_handler, error_handler])
         self.logger = self._create_logger('LOGGER', [self.console_handler, self.file_handler, error_handler])
 
@@ -140,7 +134,7 @@ class TypingConsoleHandler(logging.StreamHandler):
     def emit(self, record):
         min_speed, max_speed = 0.05, 0.01
         msg = self.format(record)
-        for i, word in enumerate(msg.split()):
+        for word in msg.split():
             print(word, end=" ", flush=True)
             time.sleep(random.uniform(min_speed, max_speed))
             min_speed, max_speed = min_speed * 0.95, max_speed * 0.95
@@ -156,15 +150,15 @@ class AutoGptFormatter(logging.Formatter):
         record.message_no_color = remove_color_codes(getattr(record, 'msg', ''))
         return super().format(record)
 
-# Functions
 def get_memory(cfg):
-    memory_type = cfg.memory_backend
+    memory_type = cfg.system_settings['memory_backend']
     if memory_type == "local":
         return LocalCache(cfg)
     else:
-        print(f"Unknown memory type '{memory_type}'. Using LocalCache.")
+        logger.warn(f"Unknown memory type '{memory_type}'. Using LocalCache.")
         return LocalCache(cfg)
 
+# Functions
 def remove_color_codes(s):
     return re.sub(r'\x1B[@-_][0-?]*[ -/]*[@-~]', '', s)
 
@@ -192,5 +186,5 @@ def say_text(text, voice_index=0):
         speaker.Speak(text)
         return True
     except Exception as e:
-        print(f"TTS error: {e}")
+        logger.error(f"TTS error: {e}")
         return False
