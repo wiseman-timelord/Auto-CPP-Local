@@ -74,18 +74,11 @@ class PromptGenerator:
         self.commands.append(command)
 
     def _generate_command_string(self, command):
-        """
-        Generate a formatted string representation of a command.
-
-        Args:
-            command (dict): A dictionary containing command information.
-
-        Returns:
-            str: The formatted command string.
-        """
-        args_string = ', '.join(
-            f'"{key}": "{value}"' for key, value in command['args'].items())
+        def format_args(args):
+            return ', '.join(f'"{key}": "{value}"' if not isinstance(value, dict) else f'"{key}": {{{format_args(value)}}}' for key, value in args.items())
+        args_string = format_args(command['args'])
         return f'{command["label"]}: "{command["name"]}", args: {args_string}'
+
 
     def add_resource(self, resource):
         """

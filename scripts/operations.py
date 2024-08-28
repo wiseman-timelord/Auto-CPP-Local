@@ -33,65 +33,34 @@ def get_command(response):
         return "Error:", str(e)
 
 def execute_command(command_name, arguments):
-    memory = LocalCache(cfg)
+    command_map = {
+        "web_search": web_search,
+        "browse_website": browse_website,
+        "memory_add": lambda args: memory.add(args["string"]),
+        "start_agent": start_agent,
+        "message_agent": message_agent,
+        "list_agents": list_agents,
+        "delete_agent": delete_agent,
+        "get_text_summary": get_text_summary,
+        "get_hyperlinks": get_hyperlinks,
+        "read_file": read_file,
+        "write_to_file": write_to_file,
+        "append_to_file": append_to_file,
+        "delete_file": delete_file,
+        "search_files": search_files,
+        "evaluate_code": evaluate_code,
+        "improve_code": improve_code,
+        "write_tests": write_tests,
+        "execute_python_file": execute_python_file,
+        "execute_shell": execute_shell,
+        "generate_image": generate_image,
+        "do_nothing": lambda _: "No action performed.",
+        "task_complete": shutdown,
+    }
+    
     try:
-        if command_name == "web_search":
-            return web_search(arguments["query"])
-        if command_name == "browse_website":
-            return browse_website(arguments["url"], arguments["question"])
-        if command_name == "memory_add":
-            return memory.add(arguments["string"])
-        if command_name == "start_agent":
-            return start_agent(arguments["name"], arguments["task"], arguments["prompt"])
-        if command_name == "message_agent":
-            return message_agent(arguments["key"], arguments["message"])
-        if command_name == "list_agents":
-            return list_agents()
-        if command_name == "delete_agent":
-            return delete_agent(arguments["key"])
-        if command_name == "get_text_summary":
-            return get_text_summary(arguments["url"], arguments["question"])
-        if command_name == "get_hyperlinks":
-            return get_hyperlinks(arguments["url"])
-        if command_name == "read_file":
-            return read_file(arguments["file"])
-        if command_name == "write_to_file":
-            return write_to_file(arguments["file"], arguments["text"])
-        if command_name == "append_to_file":
-            return append_to_file(arguments["file"], arguments["text"])
-        if command_name == "delete_file":
-            return delete_file(arguments["file"])
-        if command_name == "search_files":
-            return search_files(arguments["directory"])
-        if command_name == "evaluate_code":
-            return model.create_completion(arguments["code"], max_tokens=1500)
-        if command_name == "improve_code":
-            return model.create_completion(f"Improve the code:\n\n{arguments['code']}\n\nSuggestions:\n{arguments['suggestions']}", max_tokens=1500)
-        if command_name == "write_tests":
-            return model.create_completion(f"Write tests:\n\n{arguments['code']}\n\nFocus: {arguments.get('focus', 'all aspects')}", max_tokens=1500)
-        if command_name == "execute_python_file":
-            return execute_python_file(arguments["file"])
-        if command_name == "execute_shell":
-            return execute_shell(arguments["command_line"]) if cfg.execute_local_commands else "Not allowed to run local shell commands."
-        if command_name == "generate_image":
-            return generate_image(arguments["prompt"])
-        if command_name == "do_nothing":
-            return "No action performed."
-        if command_name == "task_complete":
-            shutdown()
-        # New commands
-        if command_name == "summarize_multiple_urls":
-            return summarize_multiple_urls(arguments["urls"], arguments["question"])
-        if command_name == "compare_information":
-            return compare_information(arguments["urls"], arguments["question"])
-        if command_name == "generate_report":
-            return generate_report(arguments["topic"], arguments["collected_info"])
-        if command_name == "prioritize_tasks":
-            return prioritize_tasks(arguments["tasks"])
-        if command_name == "break_down_task":
-            return break_down_task(arguments["task"])
-        if command_name == "evaluate_task_success":
-            return evaluate_task_success(arguments["task_description"], arguments["task_result"])
+        if command_name in command_map:
+            return command_map[command_name](arguments)
         return f"Unknown command '{command_name}'."
     except Exception as e:
         logger.error(f"Error executing command {command_name}: {str(e)}")

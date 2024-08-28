@@ -8,7 +8,6 @@ import tiktoken
 
 cfg = Config()
 
-# Classes
 class LlamaModel:
     def __init__(self):
         self.model_path = None
@@ -16,7 +15,7 @@ class LlamaModel:
         self.initialize_model()
 
     def initialize_model(self):
-        model_dir = cfg.model_path
+        model_dir = cfg.llm_model_settings['model_path']
         self.model_path = next(
             (os.path.join(model_dir, f) for f in os.listdir(model_dir) if f.endswith(".gguf")), None)
         if not self.model_path:
@@ -35,13 +34,17 @@ class LlamaModel:
         cmd = [
             ".\\data\\libraries\\LlamaCpp_Binaries\\llama-cli.exe",
             "-m", self.model_path, "-p", prompt, "--temp", str(temperature),
-            "-n", str(max_tokens), "-t", str(self.n_threads), "--ctx_size", str(cfg.context_size), "-ngl", "1"
+            "-n", str(max_tokens), "-t", str(self.n_threads), "--ctx_size", str(cfg.llm_model_settings['context_size']), "-ngl", "1"
         ]
-        return subprocess.run(cmd, capture_output=True, text=True).stdout
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            logger.error(f"Llama CLI Error: {result.stderr}")
+            raise RuntimeError(f"Failed to execute Llama CLI: {result.stderr}")
+        return result.stdout
 
-    def create_chat_completion(self, messages: List[Dict[str, str]], temperature: float = cfg.temperature, max_tokens: int = None) -> str:
+    def create_chat_completion(self, messages: List[Dict[str, str]], temperature: float = cfg.llm_model_settings['temperature'], max_tokens: int = None) -> str:
         prompt = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
-        return self.run_llama_cli(prompt, max_tokens or cfg.max_tokens, temperature)
+        return self.run_llama_cli(prompt, max_tokens or cfg.llm_model_settings['max_tokens'], temperature)
 
 class JsonHandler:
     @staticmethod
@@ -72,7 +75,6 @@ class JsonHandler:
         except Exception as e:
             return "Error:", str(e)
 
-# Functions
 def count_message_tokens(messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo-0301") -> int:
     try:
         encoding = tiktoken.encoding_for_model(model)
@@ -87,23 +89,10 @@ def count_string_tokens(string: str, model_name: str) -> int:
     return len(encoding.encode(string))
 
 def call_ai_function(function, args, description, model=None):
-    model = model or cfg.smart_llm_model
+    model = model or cfg.llm_model_settings['smart_llm_model']
     args = ", ".join([str(arg) if arg is not None else "None" for arg in args])
     messages = [
         {"role": "system", "content": f"You are: ```# {description}\n{function}```"},
         {"role": "user", "content": args},
     ]
     return LlamaModel().create_chat_completion(messages, temperature=0)
-
-if __name__ == "__main__":
-    llm = LlamaModel()
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is the capital of France?"}
-    ]
-    print("LlamaModel response:", llm.create_chat_completion(messages))
-
-    json_str = '{"command": {"name": "test", "args": {"key": "value"}}}'
-    print("Parsed JSON:", JsonHandler.fix_and_parse_json(json_str))
-    command_name, arguments = JsonHandler.get_command(json_str)
-    print("Command:", command_name, "Args:", arguments)

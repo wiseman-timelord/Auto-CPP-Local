@@ -8,6 +8,7 @@ from config import AbstractSingleton, Config
 import dataclasses, orjson, os
 import numpy as np
 from typing import Any, List, Optional
+import threading
 
 cfg = Config()
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
@@ -28,18 +29,12 @@ class MemoryProviderSingleton(AbstractSingleton):
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
 
-# Functions
-def get_memory(cfg):
-    memory_type = cfg.memory_backend
-    if memory_type == "local":
-        return LocalCache(cfg)
-    else:
-        print(f"Unknown memory type '{memory_type}'. Using LocalCache.")
-        return LocalCache(cfg)
+
 
 class LocalCache(MemoryProviderSingleton):
     def __init__(self, cfg):
         self.filename = f"{cfg.system_settings['memory_index']}.json"
+        self.lock = threading.Lock()  # Ensure thread safety
         if os.path.exists(self.filename):
             try:
                 with open(self.filename, 'r+b') as f:
@@ -54,26 +49,32 @@ class LocalCache(MemoryProviderSingleton):
 
     def add(self, text: str) -> str:
         if 'Command Error:' not in text:
-            self.data.texts.append(text)
-            vec = np.array(get_embedding(text), np.float32)[np.newaxis, :]
-            self.data.embeddings = np.concatenate([self.data.embeddings, vec], axis=0)
-            with open(self.filename, 'wb') as f:
-                f.write(orjson.dumps(self.data, option=SAVE_OPTIONS))
+            with self.lock:
+                self.data.texts.append(text)
+                vec = np.array(get_embedding(text), np.float32)[np.newaxis, :]
+                self.data.embeddings = np.concatenate([self.data.embeddings, vec], axis=0)
+                with open(self.filename, 'wb') as f:
+                    f.write(orjson.dumps(self.data, option=SAVE_OPTIONS))
         logger.debug(f"Memory updated with text: {text}")
         return text
 
-    clear = lambda self: logger.debug("Memory cleared")
+    def clear(self):
+        with self.lock:
+            self.data = CacheContent()
+            logger.debug("Memory cleared")
 
     def get(self, data: str) -> Optional[List[Any]]:
         return self.get_relevant(data, 1)
 
     def get_relevant(self, txt: str, k: int = 5) -> List[Any]:
-        scores = np.dot(self.data.embeddings, get_embedding(txt))
-        logger.debug(f"Retrieved relevant memory for: {txt}")
-        return [self.data.texts[i] for i in np.argsort(scores)[-k:][::-1]]
+        with self.lock:
+            scores = np.dot(self.data.embeddings, get_embedding(txt))
+            logger.debug(f"Retrieved relevant memory for: {txt}")
+            return [self.data.texts[i] for i in np.argsort(scores)[-k:][::-1]]
 
     def get_stats(self):
-        return len(self.data.texts), self.data.embeddings.shape
+        with self.lock:
+            return len(self.data.texts), self.data.embeddings.shape
 
 
 class Logger:
@@ -154,6 +155,15 @@ class AutoGptFormatter(logging.Formatter):
         record.title_color = f"{getattr(record, 'title', '')} "
         record.message_no_color = remove_color_codes(getattr(record, 'msg', ''))
         return super().format(record)
+
+# Functions
+def get_memory(cfg):
+    memory_type = cfg.memory_backend
+    if memory_type == "local":
+        return LocalCache(cfg)
+    else:
+        print(f"Unknown memory type '{memory_type}'. Using LocalCache.")
+        return LocalCache(cfg)
 
 def remove_color_codes(s):
     return re.sub(r'\x1B[@-_][0-?]*[ -/]*[@-~]', '', s)

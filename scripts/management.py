@@ -10,6 +10,7 @@ from utilities import LocalCache, logger, TaskTracker
 from urllib.parse import urlparse, urljoin
 import argparse, logging
 from operations import ingest_file, search_files, evaluate_task_success, break_down_task
+import threading#
 
 # Globals
 next_key = 0
@@ -22,6 +23,30 @@ WORKSPACE_FOLDER = ".\workspace"
 session = requests.Session()
 session.headers.update({'User-Agent': cfg.browsing_settings['user_agent']})
 
+# Classes
+class TaskTracker:
+    def __init__(self):
+        self.lock = threading.Lock()  # Ensure thread safety
+        self.tasks = {}
+
+    def add_task(self, task_id, description):
+        with self.lock:
+            self.tasks[task_id] = {"description": description, "status": "Not Started"}
+
+    def update_task_status(self, task_id, status):
+        with self.lock:
+            if task_id in self.tasks:
+                self.tasks[task_id]["status"] = status
+
+    def get_task_status(self, task_id):
+        with self.lock:
+            return self.tasks.get(task_id, {}).get("status", "Task not found")
+
+    def get_all_tasks(self):
+        with self.lock:
+            return self.tasks
+
+# Functions
 def configure_logging():
     logging.basicConfig(filename='log-ingestion.txt',
                         filemode='a',
