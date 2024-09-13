@@ -6,7 +6,7 @@ Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing y
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
-- Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model. This program, driven by GPT-4, chains together LLM "thoughts", to autonomously achieve whatever goal you set. As one of the first examples of GPT-4 running fully autonomously, Auto-GPT pushes the boundaries of what is possible with AI.`
+- Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model.`, from this, we take from it, that its only as good as the model, albeit you want models on par with gpt 4.
 
 ### NEW FEATURES:
 - summarize_multiple_urls: Summarizes the content from multiple URLs based on a given question.
