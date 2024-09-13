@@ -41,11 +41,11 @@ def main():
 
     initialize_model(cfg)
 
-    ai_name = cfg.session_settings.get('ai_name', 'AutoCPP-Lite')
+    ai_name = cfg.session_settings.get('ai_name', 'Auto-CPP-Local')
     prompt = get_prompt()
     full_message_history, next_action_count = [], 0
 
-    print(f"\nWelcome to AutoCPP-Lite. Using AI: {ai_name}")
+    print(f"\nWelcome to Auto-CPP-Local. Using AI: {ai_name}")
 
     agent = Agent(ai_name, get_memory(cfg), full_message_history, next_action_count, prompt)
     agent.start_interaction_loop()
