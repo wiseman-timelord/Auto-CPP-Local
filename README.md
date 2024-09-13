@@ -2,8 +2,8 @@
 Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
-- Done - Re-imagining of folder structures/usage....`.\Input`, `.\Output`, `.\cache\downloads`, `.\cache\working`.
 Roll on development...
+- Done - Re-imagining of folder structures/usage....`.\Input`, `.\Output`, `.\cache\downloads`, `.\cache\working`. It is also clearing downloads and working, upon the event of starting a new project.
 - we are going to try to use llama.cpp, for text and for images, 2 models. I will only be supporting the currently best performing local models for each, deepseek v2 lite and flux, they are both available in gguf. if the image one is not present, then it should warn the user, and disable the image generation features/prompts/operations/commands, but obviously if its present then enable them. The scripts require to be optimally programmed for both, both would be required to be loaded at same time if using both, and cpu threads should be dynamically assigned, ie if there is a task using both image and text generation, then the threads calculated to be useable should be devided between the two, or if just one of them was required for the task then put all safe free threads on that. To refresh, the user should have 3 free threads on the processor, after the free threads have been assigned to the task, as 3 threads is ample to run a windows computer for basic use outside of the program.
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
