@@ -1,4 +1,4 @@
-# AutoCPP-Lite: A Fork and Remake, of AutoGPT 1.3
+# Auto-CPP-Local: A Fork and Remake, of AutoGPT 1.3
 Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
