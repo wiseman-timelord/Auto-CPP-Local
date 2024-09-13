@@ -15,6 +15,7 @@ SAVE_OPTIONS = orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_SERIALIZE_DATACLASS
 get_embedding = lambda txt: Llama(model_path=cfg.smart_llm_model).embed(txt.replace("\n", " "))
 create_default_embeddings = lambda: np.zeros((0, cfg.embed_dim), np.float32)
 logger = Logger()
+PYTHON_EXE_PATH = read_python_exe_path()
 
 # Classes
 @dataclasses.dataclass
@@ -28,8 +29,6 @@ class MemoryProviderSingleton:
     def clear(self) -> str: pass
     def get_relevant(self, data: str, num_relevant: int = 5) -> List[Any]: pass
     def get_stats(self) -> Any: pass
-
-
 class LocalCache(MemoryProviderSingleton):
     def __init__(self, cfg):
         self.filename = f"{cfg.system_settings['memory_index']}.json"
@@ -76,7 +75,6 @@ class LocalCache(MemoryProviderSingleton):
     def get_stats(self):
         with self.lock:
             return len(self.data.texts), self.data.embeddings.shape
-
 class Logger:
     def __init__(self):
         log_dir = os.path.join(os.path.dirname(__file__), '../logs')
@@ -146,6 +144,14 @@ class Logger:
         additional_text = additional_text or "Check setup/config: https://github.com/Torantulino/Auto-GPT#readme"
         self.typewriter_log("DOUBLE CHECK CONFIG", "", additional_text)
 
+def safe_join(base, *paths):
+    """Safely join paths."""
+    new_path = os.path.normpath(os.path.join(base, *paths))
+    if os.path.commonprefix([base, new_path]) != base:
+        logger.error("Path escape detected.")
+        raise ValueError("Path escape detected.")
+    return new_path
+
 class TypingConsoleHandler(logging.StreamHandler):
     def emit(self, record):
         min_speed, max_speed = 0.05, 0.01
@@ -214,3 +220,12 @@ def say_text(text, voice_index=0):
     except Exception as e:
         logger.error(f"TTS error: {e}")
         return False
+        
+def read_python_exe_path():
+    try:
+        with open(os.path.join("data", "persistence_batch.txt"), "r") as f:
+            for line in f:
+                if line.startswith("python_exe="):
+                    return line.split("=")[1].strip()
+    except FileNotFoundError:
+        return None        

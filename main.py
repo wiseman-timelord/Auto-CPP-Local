@@ -8,46 +8,49 @@ from typing import Dict, Any
 from scripts.utilities import clean_input, validate_yaml_file
 from scripts.config import Config
 
-# Constants
 MAIN_MENU_OPTIONS = {
     '1': 'program_settings',
     '2': 'session_settings',
     '3': 'system_settings',
     '4': 'llm_model_settings',
-    '5': 'browsing_settings'
+    '5': 'browsing_settings',
+    '6': 'optional_modes'
 }
 
-# Global variables for settings
 config = Config()
+PYTHON_EXE_PATH = None
 
-# Functions
+def read_python_exe_path():
+    try:
+        with open(os.path.join("data", "persistence_batch.txt"), "r") as f:
+            for line in f:
+                if line.startswith("python_exe="):
+                    return line.split("=")[1].strip()
+    except FileNotFoundError:
+        return None
+
 def load_settings() -> None:
-    """Load settings into globals."""
     global config
     config.load_config()
 
 def save_settings() -> None:
-    """Save global settings to YAML."""
     config.save_config()
 
 def print_separator() -> None:
-    """Print a separator line of 120 characters width."""
     print("=" * 120)
 
 def display_main_menu() -> str:
-    """Display the main menu and return user's choice."""
     print_separator()
-    print(" " * 39 + "AutoCPP-Lite")
+    print(" " * 39 + "Auto-CPP-Local")
     print("-" * 120)
     for number, setting in MAIN_MENU_OPTIONS.items():
         print(f" {number}. {setting.replace('_', ' ').title()}")
     print_separator()
-    return clean_input("Selection; Menu Options = 1-5, Begin AutoCPP-Lite = B, Exit and Save = X: ").strip().upper()
+    return clean_input("Selection; Menu Options = 1-6, Begin AutoCPP-Lite = B, Exit and Save = X: ").strip().upper()
 
 def display_submenu(settings_group: Dict[str, Any]) -> str:
-    """Display submenu for each setting group and return user's choice."""
     print_separator()
-    print(" " * 39 + "AutoCPP-Lite")
+    print(" " * 39 + "Auto-CPP-Local")
     print("-" * 120)
     for idx, (key, value) in enumerate(settings_group.items(), 1):
         print(f" {idx}. {key},".ljust(30) + f"({value})".rjust(50))
@@ -55,7 +58,6 @@ def display_submenu(settings_group: Dict[str, Any]) -> str:
     return clean_input("Selection; Options = 1-#, Back To Main = B: ").strip().upper()
 
 def select_model_file(model_path: str) -> str:
-    """Display available model files and let the user select one."""
     gguf_files = [f for f in os.listdir(model_path) if f.lower().endswith('.gguf')]
     if not gguf_files:
         print(f"No .gguf files found in directory: {model_path}")
@@ -76,7 +78,6 @@ def select_model_file(model_path: str) -> str:
         return ""
 
 def handle_llm_model_settings() -> None:
-    """Handle LLM Model Settings submenu."""
     while True:
         choice = display_submenu(config.llm_model_settings)
         
@@ -98,10 +99,29 @@ def handle_llm_model_settings() -> None:
         else:
             print("Invalid choice. Please select a valid option.")
 
+def handle_optional_modes() -> None:
+    while True:
+        choice = display_submenu(config.program_settings)
+        
+        if choice == 'B':
+            break
+        elif choice == '1':  # continuous_mode
+            config.program_settings['continuous_mode'] = not config.program_settings['continuous_mode']
+            save_settings()
+        elif choice == '2':  # debug_mode
+            config.program_settings['debug_mode'] = not config.program_settings['debug_mode']
+            save_settings()
+        elif choice == '3':  # speak_mode
+            config.system_settings['speak_mode'] = not config.system_settings['speak_mode']
+            save_settings()
+        else:
+            print("Invalid choice. Please select a valid option.")
+
 def handle_submenu_selection(settings_group_name: str) -> None:
-    """Handle user's selection in submenus."""
     if settings_group_name == 'llm_model_settings':
         handle_llm_model_settings()
+    elif settings_group_name == 'optional_modes':
+        handle_optional_modes()
     else:
         while True:
             settings_group = getattr(config, settings_group_name, {})
@@ -117,7 +137,6 @@ def handle_submenu_selection(settings_group_name: str) -> None:
                 print("Invalid choice. Please select a valid option.")
 
 def main_menu() -> None:
-    """Main entry point for the configuration menu."""
     load_settings()
     
     while True:
@@ -134,7 +153,6 @@ def main_menu() -> None:
             print("Invalid choice. Please select a valid option.")
 
 def begin_autocpp_lite() -> None:
-    """Start the AutoCPP-Lite main script."""
     print("Importing .\scripts\main.py")
     time.sleep(2)
     from scripts.main import main
@@ -145,7 +163,6 @@ def begin_autocpp_lite() -> None:
     time.sleep(5)
 
 def exit_and_save() -> None:
-    """Save settings and exit the configurator."""
     print("Exiting and Saving...")
     save_settings()
     print("Settings Saved To Yaml.")
@@ -154,4 +171,9 @@ def exit_and_save() -> None:
     time.sleep(5)
 
 if __name__ == "__main__":
+    PYTHON_EXE_PATH = read_python_exe_path()
+    if PYTHON_EXE_PATH:
+        print(f"Python executable path set to: {PYTHON_EXE_PATH}")
+    else:
+        print("Python executable path not found. Please ensure persistence_batch.txt is correctly set up.")
     main_menu()

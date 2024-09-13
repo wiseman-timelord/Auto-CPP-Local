@@ -12,7 +12,6 @@ import argparse, logging
 from operations import ingest_file, search_files, evaluate_task_success, break_down_task
 import threading
 
-# Globals
 next_key = 0
 agents = {}  # key: (task, history, model)
 cfg = Config()
@@ -23,7 +22,6 @@ WORKSPACE_FOLDER = ".\workspace"
 session = requests.Session()
 session.headers.update({'User-Agent': cfg.browsing_settings['user_agent']})
 
-# Classes
 class TaskTracker:
     def __init__(self):
         self.lock = threading.Lock()  # Ensure thread safety
@@ -46,7 +44,6 @@ class TaskTracker:
         with self.lock:
             return self.tasks
 
-# Functions
 def configure_logging():
     logging.basicConfig(filename='log-ingestion.txt',
                         filemode='a',

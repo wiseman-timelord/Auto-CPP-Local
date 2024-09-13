@@ -10,33 +10,7 @@ from scripts.operations import execute_command
 
 cfg = Config()
 
-# Functions
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='Process args.')
-    parser.add_argument('-c', '--continuous', action='store_true', help='Enable Continuous Mode')
-    parser.add_argument('-l', '--continuous-limit', type=int, help='Set continuous run limit')
-    parser.add_argument('--speak', action='store_true', help='Enable Speak Mode')
-    parser.add_argument('--debug', action='store_true', help='Enable Debug Mode')
-    parser.add_argument('-y', '--skip-reprompt', action='store_true', help='Skip reprompt messages')
-    parser.add_argument('-C', '--config', help="Specify config file path")
-    args = parser.parse_args()
-
-    if args.config:
-        cfg.config_file = args.config
-        cfg.load_config()
-    if args.continuous:
-        cfg.program_settings['continuous_mode'] = True
-    if args.continuous_limit is not None:
-        cfg.program_settings['continuous_limit'] = args.continuous_limit
-    if args.speak:
-        cfg.system_settings['speak_mode'] = True
-    if args.debug:
-        cfg.program_settings['debug_mode'] = True
-
-    return cfg
-
 def main():
-    cfg = parse_arguments()
     logger.set_level(logging.DEBUG if cfg.program_settings['debug_mode'] else logging.INFO)
 
     initialize_model(cfg)
@@ -50,7 +24,6 @@ def main():
     agent = Agent(ai_name, get_memory(cfg), full_message_history, next_action_count, prompt)
     agent.start_interaction_loop()
 
-# Classes
 class Agent:
     def __init__(self, ai_name, memory, full_message_history, next_action_count, prompt):
         self.ai_name = ai_name
@@ -105,6 +78,5 @@ class Agent:
         else:
             self.full_message_history.append(JsonHandler.create_chat_message("system", f"Command {command_name} executed successfully."))
 
-# Entry Point
 if __name__ == "__main__":
     main()

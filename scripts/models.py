@@ -1,6 +1,5 @@
 # `.\scripts\models.py`
 
-# Imports
 import subprocess, os, math, json, re
 from typing import List, Dict, Any, Union
 from scripts.config import Config
@@ -9,7 +8,6 @@ from scripts.utilities import logger
 
 cfg = Config()
 
-# Classes
 class LlamaModel:
     def __init__(self):
         self.model_path = None
@@ -76,7 +74,6 @@ class JsonHandler:
         except Exception as e:
             return "Error", str(e)
 
-# Functions
 def count_message_tokens(messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo-0301") -> int:
     try:
         encoding = tiktoken.encoding_for_model(model)

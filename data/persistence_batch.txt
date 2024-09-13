@@ -1,0 +1,1 @@
+python_exe=C:\Users\Mastar\AppData\Local\Programs\Python\Python39\\python.exe 

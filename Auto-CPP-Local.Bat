@@ -1,13 +1,17 @@
+:: Script: `.\Auto-CPP-Local.Bat`
+
+:: Initialization
 @echo off
 setlocal enabledelayedexpansion
 
 :: Globals
 set "PYTHON_VERSION_USED=39"
-set "AUTO_CCP_LOCAL_VERSION=006"
+set "AUTO_CCP_LOCAL_VERSION=007"
 set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 set "zipFileName=llama_cpp.zip"
 set "zipFilePath=.\cache\%zipFileName%"
 set "PYTHON_EXE_TO_USE="
+set "PERSISTENCE_FILE=.\data\persistence_batch.txt"
 
 :: Dp0
 set "ScriptDirectory=%~dp0"
@@ -29,21 +33,47 @@ if %errorLevel% NEQ 0 (
 :: Print Working DIR
 echo Working Dir: %ScriptDirectory%
 
-:: Find Python
-for %%I in (
-    "C:\Program Files\Python%PYTHON_VERSION_USED%\"
-    "%LocalAppData%\Programs\Python\Python%PYTHON_VERSION_USED%\"
-) do (
-    if exist "%%~I" (
-        set "PYTHON_EXE_TO_USE=%%~I\python.exe"
-        goto :found_python_location
+:: Check for persistence file
+if exist "%PERSISTENCE_FILE%" (
+    echo Persistence file found.
+    for /f "tokens=1,* delims==" %%A in ('type "%PERSISTENCE_FILE%"') do (
+        if "%%A"=="python_exe" (
+            set "PYTHON_EXE_TO_USE=%%B"
+            if exist "!PYTHON_EXE_TO_USE!" (
+                echo Found: .\data\persistence_batch.txt
+                goto :found_python_location
+            ) else (
+                echo Corrupt: .\data\persistence_batch.txt
+                set "PYTHON_EXE_TO_USE="
+            )
+        )
+    )
+) else (
+    echo Missing: .\Data\persistence_batch.txt
+)
+timeout /t 1 >nul
+if not defined PYTHON_EXE_TO_USE (
+    for %%I in (
+        "C:\Program Files\Python%PYTHON_VERSION_USED%\"
+        "%LocalAppData%\Programs\Python\Python%PYTHON_VERSION_USED%\"
+    ) do (
+        if exist "%%~I\python.exe" (
+            set "PYTHON_EXE_TO_USE=%%~I\python.exe"
+            echo python_exe=!PYTHON_EXE_TO_USE! > "%PERSISTENCE_FILE%"
+            echo Created: .\data\persistence_batch.txt
+			timeout /t 1 >nul
+            goto :found_python_location
+        )
     )
 )
-echo Missing Requirement: Python%PYTHON_VERSION_USED%
-timeout /t 3 >nul
-goto :end_of_script
+timeout /t 1 >nul
+if not defined PYTHON_EXE_TO_USE (
+    echo Missing: Python%PYTHON_VERSION_USED%
+    timeout /t 3 >nul
+    goto :end_of_script
+)
 :found_python_location
-echo Python Found: %PYTHON_EXE_TO_USE%
+echo Python Found: !PYTHON_EXE_TO_USE!
 timeout /t 1 >nul
 
 :: Initialization Completed.
@@ -77,7 +107,6 @@ echo.
 echo     2. Check Folders and Install Libraries
 echo.
 echo     3. Upgrade Pip Version to Current
-echo.
 echo.
 echo.
 echo.

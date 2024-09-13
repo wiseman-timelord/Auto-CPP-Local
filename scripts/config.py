@@ -1,12 +1,11 @@
-# `.\scripts\config.py`
+# Script: .\scripts\config.py
 
-# Imports
 import os
 import yaml
 
 class Config:
     def __init__(self):
-        self.config_file = os.path.join(os.path.dirname(__file__), '..', 'data', 'persistent_settings.yaml')
+        self.config_file = os.path.join(os.path.dirname(__file__), '..', 'data', 'persistence_python.yaml')
         self.load_config()
 
     def load_config(self):
