@@ -2,13 +2,14 @@
 Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
-- Further, Streamlining and Optimization and Conforming, of Code.
-- Better use of persistence files, persistence_python and persistence_batch.
-
+- Done - Re-imagining of folder structures/usage....`.\Input`, `.\Output`, `.\cache\downloads`, `.\cache\working`.
+Roll on development...
+- we are going to try to use llama.cpp, for text and for images, 2 models. I will only be supporting the currently best performing local models for each, deepseek v2 lite and flux, they are both available in gguf. if the image one is not present, then it should warn the user, and disable the image generation features/prompts/operations/commands, but obviously if its present then enable them. The scripts require to be optimally programmed for both, both would be required to be loaded at same time if using both, and cpu threads should be dynamically assigned, ie if there is a task using both image and text generation, then the threads calculated to be useable should be devided between the two, or if just one of them was required for the task then put all safe free threads on that. To refresh, the user should have 3 free threads on the processor, after the free threads have been assigned to the task, as 3 threads is ample to run a windows computer for basic use outside of the program.
+- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
+- I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
-- Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model.`, from this, we take from it, that its only as good as the model, albeit you want models on par with gpt 4.
 
 ### NEW FEATURES:
 - summarize_multiple_urls: Summarizes the content from multiple URLs based on a given question.
@@ -107,14 +108,8 @@ playwright_timeout: 30000
     .\cache\working: Temporary workspace for file and project creation.
     .\cache\downloads: Temporary storage for downloaded files.
 ```
+- Quoted from the original v1.3 "README.md": `Auto-GPT is an experimental open-source application showcasing the capabilities of the GPT-4 language model.`, from this, we take from it, that its only as good as the model, albeit you want models on par with gpt 4.
 
-## DEVELOPMENT:
-- to make up for removal of image generation, the user should be generating their own media such as, images, samples, movies, optimally with other software, and making them available in a ".\input" folder, where the AI will become aware of new files periodically, and ask the user what to do with them, or possibly be asking the user to produce certain media, for the ai to be using in the project, and can instruct upon proposed filenames, so they fit the code. Finished projects would be in `.\output` folder, ensure auto-creation in installer. `.\working` should literally be the working folder, logically it would be `.\data\working`, and it would be cleared upon starting a new project.
-- I want all scripts and files, to have labeles with two words, eg `example_name.py` for clarity while editing/programming, as there is some close resemblence between references and actual code.
-- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
-- Installer works, and sets up folders correctly, however, need review of import modules, and check requirements.txt.
-- I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
-- (needs larger context solution) Checking logic and sanity, in script, while ensuring updates to produce, optimizaton, improvement, completeness and correctness, in scripts. There may still be some incomplete and/or inefficient processes. About 35 sripts have been consolidated into 10, many functions were in separate scripts, some features added/cut, and so there will be some streamlining to be had also.
 
 # DISCLAIMER
 - This fork AutoCPP-Lite, is a experimental application, and is provided "as-is" without any warranty, express or implied. By using this software, you agree to assume all risks associated with its use, including but not limited to data loss, system failure, or any other issues that may arise. But be safe in knowing, you will not incur any more Online fees for usage of what is essentially Auto-GPT. 
