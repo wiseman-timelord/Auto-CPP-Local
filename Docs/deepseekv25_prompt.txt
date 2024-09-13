@@ -1,0 +1,55 @@
+INFORMATION/INSTRUCTION:
+I have a project to create a local-model based version of AutoGPT, but claude was unable to complete it due to the size of the code-base, however, with the release of Deepseek 2.5 we are now working together to try to complete this long awaited project.  
+We are in the late stages of converting a very early version of Auto-GPT to being run on local models, with no use of online services, at all. The only thing we want Auto-GPT to do online, is use libraries such as playwright for web-search/scrape/mail.
+- We will not be using environments or docker etc, the only environment we will be using is the set version/location of python.
+- We will be using LM pre-compiled binaries for model interference, specifically the library `.\data\libraries\llama-cli.exe`
+- All things such as, docker, pinecone, redis, openai, azure, elevenlabs, mac_os_ttx, google, image provider, image generation.
+- REmember we are programming towards windows 10 non-wsl python 3.9.
+- The only exception is image generation, we should keep code for that, but make it the local models, again it will be in gguf, as there are gguf, stablediffusion and flux, models, though I am not sure about how thats done.
+- instead of the .env in the vanilla AutoGPT, there is now a `persistent_settings.yaml`, for all intensive persistent settings necessities.
+-For TTS, we will only be using windows built-in windows tts.
+- We are also creating this on the windows 10 non-wsl python 3.9 platform, so, while the program should remain compatible as possible it should also have whatever enhancements we can implement for, that version and use of python on that operating system.
+- the script `.\main.py` is a pre-launch environment, that when done with its own configuration, then imports the other scripts into itself.  
+
+INSTRUCTION:
+Determine the best plan, and best implementations for the work mentioned below, then print the complete updated scripts...
+1. check the full logic and syntax of the scripts, determine where there may be issues, determine the best solutions to those issues, then produce complete updated scripts for each script requiring updating, but if the script is not being updated, then do not print it. the binaries offer...
+
+
+RESOURCE:
+here is the files structure...
+```
+
+.\Auto-CPP-Local.Bat
+.\cache
+.\data
+.\Input
+.\main.py
+.\models
+.\Output
+.\scripts
+.\working
+.\cache\llama_cpp.zip
+.\data\libraries
+.\data\persistence_batch.txt
+.\data\persistence_python.yaml
+.\data\requirements.txt
+.\data\libraries\llama_cpp
+.\data\libraries\llama_cpp\llama-cli.exe
+.\docs\extended_overhauls.txt
+.\docs\menu_prompt.txt
+.\docs\programmers_prompt.txt
+.\models\codeqwen-1_5-7b-chat-q8_0.gguf
+.\scripts\config.py
+.\scripts\main.py
+.\scripts\management.py
+.\scripts\models.py
+.\scripts\operations.py
+.\scripts\prompt.py
+.\scripts\utilities.py
+.\scripts\__init__.py
+```
+
+
+RESOURCE:
+HEre are most of the important/relevant scripts....
