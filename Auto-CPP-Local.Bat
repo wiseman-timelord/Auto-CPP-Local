@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 :: Globals
 set "PYTHON_VERSION_USED=39"
-set "AUTO_CCP_LOCAL_VERSION=s006"
+set "AUTO_CCP_LOCAL_VERSION=006"
 set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 set "zipFileName=llama_cpp.zip"
 set "zipFilePath=.\cache\%zipFileName%"
