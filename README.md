@@ -2,7 +2,9 @@
 Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
-- It dont fit in claude anymore in 1 long initial prompt, with the sections I need to edit, but it gave me a grasp of certain things, but it turned out to be about the limit of what claude could work with around most of more central scripts. This was my Attempt to create this program using Claude_Sonnet. At the point DeepSeek 2.5 came out, we are able to continue project. Plan is in the air, need to assess where we were, but, basically, first feed scripts in, and ask for a logic and sanity chck/fix.
+- Been over the scripts twice in the new `DeepSeek v2.5`, logic and sanity.
+- Updated to streamline token counting and costs (lopped it off).
+- Updated all GPT code to become LlamaCPP Binary code.
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
