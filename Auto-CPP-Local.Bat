@@ -72,7 +72,7 @@ echo.
 echo.
 echo.
 echo.
-echo     1. Run Auto-Deep v%AUTO_CCP_LOCAL_VERSION% on Python v%PYTHON_VERSION_USED%
+echo     1. Run Auto-CPP-Local v%AUTO_CCP_LOCAL_VERSION% on Python v%PYTHON_VERSION_USED%
 echo.
 echo     2. Check Folders and Install Libraries
 echo.
