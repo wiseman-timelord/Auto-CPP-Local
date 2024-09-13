@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 :: Globals
 set "PYTHON_VERSION_USED=39"
-set "AUTO_CCP_LOCAL_VERSION=006"
+set "AUTO_CCP_LOCAL_VERSION=s006"
 set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 set "zipFileName=llama_cpp.zip"
 set "zipFilePath=.\cache\%zipFileName%"
@@ -125,12 +125,12 @@ timeout /t 2 >nul
 
 :: Installing Libraries...
 echo Installing `requirements.txt`...
-if not exist ".\requirements.txt" (
+if not exist ".\data\requirements.txt" (
     echo Error: requirements.txt not found!
     timeout /t 3 >nul
     goto :menu
 )
-"%PYTHON_EXE_TO_USE%" -m pip install -r .\requirements.txt
+"%PYTHON_EXE_TO_USE%" -m pip install -r .\data\requirements.txt
 if %errorLevel% NEQ 0 (
     echo Error: Pip installation failed!
     timeout /t 3 >nul
