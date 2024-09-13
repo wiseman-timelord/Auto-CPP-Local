@@ -100,6 +100,13 @@ playwright_timeout: 30000
 - If we re-implement image generation, stable-diffusion 2.1 model in GGUF here `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`.
 - No gradio interface, scripts are too large as it is for AI programming. At least not for now, until I have full release, at which point I will produce a decision.
 - Optimally I want 2 models, user would be `director` and `creative artist`, and frank model would be `assistant-director` and `liason-officer` and `agent manager`, and Qwen would be `task agents` and `programmers`, Something like that.
+- The folders have been re-imagined...
+```
+    .\Input: Folder for input files; if present, prompts the user for descriptions.
+    .\Output: Folder for completed tasks and final output files.
+    .\cache\working: Temporary workspace for file and project creation.
+    .\cache\downloads: Temporary storage for downloaded files.
+```
 
 ## DEVELOPMENT:
 - to make up for removal of image generation, the user should be generating their own media such as, images, samples, movies, optimally with other software, and making them available in a ".\input" folder, where the AI will become aware of new files periodically, and ask the user what to do with them, or possibly be asking the user to produce certain media, for the ai to be using in the project, and can instruct upon proposed filenames, so they fit the code. Finished projects would be in `.\output` folder, ensure auto-creation in installer. `.\working` should literally be the working folder, logically it would be `.\data\working`, and it would be cleared upon starting a new project.
