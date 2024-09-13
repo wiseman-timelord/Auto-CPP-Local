@@ -2,10 +2,9 @@
 Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
 
 ### DEVELOPMENT:
-- Been over the scripts twice in the new `DeepSeek v2.5`, logic and sanity.
-- Updated to streamline token counting and costs (lopped it off).
-- Updated all GPT code to become LlamaCPP Binary code.
-- One of my more recent designs of launcher, all in one job.
+- Further, Streamlining and Optimization and Conforming, of Code.
+- Better use of persistence files, persistence_python and persistence_batch.
+
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
