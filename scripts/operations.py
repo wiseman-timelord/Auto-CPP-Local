@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 # Globals
 cfg = Config()
 WORKSPACE_FOLDER = ".\\workspace"
-os.makedirs(WORKSPACE_FOLDER, exist_ok=True
+os.makedirs(WORKSPACE_FOLDER, exist_ok=True)
 
 # Functions
 def is_valid_int(value):

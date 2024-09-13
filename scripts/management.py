@@ -10,7 +10,7 @@ from utilities import LocalCache, logger, TaskTracker
 from urllib.parse import urlparse, urljoin
 import argparse, logging
 from operations import ingest_file, search_files, evaluate_task_success, break_down_task
-import threading#
+import threading
 
 # Globals
 next_key = 0
@@ -178,7 +178,7 @@ def create_agent(task: str, prompt: str, model) -> Tuple[int, str]:
     return key, reply
 
 def message_agent(key: int, message: str) -> str:
-    task_id, msgs, model = agents[int(key)]
+    task_id, msgs, model = agents[int(key) if is_valid_int(key) else key]
     msgs.append({"role": "user", "content": message})
     reply = create_chat_completion(model=model, messages=msgs)
     msgs.append({"role": "assistant", "content": reply})

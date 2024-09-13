@@ -1,4 +1,4 @@
-# Updated `main.py`
+# Updated `.\scripts\main.py`
 
 # Imports
 import json, random, time, traceback, yaml, argparse, logging
