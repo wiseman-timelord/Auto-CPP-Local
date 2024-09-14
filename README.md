@@ -1,10 +1,5 @@
 # Auto-CPP-Local: A Fork and Remake, of AutoGPT 1.3
-Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing yet.
-
-### DEVELOPMENT:
-Roll on development...
-- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
-- The prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar. It must work most, logicall and effectively, the prompting should be customized to best compatibility with the applicable model in use for the task. 
+Status: Alpha - Recent Overhaul of scripts via DeepSeek, waiting on model download, ensure to patreon or ko-fi, to progress the upgrade of internet hardware.
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
@@ -94,6 +89,9 @@ playwright_timeout: 30000
 2. Ensure to insert a `*.GGUF` model into `.\models` folder, we are only using one for now, it must be capable of chat and code, and have its own embeddings in the model.
 3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that, unless you installed Python 3.9 in a un-usual location. 4. First the may user to configure some things, then the user may, Begin AutoCPP-Lite or Exit and Save.
 
+### DEVELOPMENT:
+- review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
+- The prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar. It must work most, logicall and effectively, the prompting should be customized to best compatibility with the applicable model in use for the task. 
 
 ### NOTATION:
 - If we re-implement image generation, stable-diffusion 2.1 model in GGUF here `https://huggingface.co/jiaowobaba02/stable-diffusion-v2-1-GGUF`.
