@@ -3,9 +3,6 @@ Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing y
 
 ### DEVELOPMENT:
 Roll on development...
-- Done - Re-imagining of folder structures/usage....`.\Input`, `.\Output`, `.\cache\downloads`, `.\cache\working`. It is also clearing downloads and working, upon the event of starting a new project.
-- Multiple model implementation, only the current best, in preparation for `deepseek v2.5 lite`, that possibly, it will work with, but for now we are going with, `DeepSeek-V2-Lite-Chat-Q8_0.gguf`, `DeepSeek-Coder-V2-Lite-Instruct-Q8_0.gguf`, `flux1-schnell-Q8_0.gguf`.
-- Intelligent assignment of models into `safe spaces` of combined CPU/GPU resources, but it will be 1 GPU only, but with vulkan, ie at worst 1 layer from each model on ram. The Image Generation model will be optional.
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
 
