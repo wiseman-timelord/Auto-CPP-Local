@@ -1,0 +1,44 @@
+INFORMATION:
+I have a project to create a local-model based version of AutoGPT, but claude was unable to complete it due to the size of the code-base, however, with the release of Deepseek 2.5 we are now working together to try to complete this long awaited project.  
+We are in the late stages of converting a very early version of Auto-GPT to being run on local models, with no use of online services, at all. The only thing we want Auto-GPT to do online, is use libraries such as playwright for web-search/scrape/mail.
+
+INSTRUCTION:
+1. safely removed all the code relating to image generation, we do not want image generation, we are focusing on compitent text and code generation.
+2. Determine the best case use for each model in the relevant operations and commands currently implemented, and replace current relating implementations. For examples, the chat model shoud be used for chatting with the user and generating descriptive content, while the instruct model should be used for code generation and text processing. 
+3. Currently there are references to, fast model and slow model or just model. But there should be the `chat_llm_model` and `code_llm_model`, these will relate to the `DeepSeek-V2-Lite-Chat-Q*.gguf` and `DeepSeek-Coder-V2-Lite-Instruct-Q*.gguf`.
+
+
+RESOURCE:
+here is the files structure...
+```
+
+.\Auto-CPP-Local.Bat
+.\cache
+.\data
+.\Input
+.\Output
+.\launch.py
+.\models
+.\scripts
+.\cache\working
+.\cache\downloads
+.\data\libraries
+.\data\persistence_batch.txt
+.\data\persistence_python.yaml
+.\data\requirements.txt
+.\data\libraries\llama_cpp
+.\data\libraries\llama_cpp\llama-cli.exe
+.\models\codeqwen-1_5-7b-chat-q8_0.gguf
+.\scripts\config.py
+.\scripts\main.py
+.\scripts\management.py
+.\scripts\models.py
+.\scripts\operations.py
+.\scripts\prompt.py
+.\scripts\utilities.py
+.\scripts\__init__.py
+```
+
+
+RESOURCE:
+HEre are most of the important/relevant scripts....
