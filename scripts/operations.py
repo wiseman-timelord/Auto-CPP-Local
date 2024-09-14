@@ -7,12 +7,10 @@ from scripts.utilities import LocalCache, logger
 from scripts.models import JsonHandler
 from playwright.sync_api import sync_playwright
 
-# Globals
 cfg = Config()
-WORKSPACE_FOLDER = ".\\workspace"
+WORKSPACE_FOLDER = ".\\cache\\workspace"
 os.makedirs(WORKSPACE_FOLDER, exist_ok=True)
 
-# Functions
 def is_valid_int(value):
     try:
         int(value)
@@ -25,8 +23,6 @@ def get_command(response):
         res_json = JsonHandler.fix_and_parse_json(response)
         cmd = res_json.get("command", {})
         return cmd.get("name", "Error: Missing 'name'"), cmd.get("args", {})
-    except (json.JSONDecodeError, Exception) as e:
-        return "Error:", str(e)
 
 def execute_command(command_name, arguments):
     command_map = {
@@ -285,6 +281,30 @@ def prioritize_tasks(tasks):
 def break_down_task(task):
     breakdown_prompt = f"Break down the following task into smaller, manageable subtasks:\n\n{task}\n\nProvide a numbered list of subtasks."
     return model.create_completion(breakdown_prompt, max_tokens=cfg.max_tokens, temperature=cfg.temperature)
+
+def evaluate_code(code: str) -> List[str]:
+    return call_ai_function(
+        "def analyze_code(code: str) -> List[str]:", 
+        [code], 
+        "Analyzes the code and suggests improvements.",
+        model=LlamaModel('code')
+    )
+
+def improve_code(suggestions: List[str], code: str) -> str:
+    return call_ai_function(
+        "def generate_improved_code(suggestions: List[str], code: str) -> str:", 
+        [json.dumps(suggestions), code], 
+        "Improves code based on suggestions.",
+        model=LlamaModel('code')
+    )
+
+def write_tests(code: str, focus: List[str]) -> str:
+    return call_ai_function(
+        "def create_test_cases(code: str, focus: Optional[str] = None) -> str:", 
+        [code, json.dumps(focus)], 
+        "Generates test cases.",
+        model=LlamaModel('code')
+    )
 
 class TaskTracker:
     def __init__(self):

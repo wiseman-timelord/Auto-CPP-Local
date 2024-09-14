@@ -9,15 +9,20 @@ from scripts.utilities import logger
 cfg = Config()
 
 class LlamaModel:
-    def __init__(self):
+    def __init__(self, model_type):
+        self.model_type = model_type
         self.model_path = None
         self.n_threads = None
         self.initialize_model()
 
     def initialize_model(self):
         model_dir = cfg.llm_model_settings['model_path']
-        self.model_path = next(
-            (os.path.join(model_dir, f) for f in os.listdir(model_dir) if f.endswith(".gguf")), None)
+        if self.model_type == 'chat':
+            self.model_path = next(
+                (os.path.join(model_dir, f) for f in os.listdir(model_dir) if f.startswith("DeepSeek-V2-Lite-Chat-Q")), None)
+        elif self.model_type == 'code':
+            self.model_path = next(
+                (os.path.join(model_dir, f) for f in os.listdir(model_dir) if f.startswith("DeepSeek-Coder-V2-Lite-Instruct-Q")), None)
         if not self.model_path:
             raise FileNotFoundError(f"No .gguf model found in {model_dir}")
         self.n_threads = self.calculate_optimal_threads()

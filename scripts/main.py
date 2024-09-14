@@ -1,7 +1,9 @@
 # Updated `.\scripts\main.py`
 
 # Imports
-import json, random, time, traceback, yaml, argparse, logging
+import os
+import time
+import logging
 from scripts.utilities import get_memory, logger, clean_input
 from scripts.config import Config
 from scripts.models import LlamaModel, JsonHandler
@@ -10,10 +12,24 @@ from scripts.operations import execute_command
 
 cfg = Config()
 
+def clear_folders():
+    folders_to_clear = [".\\cache\\downloads", ".\\cache\\working"]
+    for folder in folders_to_clear:
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+
 def main():
     logger.set_level(logging.DEBUG if cfg.program_settings['debug_mode'] else logging.INFO)
 
-    initialize_model(cfg)
+    chat_model = LlamaModel('chat')
+    code_model = LlamaModel('code')
 
     ai_name = cfg.session_settings.get('ai_name', 'Auto-CPP-Local')
     prompt = get_prompt()
@@ -79,4 +95,5 @@ class Agent:
             self.full_message_history.append(JsonHandler.create_chat_message("system", f"Command {command_name} executed successfully."))
 
 if __name__ == "__main__":
+    clear_folders()  # Clear folders at the start of a new project
     main()

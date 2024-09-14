@@ -135,7 +135,7 @@ def chat_with_ai(prompt, user_input, full_message_history, permanent_memory, tok
             current_context.append(create_chat_message("user", user_input))
             tokens_remaining = token_limit - current_tokens_used
 
-            assistant_reply = LlamaModel().create_chat_completion(
+            assistant_reply = LlamaModel('chat').create_chat_completion(
                 messages=current_context,
                 max_tokens=tokens_remaining,
             )
@@ -148,6 +148,9 @@ def chat_with_ai(prompt, user_input, full_message_history, permanent_memory, tok
             logger.error(f"Error during AI chat interaction: {str(e)}")
             retry_count += 1
             time.sleep(10)
+
+    logger.error("Max retries reached during chat interaction.")
+    return "Error: Could not complete the chat interaction due to repeated errors."
 
     logger.error("Max retries reached during chat interaction.")
     return "Error: Could not complete the chat interaction due to repeated errors."

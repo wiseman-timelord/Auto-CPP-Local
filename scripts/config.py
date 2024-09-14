@@ -47,7 +47,17 @@ class Config:
         }
 
     def _load_system_settings(self, config):
-        return {
+        return {    def load_config(self):
+        with open(self.config_file, 'r') as file:
+            config = yaml.safe_load(file)
+
+        self.program_settings = self._load_program_settings(config)
+        self.session_settings = self._load_session_settings(config)
+        self.task_management_settings = self._load_task_management_settings(config)
+        self.system_settings = self._load_system_settings(config)
+        self.llm_model_settings = self._load_llm_model_settings(config)
+        self.browsing_settings = self._load_browsing_settings(config)
+        self.persistent_session_data = self._load_persistent_session_data(config)
             'memory_backend': config.get('memory_backend', 'local'),
             'memory_index': config.get('memory_index', 'autoccp-lite'),
             'gpu_threads_used': config.get('gpu_threads_used', 1024),
@@ -57,7 +67,8 @@ class Config:
     def _load_llm_model_settings(self, config):
         return {
             'model_path': config.get('model_path', './models'),
-            'smart_llm_model': config.get('smart_llm_model', './models/YourModel.gguf'),
+            'chat_llm_model': config.get('chat_llm_model', './models/DeepSeek-V2-Lite-Chat-Q*.gguf'),
+            'code_llm_model': config.get('code_llm_model', './models/DeepSeek-Coder-V2-Lite-Instruct-Q*.gguf'),
             'context_size': config.get('context_size', 8192),
             'embed_dim': config.get('embed_dim', 4096),
             'smart_token_limit': config.get('smart_token_limit', 8000),
