@@ -1,5 +1,5 @@
 # Auto-CPP-Local: A Fork and Remake, of AutoGPT 1.3
-Status: Alpha - Recent Overhaul of scripts via DeepSeek, waiting on model download, ensure to patreon or ko-fi, to progress the upgrade of internet hardware.
+Status: Alpha - Recent Overhaul of scripts via DeepSeek, waiting on model download, ensure to patreon or ko-fi, to progress the upgrade of internet hardware, back to other project for now.
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
