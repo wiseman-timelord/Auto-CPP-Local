@@ -4,7 +4,7 @@ Status: Alpha - Improvement, Optimization, Correction, Refinement, not testing y
 ### DEVELOPMENT:
 Roll on development...
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
-- I will at some point want to do my prompt engineering magic on the prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar.
+- The prompts sent to local modes, obviously its not prompt.txt anymore, so, I am a little unfamilliar. It must work most, logicall and effectively, the prompting should be customized to best compatibility with the applicable model in use for the task. 
 
 ## DESCRIPTION:
 - This fork "AutoCPP-Lite", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
