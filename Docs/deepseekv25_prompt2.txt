@@ -18,7 +18,6 @@ here is the files structure...
 .\Input
 .\Output
 .\launch.py
-.\models
 .\scripts
 .\cache\working
 .\cache\downloads
@@ -28,7 +27,6 @@ here is the files structure...
 .\data\requirements.txt
 .\data\libraries\llama_cpp
 .\data\libraries\llama_cpp\llama-cli.exe
-.\models\codeqwen-1_5-7b-chat-q8_0.gguf
 .\scripts\config.py
 .\scripts\main.py
 .\scripts\management.py
