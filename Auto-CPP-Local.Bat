@@ -6,10 +6,10 @@ setlocal enabledelayedexpansion
 
 :: Globals
 set "PYTHON_VERSION_USED=39"
-set "AUTO_CCP_LOCAL_VERSION=007"
+set "AUTO_CCP_LOCAL_VERSION=008"
 set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 set "zipFileName=llama_cpp.zip"
-set "zipFilePath=.\cache\%zipFileName%"
+set "zipFilePath=.\cache\downloads\%zipFileName%"
 set "PYTHON_EXE_TO_USE="
 set "PERSISTENCE_FILE=.\data\persistence_batch.txt"
 
@@ -216,9 +216,9 @@ goto :menu
 :: Run Program
 :run_main_program
 call :display_banner
-echo Executing Main Script...
+echo Executing `.\launch.py`...
 timeout /t 1 >nul
-"%PYTHON_EXE_TO_USE%" main.py
+"%PYTHON_EXE_TO_USE%" launch.py
 echo Auto-Deep Has Exited.
 timeout /t 2 >nul
 goto :menu
