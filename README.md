@@ -1,5 +1,15 @@
 # Auto-CPP-Local: A Fork and Remake, of AutoGPT 1.3
-Status: Alpha - Recent Overhaul of scripts via DeepSeek, waiting on model download, ensure to patreon or ko-fi, to progress the upgrade of internet hardware. Back to other project until my interest returns.
+Status: Alpha.
+
+## Recent Updates:
+- Resume for of project due to DeepSeek v2.5.
+- Overhaul of scripts.
+- Logic and Sanity.
+- Downloaded Conviniently Packaged models, enabling no non-sense local models integrated for multi-role ai agent expansion...
+```
+.\Models\DeepSeek-Coder-V2-Lite-Instruct-GGUF-Q8_0.gguf
+.\Models\DeepSeek-V2-Lite-Chat.Q8_0.gguf
+```
 
 ## DESCRIPTION:
 - This fork "Auto-CCP-Local", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
