@@ -3,6 +3,7 @@ Status: Alpha - Not Working.
 
 ### DEVELOPMENT:
 - Done: spent 2 sessions in deepseek conforming all the scripts with each other, to ensure they work correctly. 
+- Done: Fixed some tracebacks.
 - Need to check for outstanding work on the scripts and placeholders, make sure everything is correct and complete and cohierent. 
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
 - The prompts sent to local modes, have been re-worked, but they need to be analyzed so we can get the new prompting system in. 
