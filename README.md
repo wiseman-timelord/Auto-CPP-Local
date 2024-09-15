@@ -5,11 +5,6 @@ Status: Alpha.
 - Resume for of project due to DeepSeek v2.5.
 - Overhaul of scripts.
 - Logic and Sanity.
-- Downloaded Conviniently Packaged models, enabling no non-sense local models integrated for multi-role ai agent expansion...
-```
-.\Models\DeepSeek-Coder-V2-Lite-Instruct-GGUF-Q8_0.gguf
-.\Models\DeepSeek-V2-Lite-Chat.Q8_0.gguf
-```
 
 ## DESCRIPTION:
 - The project `Auto-CPP-Local` is a fork of "AutoGPT v1.3", while current version is `Auto-GPT v5.1`, so purposely went for a streamlined design for less service related code to cut later. `Auto-CPP-Local` is designed to automate project completion through AI, The primary differences include no reliance on online services other than web access through Playwright, launching two windows, one for a Gradio chat interface and one for the engine, and using appropriate local models for AI processing. The fork has be been streamlined and tuned, to windows non-wsl python operation, though enhanced through, Llama.Cpp pre-compiled binaries and 2 DeepSeek v2 model. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos/others they, intend to use with projects via `.\Input` folder. The main goal is to turn AutoGPT into, Text model `AI Manager` and Code model `AI Agents`, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users, which is the case due to the pre-compiled binaries. 
