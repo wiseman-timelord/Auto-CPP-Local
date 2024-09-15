@@ -6,7 +6,7 @@ setlocal enabledelayedexpansion
 
 :: Globals
 set "PYTHON_VERSION_USED=39"
-set "AUTO_CCP_LOCAL_VERSION=008"
+set "AUTO_CCP_LOCAL_VERSION=009"
 set "downloadUrl=https://github.com/ggerganov/llama.cpp/releases/download/b3620/llama-b3620-bin-win-vulkan-x64.zip"
 set "zipFileName=llama_cpp.zip"
 set "zipFilePath=.\cache\downloads\%zipFileName%"
@@ -91,9 +91,16 @@ echo.
 timeout /t 1 >nul
 goto :eof
 
+:: Separator
+:display_separator
+echo.
+echo -----------------------------------------------------------------------------------------------------------------------
+goto :eof
+
 :: Menu
 :menu
 call :display_banner
+echo.
 echo.
 echo.
 echo.
@@ -115,7 +122,8 @@ echo.
 echo.
 echo.
 echo.
-echo -----------------------------------------------------------------------------------------------------------------------
+echo.
+call :display_separator
 set /p choice="Selection; Menu Options = 1-3, Exit Menu = X: "
 
 if /i "%choice%"=="1" goto :run_main_program
@@ -213,15 +221,18 @@ echo Check Printout for Issues.
 pause
 goto :menu
 
-:: Run Program
+:: Option 1: Run Main Program (Now Launches Interface and Engine)
 :run_main_program
 call :display_banner
-echo Executing `.\launch.py`...
-timeout /t 1 >nul
-"%PYTHON_EXE_TO_USE%" launch.py
-echo Auto-Deep Has Exited.
-timeout /t 2 >nul
-goto :menu
+echo Launching Interface and Engine...
+
+:: Launch Python Interface and Engine Windows...
+start "Interface" cmd /k "%PYTHON_EXE_TO_USE%" .\launch_interface.py
+start "Engine" cmd /k "%PYTHON_EXE_TO_USE%" .\launch_engine.py
+echo Interface and Engine, Windows Deployed!
+echo Self-Terminate in 5 Seconds...
+timeout /t 5 >nul
+goto :end_of_script
 
 :: End Of Script
 :end_of_script
