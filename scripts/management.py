@@ -12,8 +12,7 @@ import argparse, logging
 from operations import ingest_file, search_files, evaluate_task_success, break_down_task
 import threading
 
-next_key = 0
-agents = {}  # key: (task, history, model)
+# Global Config
 cfg = Config()
 memory = LocalCache(cfg)
 model = Llama(model_path=cfg.llm_model_settings['smart_llm_model'])

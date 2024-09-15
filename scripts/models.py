@@ -7,6 +7,7 @@ from scripts.config import Config
 import tiktoken
 from scripts.utilities_two import logger
 
+# Global Config
 cfg = Config()
 
 class LlamaModel:

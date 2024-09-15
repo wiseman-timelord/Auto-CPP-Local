@@ -11,6 +11,7 @@ from scripts.prompt import get_prompt, chat_with_ai
 from scripts.operations import execute_command
 from scripts.gradio import create_gradio_interface
 
+# Global Config
 cfg = Config()
 
 def clear_folders():

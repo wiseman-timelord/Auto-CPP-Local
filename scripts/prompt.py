@@ -152,9 +152,6 @@ def chat_with_ai(prompt, user_input, full_message_history, permanent_memory, tok
     logger.error("Max retries reached during chat interaction.")
     return "Error: Could not complete the chat interaction due to repeated errors."
 
-    logger.error("Max retries reached during chat interaction.")
-    return "Error: Could not complete the chat interaction due to repeated errors."
-
 def get_prompt():
     prompt_generator = PromptGenerator()
     prompt_generator.add_constraint("~4000 word limit for short term memory. Your short term memory is short, so make best use of System Memory.")

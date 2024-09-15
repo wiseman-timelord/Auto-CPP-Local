@@ -1,13 +1,10 @@
-# `.\launcher.py` - This script needs to run standalone until importing `.\scripts\engine.py`
+# `.\launch_main.py` - This script needs to run standalone until importing `.\scripts\engine.py`
 
 # Imports
 import os
-import yaml
-from scripts.utilities_one import clean_input, validate_yaml_file
 from scripts.config import Config
-from scripts.models import LlamaModel
-from scripts.gradio import create_gradio_interface
 
+# Initialize the Config object
 config = Config()
 
 def load_settings():
@@ -19,22 +16,9 @@ def save_settings():
 def print_separator():
     print("=" * 120)
 
-def display_main_menu():
+def display_menu(menu_title, settings_group):
     print_separator()
-    print(" " * 39 + "Auto-CPP-Local - Engine Window")
-    print("-" * 120)
-    print("1. Program Settings")
-    print("2. Session Settings")
-    print("3. System Settings")
-    print("4. LLM Model Settings")
-    print("5. Browsing Settings")
-    print("6. Optional Modes")
-    print_separator()
-    return clean_input("Selection; Menu Options = 1-6, Begin AutoCPP-Lite = B, Exit and Save = X: ").strip().upper()
-
-def display_submenu(settings_group):
-    print_separator()
-    print(" " * 39 + "Auto-CPP-Local - Engine Window")
+    print(" " * 39 + menu_title)
     print("-" * 120)
     for idx, (key, value) in enumerate(settings_group.items(), 1):
         print(f" {idx}. {key},".ljust(30) + f"({value})".rjust(50))
@@ -63,7 +47,7 @@ def select_model_file(model_path):
 
 def handle_llm_model_settings():
     while True:
-        choice = display_submenu(config.llm_model_settings)
+        choice = display_menu("Auto-CPP-Local - LLM Model Settings", config.llm_model_settings)
         
         if choice == 'B':
             break
@@ -71,12 +55,21 @@ def handle_llm_model_settings():
             new_model_path = clean_input("Enter new model path: ").strip()
             config.llm_model_settings['model_path'] = new_model_path
             save_settings()
-        elif choice == '2':  # smart_llm_model option
+        elif choice == '2':  # chat_llm_model option
             model_path = config.llm_model_settings['model_path']
             if os.path.isdir(model_path):
                 selected_model = select_model_file(model_path)
                 if selected_model:
-                    config.llm_model_settings['smart_llm_model'] = selected_model
+                    config.llm_model_settings['chat_llm_model'] = selected_model
+                    save_settings()
+            else:
+                print(f"Invalid model path: {model_path}")
+        elif choice == '3':  # code_llm_model option
+            model_path = config.llm_model_settings['model_path']
+            if os.path.isdir(model_path):
+                selected_model = select_model_file(model_path)
+                if selected_model:
+                    config.llm_model_settings['code_llm_model'] = selected_model
                     save_settings()
             else:
                 print(f"Invalid model path: {model_path}")
@@ -85,7 +78,7 @@ def handle_llm_model_settings():
 
 def handle_optional_modes():
     while True:
-        choice = display_submenu(config.program_settings)
+        choice = display_menu("Auto-CPP-Local - Optional Modes", config.program_settings)
         
         if choice == 'B':
             break
@@ -109,7 +102,7 @@ def handle_submenu_selection(settings_group_name):
     else:
         while True:
             settings_group = getattr(config, settings_group_name, {})
-            choice = display_submenu(settings_group)
+            choice = display_menu(f"Auto-CPP-Local - {settings_group_name.capitalize()} Settings", settings_group)
             if choice == 'B':
                 break
             elif choice.isdigit() and 1 <= int(choice) <= len(settings_group):
@@ -124,7 +117,14 @@ def main_menu():
     load_settings()
     
     while True:
-        choice = display_main_menu()
+        choice = display_menu("Auto-CPP-Local - Engine Window", {
+            "1": "Program Settings",
+            "2": "Session Settings",
+            "3": "System Settings",
+            "4": "LLM Model Settings",
+            "5": "Browsing Settings",
+            "6": "Optional Modes"
+        })
         if choice in ['1', '2', '3', '4', '5', '6']:
             handle_submenu_selection(f"{choice}_settings")
         elif choice == 'B':
@@ -146,6 +146,9 @@ def exit_and_save():
     print("Exiting and Saving...")
     save_settings()
     print("Settings Saved To Yaml.")
+
+# Import clean_input here to ensure it is available when needed
+from scripts.utilities_one import clean_input
 
 if __name__ == "__main__":
     main_menu()

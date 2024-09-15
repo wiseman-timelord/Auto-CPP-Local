@@ -7,6 +7,7 @@ from scripts.utilities_one import LocalCache, logger
 from scripts.models import JsonHandler
 from playwright.sync_api import sync_playwright
 
+# Global Config
 cfg = Config()
 WORKSPACE_FOLDER = ".\\cache\\workspace"
 os.makedirs(WORKSPACE_FOLDER, exist_ok=True)
@@ -23,6 +24,8 @@ def get_command(response):
         res_json = JsonHandler.fix_and_parse_json(response)
         cmd = res_json.get("command", {})
         return cmd.get("name", "Error: Missing 'name'"), cmd.get("args", {})
+    except Exception as e:
+        return "Error", str(e)
 
 def execute_command(command_name, arguments):
     command_map = {

@@ -1,5 +1,6 @@
 # `.\scripts\utilities_two.py` The Utilities script to fix circular imports.
 
+# Imports
 import logging
 import os
 import random
@@ -8,6 +9,7 @@ import time
 import win32com.client
 from scripts.config import Config
 
+# Global Config
 cfg = Config()
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
