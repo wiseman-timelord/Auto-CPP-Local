@@ -1,4 +1,4 @@
-# Auto-CPP-Local: A Fork and Remake, of AutoGPT 1.3
+# Auto-CPP-Local: A Vivid Fork of AutoGPT v1.3
 Status: Alpha.
 
 ## Recent Updates:
@@ -12,7 +12,7 @@ Status: Alpha.
 ```
 
 ## DESCRIPTION:
-- This fork "Auto-CCP-Local", is a remake of the last release of "AutoGPT v1.3", that has be been streamlined and tuned, to basic windows non-wsl offline operation, and will be designed to run of local models, such as "qwencode 1.5". Auto-GPT is currently at v5.1, so dont expect that level of operation/compitence. however, we have found alternates to things such as google websearch, as well as giving the code a good optimization. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, generate elsewhere and communicate inclusion of. The main goal is to have AutoGPT, robust and compitent, on local models, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users. 
+- The project Auto-CPP-Local is a fork of "AutoGPT v1.3", designed to automate project completion through AI. The primary differences include no reliance on online services other than web access through Playwright, launching two windows (one for a Gradio chat interface and one for the engine), and using local models for AI processing. The fork has be been streamlined and tuned, to windows non-wsl python operation, though enhanced through, Llama.Cpp pre-compiled binaries and 2 DeepSeek v2 model. Auto-GPT is currently at v5.1, so dont expect the same advancements. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos they, intend to use via `.\Input` folder. The main goal is to turn AutoGPT into, Text model `AI Manager` and Code model, AI Agents, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users, which is the case due to the pre-compiled binaries. 
 
 ### NEW FEATURES:
 - summarize_multiple_urls: Summarizes the content from multiple URLs based on a given question.
