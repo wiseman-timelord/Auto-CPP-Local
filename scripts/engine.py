@@ -1,14 +1,15 @@
-# Updated `.\scripts\engine.py`
+# `.\scripts\engine.py`
 
 # Imports
 import os
 import time
 import logging
-from scripts.utilities import get_memory, logger, clean_input
+from scripts.utilities_one import get_memory, logger, clean_input
 from scripts.config import Config
 from scripts.models import LlamaModel, JsonHandler
 from scripts.prompt import get_prompt, chat_with_ai
 from scripts.operations import execute_command
+from scripts.gradio import create_gradio_interface
 
 cfg = Config()
 
@@ -97,3 +98,4 @@ class Agent:
 if __name__ == "__main__":
     clear_folders()  # Clear folders at the start of a new project
     main()
+    create_gradio_interface()  # Launch Gradio interface in the default browser

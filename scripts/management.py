@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple
 import json, requests, os
 from config import Config
 from models import call_ai_function, create_chat_completion
-from utilities import LocalCache, logger, TaskTracker
+from utilities_one import LocalCache, logger, TaskTracker
 from urllib.parse import urlparse, urljoin
 import argparse, logging
 from operations import ingest_file, search_files, evaluate_task_success, break_down_task

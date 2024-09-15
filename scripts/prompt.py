@@ -2,7 +2,7 @@
 
 # Imports
 import json, time
-from scripts.utilities import LocalCache, logger
+from scripts.utilities_one import LocalCache, logger
 from scripts.config import Config
 from scripts.models import LlamaModel, JsonHandler
 

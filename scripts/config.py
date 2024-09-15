@@ -1,4 +1,4 @@
-# Script: .\scripts\config.py
+# `.\scripts\config.py`
 
 import os
 import yaml
@@ -47,17 +47,7 @@ class Config:
         }
 
     def _load_system_settings(self, config):
-        return {    def load_config(self):
-        with open(self.config_file, 'r') as file:
-            config = yaml.safe_load(file)
-
-        self.program_settings = self._load_program_settings(config)
-        self.session_settings = self._load_session_settings(config)
-        self.task_management_settings = self._load_task_management_settings(config)
-        self.system_settings = self._load_system_settings(config)
-        self.llm_model_settings = self._load_llm_model_settings(config)
-        self.browsing_settings = self._load_browsing_settings(config)
-        self.persistent_session_data = self._load_persistent_session_data(config)
+        return {
             'memory_backend': config.get('memory_backend', 'local'),
             'memory_index': config.get('memory_index', 'autoccp-lite'),
             'gpu_threads_used': config.get('gpu_threads_used', 1024),

@@ -1,10 +1,11 @@
 # `.\scripts\models.py`
 
+# Imports
 import subprocess, os, math, json, re
 from typing import List, Dict, Any, Union
 from scripts.config import Config
 import tiktoken
-from scripts.utilities import logger
+from scripts.utilities_two import logger
 
 cfg = Config()
 
