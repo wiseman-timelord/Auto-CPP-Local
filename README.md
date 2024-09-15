@@ -96,9 +96,11 @@ Selection; Menu Options = 1-3, Exit Menu = X:
 
 ### REQUIREMENTS:
 - Python 3.9 - It will find "...Python39\pip.exe" in, user folder or either program files, though you can change Python 3.9 consistently to any version in the 2 batches.
-- Python Requirements - Installed by `Installer.Bat`, from, Web-Request on GitHub and what is now `.\data\requirements.txt`.  
-- No Environments - Such as, Dockers or WSL, no, just normal windows operations, we are using the Llama Pre-compiled binaries, they run in windows, no issues there. 
-- Suitable Models - I predict `codeqwen-1_5-7b-chat-q8_0.gguf`, is worthy; `context length max 64K`, `92 coding languages`, `text-to-SQL, bug fix, etc`.
+- Python Libraries - Now listed in `.\data\requirements.txt`, able to be Installed through `.\Auto-Cpp-Local.Bat`, the requirements are same as `AutoGPT v1.3`, other than, removal of online services, then insertion so far of: `Gradio`. 
+- Pre-Compiled Llama.Cpp - Downloaded/Installed by `.\Auto-Ccp-Local.Bat` during processes around selection of install of `.\data\requirements.txt`.
+- No Environments - Such as, Dockers or WSL, no, just normal windows operations, and set python location installs.
+- Suitable Models - Currently its, `.\Models\DeepSeek-Coder-V2-Lite-Instruct-GGUF-Q*.gguf` and `.\Models\DeepSeek-V2-Lite-Chat.Q*.gguf`, this will be expanded later, need working version.
+
 
 ### INSTALL AND USAGE:
 - Note, it does not work yet, but when it does, it will be like...
