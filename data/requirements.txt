@@ -13,3 +13,4 @@ flake8
 numpy
 pywin32==305
 pytest-playwright
+gradio
