@@ -221,17 +221,13 @@ echo Check Printout for Issues.
 pause
 goto :menu
 
-:: Option 1: Run Main Program (Now Launches Interface and Engine)
+:: Option 1: Run Main Program
 :run_main_program
 call :display_banner
-echo Launching Interface and Engine...
-
-:: Launch Python Interface and Engine Windows...
-start "Interface" cmd /k "%PYTHON_EXE_TO_USE%" .\launch_interface.py
-start "Engine" cmd /k "%PYTHON_EXE_TO_USE%" .\launch_engine.py
-echo Interface and Engine, Windows Deployed!
-echo Self-Terminate in 5 Seconds...
-timeout /t 5 >nul
+echo Launching Auto-CPP-Local...
+"%PYTHON_EXE_TO_USE%" .\launch_main.py
+echo Auto-CPP-Local Exited.
+timeout /t 3 >nul
 goto :end_of_script
 
 :: End Of Script
