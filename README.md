@@ -2,7 +2,7 @@
 Status: Alpha - Not Working.
 
 ### DEVELOPMENT:
-- Done: spent 2 sessions in deepseek conforming all the scripts with each other, to ensure they work correctly. 
+- Done: spent 2 sessions in deepseek conforming all the scripts with each other, to ensure they work correctly, and as outlined.
 - Done: Fixed some tracebacks.
 - Need to check for outstanding work on the scripts and placeholders, make sure everything is correct and complete and cohierent. 
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
