@@ -99,9 +99,11 @@ Selection; Menu Options = 1-3, Exit Menu = X:
 
 ### INSTALL AND USAGE:
 - Note, it does not work yet, but when it does, it will be like...
-1. Run the `.\Installer.Bat`, ensure firewall is off temprarely, or allow through. it will find "...Python39\scripts\pip.exe" and use that, unless you installed Python 3.9 in a un-usual location.
-2. Ensure to insert a `*.GGUF` model into `.\models` folder, we are only using one for now, it must be capable of chat and code, and have its own embeddings in the model.
-3. Run the `.\Launcher.Bat`, it will find "...Python39\python.exe" and use that, unless you installed Python 3.9 in a un-usual location. 4. First the may user to configure some things, then the user may, Begin AutoCPP-Lite or Exit and Save.
+1. This program is currently for the version of Python it was created on, that is `Python 3.9`, install it to one of the 2 possible default file locations, do not install Python 3.9 in a un-usual location.  
+2. Run the `.\Auto-CCP-Local.Bat`, tou first should install requirements, it will find "...Python39\scripts\pip.exe" and use that, and I advise ensure firewall is off to allow web-request to install llama.cpp pre-compiled binary.
+3. Ensure to insert the `Suitable Models` in `*.GGUF` formmat into `.\Models` folder, we need both of them for the AI to work.
+4. On the `.\Auto-CCP-Local.Bat` menu, launch the program, it will find "...Python39\python.exe" and use that for the launch commands.
+4. First the user must configure some things in the text based `Engine Window`, then the user may, begin using AutoCPP-Lite in the based `Chat Window` Server, that should popup the interface in the default web browser.
 
 ### DEVELOPMENT:
 - review the memory code, determine if there is any clever code we can introduce to enhance the memory of the AI. Rag, is that what we need, is there something better? What is best solution for best results?
