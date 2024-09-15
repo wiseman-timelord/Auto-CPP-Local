@@ -1,5 +1,5 @@
 # Auto-CPP-Local: A Vivid Fork of AutoGPT v1.3
-Status: Alpha.
+Status: Alpha - Not Working.
 
 ## Recent Updates:
 - Resume for of project due to DeepSeek v2.5.
