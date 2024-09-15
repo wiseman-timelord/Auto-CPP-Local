@@ -11,13 +11,10 @@ Status: Alpha.
 - The project `Auto-CPP-Local` is a fork of "AutoGPT v1.3", while current version is `Auto-GPT v5.1`, so purposely went for a streamlined design for less service related code to cut later. `Auto-CPP-Local` is designed to automate project completion through AI, The primary differences include no reliance on online services other than web access through Playwright, launching. Two windows, one for a Gradio WebUI chat interface with chat model and one window for the engine window, and using appropriate relating multi-role prompted local models for AI processing. The fork has be been streamlined and tuned, to windows non-wsl python operation, though enhanced through, Llama.Cpp pre-compiled binaries and 2 DeepSeek v2 model. The image generation is removed, the user should instead provide AutoCPP-Lite with images/music/videos/others they, intend to use with projects via `.\Input` folder. The main goal is to turn AutoGPT into, Text model `AI Manager` and Code model `AI Agents`, and the second goal is GPU Acelleration for both, entry level nVidia and Non-ROCM AMD, users, which is the case due to the pre-compiled binaries. 
 
 ### NEW FEATURES:
-- summarize_multiple_urls: Summarizes the content from multiple URLs based on a given question.
-- compare_information: Compares information from multiple URLs in relation to a specific question.
-- generate_report: Creates a comprehensive report on a given topic using collected information.
-- prioritize_tasks: Organizes a list of tasks in order of priority.
-- break_down_task: Divides a large task into smaller, more manageable subtasks.
-- evaluate_task_success: Assesses the success of a completed task and provides a score and explanation.
-- TaskTracker class: Manage and track tasks; Add new task, Update task status, Get task status, Retrieve all tasks.
+- New commands: summarize_multiple_urls, compare_information, generate_report, prioritize_tasks, break_down_task, evaluate_task_success, TaskTracker class.
+- Gradio Interface: Tba.
+= Local Models: TBA
+- Etc.
 
 ### PREVIEW:
 - The Env is now a yaml, as we have no APIs, this will have a gradio configurator for logical keys...
