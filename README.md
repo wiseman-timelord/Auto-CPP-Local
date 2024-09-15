@@ -61,30 +61,37 @@ user_agent: "Mozilla/5.0"
 playwright_headless: true
 playwright_timeout: 30000
 ```
-- Check out the new files structure, its now manageable...
+- The combined, `Setup-Installer` and `Launcher`, is the current form of `Auto-Cpp-Local.Bat`...
 ```
-.\Installer.bat
-.\Launcher.bat
-.\main.py
-.\working
-.\docs
-.\docs\*programming notes*
-.\data
-.\data\libraries\
-.\data\libraries\**Llama.Cpp Library**
-.\data\persistent_settings.yaml
-.\data\requirements.txt
-.\models
-.\models\**default models location**
-.\scripts
-.\scripts\config.py
-.\scripts\main.py
-.\scripts\management.py
-.\scripts\models.py
-.\scripts\operations.py
-.\scripts\prompt.py
-.\scripts\utilities.py
-.\scripts\__init__.py
+=======================================================================================================================
+    Auto-CPP-Local v009
+=======================================================================================================================
+
+
+
+
+
+
+
+
+
+    1. Run Auto-CPP-Local v009 on Python v39
+
+    2. Check Folders and Install Libraries
+
+    3. Upgrade Pip Version to Current
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+Selection; Menu Options = 1-3, Exit Menu = X:
+
 ```
 
 ### REQUIREMENTS:
